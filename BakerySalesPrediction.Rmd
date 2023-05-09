@@ -11,6 +11,13 @@ kiwo <- read.csv('data/kiwo.csv')
 revenue <- read.csv('data/umsatzdaten_gekuerzt.csv')
 weather <- read.csv('data/weather.csv')
 
-
+####
+# Wochentage
+# Produktgruppen (ggf. kategorisieren ??)
+# Monate/Jahreszeiten
+# Temperatur / Wetter (Sonne, Regen)
+# Kiwo? (Events)
+# Ferien / Feiertage
+####
 
 ```
