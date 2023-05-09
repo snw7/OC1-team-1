@@ -1,7 +1,8 @@
 <h2>Projekt - ML Opencampus - Datascience Kurs - Team 1.1</h2>
 
 <h4>Aktuelle Infos</h4>
-
+hier tippen...
+<br>
 <h4>Parameter für Modell</h4>
 <ul>
   <li>Wochentage</li>
