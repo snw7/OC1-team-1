@@ -10,5 +10,4 @@ output: html_document
 kiwo <- read.csv('data/kiwo.csv')
 revenue <- read.csv('data/umsatzdaten_gekuerzt.csv')
 weather <- read.csv('data/weather.csv')
-
 ```
