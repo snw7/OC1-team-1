@@ -1,9 +1,9 @@
 <h2>Projekt - ML Opencampus - Datascience Kurs - Team 1.1</h2>
 
-<h4>Aktuelle Infos</h4>
+<h3>Aktuelle Infos</h3>
 hier tippen...
-<br>
-<h4>Parameter für Modell</h4>
+<br><br>
+<h3>Parameter für Modell</h3>
 <ul>
   <li>Wochentage</li>
   <li>Produktgruppen (ggf. kategorisieren ??)</li>
