@@ -9,6 +9,7 @@ hier tippen...
   <li>Produktgruppen (ggf. kategorisieren ??)</li>
   <li>Monate/Jahreszeiten</li>
   <li>Temperatur / Wetter (Sonne, Regen)</li>
+  <li>Wassertemperatur (woher?)</li>
   <li>Kiwo? (Events)</li>
   <li>Ferien / Feiertage</li>
 </ul>
