@@ -7,6 +7,7 @@ output: html_document
 
 ```{r}
 # Read data
+library()
 kiwo <- read.csv('data/kiwo.csv')
 revenue <- read.csv('data/umsatzdaten_gekuerzt.csv')
 weather <- read.csv('data/weather.csv')
