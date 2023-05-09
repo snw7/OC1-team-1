@@ -3,12 +3,6 @@
 <h3>Aktuelle Infos</h3>
 hier tippen...
 <br><br>
-<h3>Aufgaben</h3>
-<ol>
-  <li>Aufgabe1</li>
-  <li>Aufgabe2</li>
-</ol>
-<br><br>
 <h3>Parameter für Modell</h3>
 <ul>
   <li>Wochentage</li>
