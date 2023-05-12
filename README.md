@@ -6,7 +6,7 @@ hier tippen...
 <h3>Parameter für Modell</h3>
 <ul>
   <li>Wochentage</li>
-  <li>Produktgruppen (ggf. kategorisieren ??)</li>
+  <li>Produktgruppen (1: Brot, 2: Broetchen, 3: Croissant, 4: Konditiorei, 5: Kuchen, 6: Saisonbrot)</li>
   <li>Monate/Jahreszeiten</li>
   <li>Temperatur / Wetter (Sonne, Regen)</li>
   <li>Wassertemperatur (woher?)</li>
