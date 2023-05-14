@@ -62,11 +62,8 @@ df$weekday <- weekdays(df$Datum)
 df
 ```
 
-
+# This helps us figure out if we have NA values in the dataset
 ```{r}
 any(is.na(df))
 ```
 
-
-
-#
