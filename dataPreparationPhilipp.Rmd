@@ -56,6 +56,11 @@ df <- df %>%
   mutate(Warengruppe = ifelse(Warengruppe == 6, "Saisonbrot", Warengruppe))
 ```
 
+# Adding weekday column to data set
+```{r}
+df$weekday <- weekdays(df$Datum)
+df
+```
 
 
 ```{r}
