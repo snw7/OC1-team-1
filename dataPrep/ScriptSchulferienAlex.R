@@ -3,9 +3,9 @@ install.packages("lubridate")
 library(lubridate)
 
 # Dateinamen und Spaltennummern anpassen
-csv_datei <- "ferienRaw.csv"
-start_spalte <- 1
-ende_spalte <- 2
+csv_datei <- "data/original/ferienRaw.csv"
+start_spalte <- "Start"
+ende_spalte <- "Ende"
 
 # Lese die CSV-Datei ein
 daten <- read.csv(csv_datei, header = TRUE)
@@ -22,7 +22,7 @@ ende_datum <- format(ende_datum, "%Y-%m-%d")
 alle_tage <- seq.Date(as.Date(start_datum), as.Date(ende_datum), by = "day")
 
 # Speichere die Tage in einer neuen CSV-Datei
-ausgabedatei <- "SchulferienSH.csv"
+ausgabedatei <- "data/original/schulferien_sh.csv"
 write.csv(alle_tage, file = ausgabedatei, row.names = FALSE)
 
 # Gib eine Bestätigung aus
