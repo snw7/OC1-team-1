@@ -65,5 +65,6 @@ df
 # This helps us figure out if we have NA values in the dataset
 ```{r}
 any(is.na(df))
+write.csv(df, "data/data_combined.csv", row.names = FALSE)
 ```
 
