@@ -13,10 +13,10 @@ library(tidyverse)
 
 # Storing Data sets as data frames
 ```{r}
-revenue <- read.csv('./data/original/umsatzdaten_gekuerzt.csv')
-kiwo <- read.csv('./data/original/kiwo.csv')
-ferien <- read.csv('./data/original/schulferien_sh.csv')
-weather <- read.csv('./data/original/weather.csv')
+revenue <- read.csv('../data/original/umsatzdaten_gekuerzt.csv')
+kiwo <- read.csv('../data/original/kiwo.csv')
+ferien <- read.csv('../data/original/schulferien_sh.csv')
+weather <- read.csv('../data/original/weather.csv')
 ```
 
 # Joining the kiwo data with the revenue data
@@ -24,7 +24,7 @@ weather <- read.csv('./data/original/weather.csv')
 ## Replacing all instances of Kiwo = NA with Kiwo = 0
 ## Reformating Column KielerWoche to boolean values
 ```{r}
-df <- left_join(revenue, kiwo, by = "Datum") %>%
+df <- full_join(revenue, kiwo, by = "Datum") %>%
   replace_na(list(KielerWoche = 0)) %>%
   mutate(KielerWoche = ifelse(KielerWoche == 1, TRUE, FALSE))
   
@@ -34,7 +34,7 @@ df
 
 # Joining the weather data with the df containing revenue and kiwo
 ```{r}
-df <- left_join(df, weather, by = "Datum")
+df <- full_join(df, weather, by = "Datum")
 
 df
 ```
@@ -65,7 +65,7 @@ df
 
 # Adding holiday column to data set
 ```{r}
-df <- left_join(df, ferien, by = "Datum") %>%
+df <- full_join(df, ferien, by = "Datum") %>%
   replace_na(list(SchulferienSH = 0)) %>%
   mutate(SchulferienSH = ifelse(SchulferienSH == True, TRUE, FALSE))
   
