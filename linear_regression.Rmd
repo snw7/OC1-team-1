@@ -1,0 +1,81 @@
+---
+title: "Linear Regression"
+author: "Olav Cornelius"
+output: html_notebook
+---
+
+#### Importieren des Datensatzes
+
+```{r}
+library(readr)
+revenue <- read_csv("data/data_combined.csv")
+```
+
+#### Teilen des Datensatzes in Trainings- Validierungs- und Testdatensatz
+
+```{r}
+# Load the dplyr library
+library(dplyr)
+
+# Set a random seed for reproducibility
+#set.seed(42)
+
+# Shuffle the revenue // IF YOU WANT TO SHUFFLE THE DATA (NO TIME SERIES)
+#data_shuffled <- revenue %>% sample_frac(1)
+
+# Calculate the number of rows for each dataset
+n_total <- nrow(revenue)
+n_train <- floor(0.7 * n_total)
+n_validation <- floor(0.20 * n_total)
+
+# Split the SHUFFELED data into training, validation, and test datasets
+#train_data <- data_shuffled %>% slice(1:n_train)
+#validation_data <- data_shuffled %>% slice((n_train + 1):(n_train + n_validation))
+#test_data <- data_shuffled %>% slice((n_train + n_validation + 1):n_total)
+
+# Split the data into training, validation, and test datasets
+train_data <- revenue %>% slice(1:n_train)
+validation_data <- revenue %>% slice((n_train + 1):(n_train + n_validation))
+test_data <- revenue %>% slice((n_train + n_validation + 1):n_total)
+
+# Check the dimensions of the datasets
+cat("Training dataset dimensions:", dim(train_data), "\n")
+cat("Validation dataset dimensions:", dim(validation_data), "\n")
+cat("Test dataset dimensions:", dim(test_data), "\n")
+
+```
+
+### Beispiel einer einfachen linearen Regression
+
+```{r}
+  mod <- lm(Umsatz ~ Temperatur + as.factor(Wettercode), train_data)
+  summary(mod)
+
+```
+
+### Nutzung des resultierenden Modells für eine Vohersage
+
+```{r}
+# Make predictions using the test data
+predicted_values <- predict(mod, newdata = validation_data)
+
+# Compare the predicted values with the actual values
+comparison <- revenue.frame(Actual = test_data$Umsatz, Predicted = predicted_values)
+
+# Calculate the mean squared error (RMSE)
+rmse <- sqrt(mean((comparison$Actual - comparison$Predicted)^2))
+
+# Display the comparison and RMSE
+head(comparison)
+cat("Root Mean Squared Error (RMSE):", rmse, "\n")
+
+```
+
+### Beispiel einer linearen Regression mit Regularisierung
+
+```{r}
+library(glmnet)
+mod <- glmnet(as.matrix(train_data[c('Temperatur', 'Wettercode')]), train_data$Umsatz)
+mod
+
+```
