@@ -13,10 +13,10 @@ library(tidyverse)
 
 # Storing Data sets as data frames
 ```{r}
-revenue <- read.csv('./data/original/umsatzdaten_gekuerzt.csv')
-kiwo <- read.csv('./data/original/kiwo.csv')
-ferien <- read.csv('./data/original/schulferien_sh.csv')
-weather <- read.csv('./data/original/weather.csv')
+revenue <- read.csv('../data/original/umsatzdaten_gekuerzt.csv')
+kiwo <- read.csv('../data/original/kiwo.csv')
+ferien <- read.csv('../data/original/schulferien_sh.csv')
+weather <- read.csv('../data/original/weather.csv')
 ```
 
 # Joining the kiwo data with the revenue data
