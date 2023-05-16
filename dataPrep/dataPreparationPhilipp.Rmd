@@ -15,6 +15,7 @@ library(tidyverse)
 ```{r}
 revenue <- read.csv('./data/original/umsatzdaten_gekuerzt.csv')
 kiwo <- read.csv('./data/original/kiwo.csv')
+ferien <- read.csv('./data/original/schulferien_sh.csv')
 weather <- read.csv('./data/original/weather.csv')
 ```
 
@@ -59,6 +60,15 @@ df <- df %>%
 # Adding weekday column to data set
 ```{r}
 df$weekday <- weekdays(df$Datum)
+df
+```
+
+# Adding holiday column to data set
+```{r}
+df <- left_join(df, ferien, by = "Datum") %>%
+  replace_na(list(SchulferienSH = 0)) %>%
+  mutate(SchulferienSH = ifelse(SchulferienSH == True, TRUE, FALSE))
+  
 df
 ```
 
