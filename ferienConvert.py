@@ -1,7 +1,7 @@
 import csv
 from datetime import datetime, timedelta
 
-# liest Zeitspannen in CSV Datei ein (mit Start und Ende) und gibt diese in CSV Datei aus,
+# Liest Zeitspannen in CSV Datei ein (mit Start und Ende) und gibt diese in CSV Datei aus,
 # wobei jeder Tag innerhalb der Zeitspanne mit einer 1 ausgegeben wird
 
 
