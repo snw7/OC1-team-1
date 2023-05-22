@@ -30,3 +30,4 @@ output_data <- data.frame(Datum = unlist(formatted_dates))
 utils::write.csv(output_data, "ferienFormatted.csv", row.names = FALSE)
 
 # Dies ist ein Test unter Linux
+# Dies ist der zweite Test
