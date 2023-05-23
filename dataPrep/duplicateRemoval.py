@@ -1,6 +1,7 @@
 import csv
 from datetime import datetime, timedelta
 
+# removing duplicate rows for several Products with different Revenues per day
 
 i = 0 #counter for early break
 data = []
@@ -30,7 +31,7 @@ with open('../data/data_combined_sorted_cropped.csv', newline='') as csvfile: # 
         lastDate = row['Datum']
             
 
-with open('output.csv', 'w', newline='') as csvfile2:
+with open('../data/data_combined_resized.csv', 'w', newline='') as csvfile2:
     writer = csv.DictWriter(csvfile2, fieldnames=valuesToTransfer + ['Brot', 'Brötchen', 'Kuchen', 'Croissant', 'Konditorei', 'Saisonbrot'])
 
     # Write the header row
