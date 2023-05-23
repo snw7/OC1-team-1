@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 
 date_ranges = []
 
-with open('data/original/ferienRaw.csv', newline='') as csvfile:
+with open('../data/original/ferienRaw.csv', newline='') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
         start_date = datetime.strptime(row['Start'].strip(), '%Y-%m-%d')
@@ -15,7 +15,7 @@ with open('data/original/ferienRaw.csv', newline='') as csvfile:
         date_ranges.append((start_date, end_date))
 
 # # Erstelle eine neue CSV-Datei und schreibe die Daten zwischen Start- und Enddatum in die Datei
-with open('data/original/schulferienSH.csv', 'w', newline='') as csvfile:
+with open('../data/original/schulferienSH.csv', 'w', newline='') as csvfile:
     datawriter = csv.writer(csvfile)
     datawriter.writerow(['Datum','FerienSH'])
 
