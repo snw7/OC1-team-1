@@ -2,7 +2,7 @@
 library(tidyverse)
 
 # Read in the CSV file
-data <- read_csv("original_file.csv")
+data <- read_csv("/oc.team1.1/data/data_combined.csv")
 
 # Reformat the data
 reformatted_data <- data %>%
@@ -10,4 +10,5 @@ reformatted_data <- data %>%
   spread(key = Warengruppe, value = Umsatz)
 
 # Write the reformatted data to a new CSV file
-write_csv(reformatted_data, "reformatted_file.csv")
+write_csv(data_reformatted_testAR, "data_reformatted_testAR.csv")
+
