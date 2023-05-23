@@ -8,7 +8,7 @@ output: html_notebook
 
 ```{r}
 library(readr)
-revenue <- read_csv("data/data_combined.csv")
+revenue <- read.csv("data/data_combined_sorted_cropped.csv",sep=";")
 ```
 
 #### Teilen des Datensatzes in Trainings- Validierungs- und Testdatensatz
