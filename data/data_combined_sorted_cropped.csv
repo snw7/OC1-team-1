@@ -1,4 +1,4 @@
-Datum;Warengruppe;Umsatz;KielerWoche;Bewoelkung;Temperatur;Windgeschwindigkeit;Wettercode;weekday;FerienSH
+Datum;Warengruppe;Umsatz;KielerWoche;Bewoelkung;Temperatur;Windgeschwindigkeit;Wettercode;Wochentag;FerienSH
 2013-07-01;Brot;148.828353112183;FALSE;6;17.8375;15;20;Monday;TRUE
 2013-07-01;Brötchen;535.856284785361;FALSE;6;17.8375;15;20;Monday;TRUE
 2013-07-01;Croissant;201.198425690037;FALSE;6;17.8375;15;20;Monday;TRUE
