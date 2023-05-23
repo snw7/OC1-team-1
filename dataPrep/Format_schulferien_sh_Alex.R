@@ -10,7 +10,10 @@ generate_dates <- function(start, end) {
 }
 
 # Erzeugung der Datenreihen für jeden Start- und Endpunkt
-date_sequences <- Map(generate_dates, data$Start, data$Ende)
+date_sequences <- list()
+for (i in 1:nrow(data)) {
+  date_sequences[[i]] <- generate_dates(data$Start[i], data$Ende[i])
+}
 
 # Überprüfung der "Ende"-Spalte auf ungültige Werte
 invalid_rows <- is.na(data$Ende) | !is.finite(as.Date(data$Ende, "%Y-%m-%d"))
@@ -28,3 +31,9 @@ output_data <- data.frame(Datum = unlist(formatted_dates))
 
 # Export des Datenrahmens in eine CSV-Datei
 utils::write.csv(output_data, "ferienFormatted.csv", row.names = FALSE)
+
+<<<<<<< HEAD
+=======
+# Dies ist ein Test unter Linux
+# Dies ist der zweite Test
+>>>>>>> 9b97cf3ab9ac247407e61498dcc0b71bded8121f
