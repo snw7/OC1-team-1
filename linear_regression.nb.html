@@ -1770,24 +1770,11 @@ revenue &lt;- read.csv(&quot;data/data_combined_sorted_cropped.csv&quot;,sep=&qu
 Testdatensatz</h4>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBMb2FkIHRoZSBkcGx5ciBsaWJyYXJ5XG5saWJyYXJ5KGRwbHlyKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBMb2FkIHRoZSBkcGx5ciBsaWJyYXJ5XG5saWJyYXJ5KGRwbHlyKVxuXG4jIFNldCBhIHJhbmRvbSBzZWVkIGZvciByZXByb2R1Y2liaWxpdHlcbiNzZXQuc2VlZCg0MilcblxuIyBTaHVmZmxlIHRoZSByZXZlbnVlIC8vIElGIFlPVSBXQU5UIFRPIFNIVUZGTEUgVEhFIERBVEEgKE5PIFRJTUUgU0VSSUVTKVxuI2RhdGFfc2h1ZmZsZWQgPC0gcmV2ZW51ZSAlPiUgc2FtcGxlX2ZyYWMoMSlcblxuIyBDYWxjdWxhdGUgdGhlIG51bWJlciBvZiByb3dzIGZvciBlYWNoIGRhdGFzZXRcbm5fdG90YWwgPC0gbnJvdyhyZXZlbnVlKVxubl90cmFpbiA8LSBmbG9vcigwLjcgKiBuX3RvdGFsKVxubl92YWxpZGF0aW9uIDwtIGZsb29yKDAuMjAgKiBuX3RvdGFsKVxuXG4jIFNwbGl0IHRoZSBTSFVGRkVMRUQgZGF0YSBpbnRvIHRyYWluaW5nLCB2YWxpZGF0aW9uLCBhbmQgdGVzdCBkYXRhc2V0c1xuI3RyYWluX2RhdGEgPC0gZGF0YV9zaHVmZmxlZCAlPiUgc2xpY2UoMTpuX3RyYWluKVxuI3ZhbGlkYXRpb25fZGF0YSA8LSBkYXRhX3NodWZmbGVkICU+JSBzbGljZSgobl90cmFpbiArIDEpOihuX3RyYWluICsgbl92YWxpZGF0aW9uKSlcbiN0ZXN0X2RhdGEgPC0gZGF0YV9zaHVmZmxlZCAlPiUgc2xpY2UoKG5fdHJhaW4gKyBuX3ZhbGlkYXRpb24gKyAxKTpuX3RvdGFsKVxuXG4jIFNwbGl0IHRoZSBkYXRhIGludG8gdHJhaW5pbmcsIHZhbGlkYXRpb24sIGFuZCB0ZXN0IGRhdGFzZXRzXG50cmFpbl9kYXRhIDwtIHJldmVudWUgJT4lIHNsaWNlKDE6bl90cmFpbilcbnZhbGlkYXRpb25fZGF0YSA8LSByZXZlbnVlICU+JSBzbGljZSgobl90cmFpbiArIDEpOihuX3RyYWluICsgbl92YWxpZGF0aW9uKSlcbnRlc3RfZGF0YSA8LSByZXZlbnVlICU+JSBzbGljZSgobl90cmFpbiArIG5fdmFsaWRhdGlvbiArIDEpOm5fdG90YWwpXG5cbiMgQ2hlY2sgdGhlIGRpbWVuc2lvbnMgb2YgdGhlIGRhdGFzZXRzXG5jYXQoXCJUcmFpbmluZyBkYXRhc2V0IGRpbWVuc2lvbnM6XCIsIGRpbSh0cmFpbl9kYXRhKSwgXCJcXG5cIilcbmBgYCJ9 -->
 <pre class="r"><code># Load the dplyr library
-library(dplyr)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiXG5BdHRhY2hlIFBha2V0OiDigJhkcGx5cuKAmVxuXG5EaWUgZm9sZ2VuZGVuIE9iamVrdGUgc2luZCBtYXNraWVydCB2b24g4oCYcGFja2FnZTpzdGF0c+KAmTpcblxuICAgIGZpbHRlciwgbGFnXG5cbkRpZSBmb2xnZW5kZW4gT2JqZWt0ZSBzaW5kIG1hc2tpZXJ0IHZvbiDigJhwYWNrYWdlOmJhc2XigJk6XG5cbiAgICBpbnRlcnNlY3QsIHNldGRpZmYsIHNldGVxdWFsLCB1bmlvblxuIn0= -->
-<pre><code>
-Attache Paket: ‘dplyr’
+library(dplyr)
 
-Die folgenden Objekte sind maskiert von ‘package:stats’:
-
-    filter, lag
-
-Die folgenden Objekte sind maskiert von ‘package:base’:
-
-    intersect, setdiff, setequal, union</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBTZXQgYSByYW5kb20gc2VlZCBmb3IgcmVwcm9kdWNpYmlsaXR5XG4jc2V0LnNlZWQoNDIpXG5cbiMgU2h1ZmZsZSB0aGUgcmV2ZW51ZSAvLyBJRiBZT1UgV0FOVCBUTyBTSFVGRkxFIFRIRSBEQVRBIChOTyBUSU1FIFNFUklFUylcbiNkYXRhX3NodWZmbGVkIDwtIHJldmVudWUgJT4lIHNhbXBsZV9mcmFjKDEpXG5cbiMgQ2FsY3VsYXRlIHRoZSBudW1iZXIgb2Ygcm93cyBmb3IgZWFjaCBkYXRhc2V0XG5uX3RvdGFsIDwtIG5yb3cocmV2ZW51ZSlcbm5fdHJhaW4gPC0gZmxvb3IoMC43ICogbl90b3RhbClcbm5fdmFsaWRhdGlvbiA8LSBmbG9vcigwLjIwICogbl90b3RhbClcblxuIyBTcGxpdCB0aGUgU0hVRkZFTEVEIGRhdGEgaW50byB0cmFpbmluZywgdmFsaWRhdGlvbiwgYW5kIHRlc3QgZGF0YXNldHNcbiN0cmFpbl9kYXRhIDwtIGRhdGFfc2h1ZmZsZWQgJT4lIHNsaWNlKDE6bl90cmFpbilcbiN2YWxpZGF0aW9uX2RhdGEgPC0gZGF0YV9zaHVmZmxlZCAlPiUgc2xpY2UoKG5fdHJhaW4gKyAxKToobl90cmFpbiArIG5fdmFsaWRhdGlvbikpXG4jdGVzdF9kYXRhIDwtIGRhdGFfc2h1ZmZsZWQgJT4lIHNsaWNlKChuX3RyYWluICsgbl92YWxpZGF0aW9uICsgMSk6bl90b3RhbClcblxuIyBTcGxpdCB0aGUgZGF0YSBpbnRvIHRyYWluaW5nLCB2YWxpZGF0aW9uLCBhbmQgdGVzdCBkYXRhc2V0c1xudHJhaW5fZGF0YSA8LSByZXZlbnVlICU+JSBzbGljZSgxOm5fdHJhaW4pXG52YWxpZGF0aW9uX2RhdGEgPC0gcmV2ZW51ZSAlPiUgc2xpY2UoKG5fdHJhaW4gKyAxKToobl90cmFpbiArIG5fdmFsaWRhdGlvbikpXG50ZXN0X2RhdGEgPC0gcmV2ZW51ZSAlPiUgc2xpY2UoKG5fdHJhaW4gKyBuX3ZhbGlkYXRpb24gKyAxKTpuX3RvdGFsKVxuXG4jIENoZWNrIHRoZSBkaW1lbnNpb25zIG9mIHRoZSBkYXRhc2V0c1xuY2F0KFwiVHJhaW5pbmcgZGF0YXNldCBkaW1lbnNpb25zOlwiLCBkaW0odHJhaW5fZGF0YSksIFwiXFxuXCIpXG5gYGAifQ== -->
-<pre class="r"><code># Set a random seed for reproducibility
+# Set a random seed for reproducibility
 #set.seed(42)
 
 # Shuffle the revenue // IF YOU WANT TO SHUFFLE THE DATA (NO TIME SERIES)
@@ -1833,49 +1820,35 @@ cat(&quot;Training dataset dimensions:&quot;, dim(train_data), &quot;\n&quot;)</
 <h3>Beispiel einer einfachen linearen Regression</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICBtb2QgPC0gbG0oVW1zYXR6IH4gVGVtcGVyYXR1ciArIGFzLmZhY3RvcihXZXR0ZXJjb2RlKSwgdHJhaW5fZGF0YSlcbiAgc3VtbWFyeShtb2QpXG5gYGAifQ== -->
-<pre class="r"><code>  mod &lt;- lm(Umsatz ~ Temperatur + as.factor(Wettercode), train_data)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICBtb2QgPC0gbG0oVW1zYXR6IH4gYXMuZmFjdG9yKFdvY2hlbnRhZyksIHRyYWluX2RhdGEpXG4gIHN1bW1hcnkobW9kKVxuYGBgIn0= -->
+<pre class="r"><code>  mod &lt;- lm(Umsatz ~ as.factor(Wochentag), train_data)
   summary(mod)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiXG5DYWxsOlxubG0oZm9ybXVsYSA9IFVtc2F0eiB+IFRlbXBlcmF0dXIgKyBhcy5mYWN0b3IoV2V0dGVyY29kZSksIGRhdGEgPSB0cmFpbl9kYXRhKVxuXG5SZXNpZHVhbHM6XG4gICAgTWluICAgICAgMVEgIE1lZGlhbiAgICAgIDNRICAgICBNYXggXG4tMjA5LjI4IC0xMDYuMzIgIC00NS42MyAgIDc1LjYwIDE2NzcuNDUgXG5cbkNvZWZmaWNpZW50czpcbiAgICAgICAgICAgICAgICAgICAgICAgICBFc3RpbWF0ZSBTdGQuIEVycm9yIHQgdmFsdWUgUHIoPnx0fCkgICAgXG4oSW50ZXJjZXB0KSAgICAgICAgICAgICAyMDQuOTM1NjUgICAgNS42MTc3MyAgMzYuNDgwICA8IDJlLTE2ICoqKlxuVGVtcGVyYXR1ciAgICAgICAgICAgICAgICAwLjEzMzE4ICAgIDAuMDUyNjIgICAyLjUzMSAwLjAxMTQwNCAqICBcbmFzLmZhY3RvcihXZXR0ZXJjb2RlKTUgICAxNC4yMzI0MCAgIDEwLjM5ODg1ICAgMS4zNjkgMC4xNzExNjQgICAgXG5hcy5mYWN0b3IoV2V0dGVyY29kZSkxMCAtMjcuMDY3ODcgICAgOC4xMDIzNiAgLTMuMzQxIDAuMDAwODQxICoqKlxuYXMuZmFjdG9yKFdldHRlcmNvZGUpMjAgICAxLjA3NzI4ICAgMTEuNjYzNjQgICAwLjA5MiAwLjkyNjQxNCAgICBcbmFzLmZhY3RvcihXZXR0ZXJjb2RlKTIxICAxMS4xNTAyOCAgICA3LjM2NzEyICAgMS41MTQgMC4xMzAyMDQgICAgXG5hcy5mYWN0b3IoV2V0dGVyY29kZSkyMiAtMzEuMjQzMjMgICAxOS44MDcyOSAgLTEuNTc3IDAuMTE0NzcwICAgIFxuYXMuZmFjdG9yKFdldHRlcmNvZGUpMjggICAyLjMwMTgzICAgMTkuNjQyOTQgICAwLjExNyAwLjkwNjcxOSAgICBcbmFzLmZhY3RvcihXZXR0ZXJjb2RlKTQ1IC00Ni45OTk3NiAgIDE2Ljk4MDUyICAtMi43NjggMC4wMDU2NjEgKiogXG5hcy5mYWN0b3IoV2V0dGVyY29kZSk0OSAtNDEuOTE4NDAgICAyMi41Nzk1MiAgLTEuODU2IDAuMDYzNDM4IC4gIFxuYXMuZmFjdG9yKFdldHRlcmNvZGUpNTMgLTQwLjA2NTE2ICAgMjguNjcyMTIgIC0xLjM5NyAwLjE2MjM2MyAgICBcbmFzLmZhY3RvcihXZXR0ZXJjb2RlKTYxICAtMy45MDkxMSAgICA2LjUwMTQwICAtMC42MDEgMC41NDc2ODQgICAgXG5hcy5mYWN0b3IoV2V0dGVyY29kZSk2MyAgLTIuNTA0NDEgICAgOC41MjkyMCAgLTAuMjk0IDAuNzY5MDUzICAgIFxuYXMuZmFjdG9yKFdldHRlcmNvZGUpNjUgIDI0LjQ3MDA4ICAgMTUuNzM1OTUgICAxLjU1NSAwLjExOTk5MyAgICBcbmFzLmZhY3RvcihXZXR0ZXJjb2RlKTY5IC00MS45OTI0MiAgIDMxLjc5MDU4ICAtMS4zMjEgMC4xODY1ODcgICAgXG5hcy5mYWN0b3IoV2V0dGVyY29kZSk3MSAtMzQuMzg2ODYgICAyNC41NTA1OCAgLTEuNDAxIDAuMTYxMzc0ICAgIFxuYXMuZmFjdG9yKFdldHRlcmNvZGUpNzMgLTYyLjU3MjAzICAgMzUuMjMxMTcgIC0xLjc3NiAwLjA3NTc4MSAuICBcbmFzLmZhY3RvcihXZXR0ZXJjb2RlKTc1ICAgNC40MTQ5MyAgIDM3LjQ0OTkwICAgMC4xMTggMC45MDYxNjAgICAgXG5hcy5mYWN0b3IoV2V0dGVyY29kZSk3NyAtMzcuMDAxMzEgICAyNS4xMzA3NSAgLTEuNDcyIDAuMTQwOTgzICAgIFxuYXMuZmFjdG9yKFdldHRlcmNvZGUpNzkgLTMxLjA1NDkwICAgNjQuMzc2OTIgIC0wLjQ4MiAwLjYyOTU0NyAgICBcbmFzLmZhY3RvcihXZXR0ZXJjb2RlKTk1ICAzMi43NTEyOSAgIDE0LjM4NTUyICAgMi4yNzcgMC4wMjI4NDMgKiAgXG4tLS1cblNpZ25pZi4gY29kZXM6ICAwIOKAmCoqKuKAmSAwLjAwMSDigJgqKuKAmSAwLjAxIOKAmCrigJkgMC4wNSDigJgu4oCZIDAuMSDigJgg4oCZIDFcblxuUmVzaWR1YWwgc3RhbmRhcmQgZXJyb3I6IDE0My40IG9uIDU1MzUgZGVncmVlcyBvZiBmcmVlZG9tXG4gICgyMTY5IEJlb2JhY2h0dW5nZW4gYWxzIGZlaGxlbmQgZ2Vsw7ZzY2h0KVxuTXVsdGlwbGUgUi1zcXVhcmVkOiAgMC4wMTI3NixcdEFkanVzdGVkIFItc3F1YXJlZDogIDAuMDA5MTkzIFxuRi1zdGF0aXN0aWM6IDMuNTc3IG9uIDIwIGFuZCA1NTM1IERGLCAgcC12YWx1ZTogMS4xNTllLTA3XG4ifQ== -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5DYWxsOlxubG0oZm9ybXVsYSA9IFVtc2F0eiB+IGFzLmZhY3RvcihXb2NoZW50YWcpLCBkYXRhID0gdHJhaW5fZGF0YSlcblxuUmVzaWR1YWxzOlxuICAgIE1pbiAgICAgIDFRICBNZWRpYW4gICAgICAzUSAgICAgTWF4IFxuLTIyOS4yMiAtMTA4LjM4ICAtNDQuMDYgICA3OC42MSAxNjg3LjMzIFxuXG5Db2VmZmljaWVudHM6XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBFc3RpbWF0ZSBTdGQuIEVycm9yIHQgdmFsdWUgUHIoPnx0fCkgICAgXG4oSW50ZXJjZXB0KSAgICAgICAgICAgICAgICAgICAgMjAwLjYwMSAgICAgIDQuNDQ3ICA0NS4xMDYgIDwgMmUtMTYgKioqXG5hcy5mYWN0b3IoV29jaGVudGFnKU1vbmRheSAgICAgIC0zLjc5MSAgICAgIDYuMjU3ICAtMC42MDYgICAgMC41NDUgICAgXG5hcy5mYWN0b3IoV29jaGVudGFnKVNhdHVyZGF5ICAgIDQ1LjE1NCAgICAgIDYuMjYxICAgNy4yMTIgNi4wM2UtMTMgKioqXG5hcy5mYWN0b3IoV29jaGVudGFnKVN1bmRheSAgICAgIDQ4LjkxNiAgICAgIDYuMjU3ICAgNy44MTggNi4wNmUtMTUgKioqXG5hcy5mYWN0b3IoV29jaGVudGFnKVRodXJzZGF5ICAgIC0zLjY0MCAgICAgIDYuMjY0ICAtMC41ODEgICAgMC41NjEgICAgXG5hcy5mYWN0b3IoV29jaGVudGFnKVR1ZXNkYXkgICAgIC05LjY4NiAgICAgIDYuMjMzICAtMS41NTQgICAgMC4xMjAgICAgXG5hcy5mYWN0b3IoV29jaGVudGFnKVdlZG5lc2RheSAgIC04LjQ3MSAgICAgIDYuMjU0ICAtMS4zNTUgICAgMC4xNzYgICAgXG4tLS1cblNpZ25pZi4gY29kZXM6ICAwIOKAmCoqKuKAmSAwLjAwMSDigJgqKuKAmSAwLjAxIOKAmCrigJkgMC4wNSDigJgu4oCZIDAuMSDigJgg4oCZIDFcblxuUmVzaWR1YWwgc3RhbmRhcmQgZXJyb3I6IDE0NiBvbiA3Njg4IGRlZ3JlZXMgb2YgZnJlZWRvbVxuICAoMzAgb2JzZXJ2YXRpb25zIGRlbGV0ZWQgZHVlIHRvIG1pc3NpbmduZXNzKVxuTXVsdGlwbGUgUi1zcXVhcmVkOiAgMC4wMjU4OCxcdEFkanVzdGVkIFItc3F1YXJlZDogIDAuMDI1MTIgXG5GLXN0YXRpc3RpYzogMzQuMDQgb24gNiBhbmQgNzY4OCBERiwgIHAtdmFsdWU6IDwgMi4yZS0xNlxuIn0= -->
 <pre><code>
 Call:
-lm(formula = Umsatz ~ Temperatur + as.factor(Wettercode), data = train_data)
+lm(formula = Umsatz ~ as.factor(Wochentag), data = train_data)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--209.28 -106.32  -45.63   75.60 1677.45 
+-229.22 -108.38  -44.06   78.61 1687.33 
 
 Coefficients:
-                         Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)             204.93565    5.61773  36.480  &lt; 2e-16 ***
-Temperatur                0.13318    0.05262   2.531 0.011404 *  
-as.factor(Wettercode)5   14.23240   10.39885   1.369 0.171164    
-as.factor(Wettercode)10 -27.06787    8.10236  -3.341 0.000841 ***
-as.factor(Wettercode)20   1.07728   11.66364   0.092 0.926414    
-as.factor(Wettercode)21  11.15028    7.36712   1.514 0.130204    
-as.factor(Wettercode)22 -31.24323   19.80729  -1.577 0.114770    
-as.factor(Wettercode)28   2.30183   19.64294   0.117 0.906719    
-as.factor(Wettercode)45 -46.99976   16.98052  -2.768 0.005661 ** 
-as.factor(Wettercode)49 -41.91840   22.57952  -1.856 0.063438 .  
-as.factor(Wettercode)53 -40.06516   28.67212  -1.397 0.162363    
-as.factor(Wettercode)61  -3.90911    6.50140  -0.601 0.547684    
-as.factor(Wettercode)63  -2.50441    8.52920  -0.294 0.769053    
-as.factor(Wettercode)65  24.47008   15.73595   1.555 0.119993    
-as.factor(Wettercode)69 -41.99242   31.79058  -1.321 0.186587    
-as.factor(Wettercode)71 -34.38686   24.55058  -1.401 0.161374    
-as.factor(Wettercode)73 -62.57203   35.23117  -1.776 0.075781 .  
-as.factor(Wettercode)75   4.41493   37.44990   0.118 0.906160    
-as.factor(Wettercode)77 -37.00131   25.13075  -1.472 0.140983    
-as.factor(Wettercode)79 -31.05490   64.37692  -0.482 0.629547    
-as.factor(Wettercode)95  32.75129   14.38552   2.277 0.022843 *  
+                              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                    200.601      4.447  45.106  &lt; 2e-16 ***
+as.factor(Wochentag)Monday      -3.791      6.257  -0.606    0.545    
+as.factor(Wochentag)Saturday    45.154      6.261   7.212 6.03e-13 ***
+as.factor(Wochentag)Sunday      48.916      6.257   7.818 6.06e-15 ***
+as.factor(Wochentag)Thursday    -3.640      6.264  -0.581    0.561    
+as.factor(Wochentag)Tuesday     -9.686      6.233  -1.554    0.120    
+as.factor(Wochentag)Wednesday   -8.471      6.254  -1.355    0.176    
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
-Residual standard error: 143.4 on 5535 degrees of freedom
-  (2169 Beobachtungen als fehlend gelöscht)
-Multiple R-squared:  0.01276,   Adjusted R-squared:  0.009193 
-F-statistic: 3.577 on 20 and 5535 DF,  p-value: 1.159e-07</code></pre>
+Residual standard error: 146 on 7688 degrees of freedom
+  (30 observations deleted due to missingness)
+Multiple R-squared:  0.02588,   Adjusted R-squared:  0.02512 
+F-statistic: 34.04 on 6 and 7688 DF,  p-value: &lt; 2.2e-16</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1884,13 +1857,16 @@ F-statistic: 3.577 on 20 and 5535 DF,  p-value: 1.159e-07</code></pre>
 <h3>Nutzung des resultierenden Modells für eine Vohersage</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBNYWtlIHByZWRpY3Rpb25zIHVzaW5nIHRoZSB0ZXN0IGRhdGFcbnByZWRpY3RlZF92YWx1ZXMgPC0gcHJlZGljdChtb2QsIG5ld2RhdGEgPSB2YWxpZGF0aW9uX2RhdGEpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBNYWtlIHByZWRpY3Rpb25zIHVzaW5nIHRoZSB0ZXN0IGRhdGFcbnByZWRpY3RlZF92YWx1ZXMgPC0gcHJlZGljdChtb2QsIG5ld2RhdGEgPSB2YWxpZGF0aW9uX2RhdGEpXG5cbiMgQ29tcGFyZSB0aGUgcHJlZGljdGVkIHZhbHVlcyB3aXRoIHRoZSBhY3R1YWwgdmFsdWVzXG5jb21wYXJpc29uIDwtIHJldmVudWUuZnJhbWUoQWN0dWFsID0gdGVzdF9kYXRhJFVtc2F0eiwgUHJlZGljdGVkID0gcHJlZGljdGVkX3ZhbHVlcylcbmBgYCJ9 -->
 <pre class="r"><code># Make predictions using the test data
-predicted_values &lt;- predict(mod, newdata = validation_data)</code></pre>
+predicted_values &lt;- predict(mod, newdata = validation_data)
+
+# Compare the predicted values with the actual values
+comparison &lt;- revenue.frame(Actual = test_data$Umsatz, Predicted = predicted_values)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gbW9kZWwuZnJhbWUuZGVmYXVsdChUZXJtcywgbmV3ZGF0YSwgbmEuYWN0aW9uID0gbmEuYWN0aW9uLCB4bGV2ID0gb2JqZWN0JHhsZXZlbHMpIDogXG4gIEZha3RvciAnYXMuZmFjdG9yKFdldHRlcmNvZGUpJyBoYXQgbmV1ZSBTdHVmZW4gMywgMTcsIDY4XG4ifQ== -->
-<pre><code>Error in model.frame.default(Terms, newdata, na.action = na.action, xlev = object$xlevels) : 
-  Faktor &#39;as.factor(Wettercode)&#39; hat neue Stufen 3, 17, 68</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gcmV2ZW51ZS5mcmFtZShBY3R1YWwgPSB0ZXN0X2RhdGEkVW1zYXR6LCBQcmVkaWN0ZWQgPSBwcmVkaWN0ZWRfdmFsdWVzKSA6IFxuICBjb3VsZCBub3QgZmluZCBmdW5jdGlvbiBcInJldmVudWUuZnJhbWVcIlxuIn0= -->
+<pre><code>Error in revenue.frame(Actual = test_data$Umsatz, Predicted = predicted_values) : 
+  could not find function &quot;revenue.frame&quot;</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1899,24 +1875,37 @@ predicted_values &lt;- predict(mod, newdata = validation_data)</code></pre>
 <h3>Beispiel einer linearen Regression mit Regularisierung</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShnbG1uZXQpXG5gYGAifQ== -->
-<pre class="r"><code>library(glmnet)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTGFkZSBuw7Z0aWdlcyBQYWtldDogTWF0cml4XG5Mb2FkZWQgZ2xtbmV0IDQuMS03XG4ifQ== -->
-<pre><code>Lade nötiges Paket: Matrix
-Loaded glmnet 4.1-7</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW9kIDwtIGdsbW5ldChhcy5tYXRyaXgodHJhaW5fZGF0YVtjKCdUZW1wZXJhdHVyJywgJ1dldHRlcmNvZGUnKV0pLCB0cmFpbl9kYXRhJFVtc2F0eilcbmBgYCJ9 -->
-<pre class="r"><code>mod &lt;- glmnet(as.matrix(train_data[c(&#39;Temperatur&#39;, &#39;Wettercode&#39;)]), train_data$Umsatz)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gZ2xtbmV0KGFzLm1hdHJpeCh0cmFpbl9kYXRhW2MoXCJUZW1wZXJhdHVyXCIsIFwiV2V0dGVyY29kZVwiKV0pLCAgOiBcbiAgeCBoYXMgbWlzc2luZyB2YWx1ZXM7IGNvbnNpZGVyIHVzaW5nIG1ha2VYKCkgdG8gaW1wdXRlIHRoZW1cbiJ9 -->
-<pre><code>Error in glmnet(as.matrix(train_data[c(&quot;Temperatur&quot;, &quot;Wettercode&quot;)]),  : 
-  x has missing values; consider using makeX() to impute them</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxubGlicmFyeShnbG1uZXQpXG5gYGBcbmBgYCJ9 -->
+<pre class="r"><code>```r
+library(glmnet)</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-output-begin eyJkYXRhIjoiTGFkZSBuw7Z0aWdlcyBQYWtldDogTWF0cml4XG5Mb2FkZWQgZ2xtbmV0IDQuMS03XG4ifQ== --&gt;
+</code></pre>
+<p>Lade nötiges Paket: Matrix Loaded glmnet 4.1-7</p>
+<pre><code>
+
+
+&lt;!-- rnb-output-end --&gt;
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxubW9kIDwtIGdsbW5ldChhcy5tYXRyaXgodHJhaW5fZGF0YVtjKCdUZW1wZXJhdHVyJywgJ1dldHRlcmNvZGUnKV0pLCB0cmFpbl9kYXRhJFVtc2F0eilcbmBgYFxuYGBgIn0= --&gt;
+
+```r
+```r
+mod &lt;- glmnet(as.matrix(train_data[c(&#39;Temperatur&#39;, &#39;Wettercode&#39;)]), train_data$Umsatz)</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gZ2xtbmV0KGFzLm1hdHJpeCh0cmFpbl9kYXRhW2MoXFxUZW1wZXJhdHVyXFwsIFxcV2V0dGVyY29kZVxcKV0pLCAgOiBcbiAgeCBoYXMgbWlzc2luZyB2YWx1ZXM7IGNvbnNpZGVyIHVzaW5nIG1ha2VYKCkgdG8gaW1wdXRlIHRoZW1cbiJ9 --&gt;
+</code></pre>
+<p>Error in glmnet(as.matrix(train_data[c(, )]), : x has missing values;
+consider using makeX() to impute them ```</p>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkxpbmVhciBSZWdyZXNzaW9uIg0KYXV0aG9yOiAiT2xhdiBDb3JuZWxpdXMiDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQojIyMjIEltcG9ydGllcmVuIGRlcyBEYXRlbnNhdHplcw0KDQpgYGB7cn0NCmxpYnJhcnkocmVhZHIpDQpyZXZlbnVlIDwtIHJlYWQuY3N2KCJkYXRhL2RhdGFfY29tYmluZWRfc29ydGVkX2Nyb3BwZWQuY3N2IixzZXA9IjsiKQ0KYGBgDQoNCiMjIyMgVGVpbGVuIGRlcyBEYXRlbnNhdHplcyBpbiBUcmFpbmluZ3MtIFZhbGlkaWVydW5ncy0gdW5kIFRlc3RkYXRlbnNhdHoNCg0KYGBge3J9DQojIExvYWQgdGhlIGRwbHlyIGxpYnJhcnkNCmxpYnJhcnkoZHBseXIpDQoNCiMgU2V0IGEgcmFuZG9tIHNlZWQgZm9yIHJlcHJvZHVjaWJpbGl0eQ0KI3NldC5zZWVkKDQyKQ0KDQojIFNodWZmbGUgdGhlIHJldmVudWUgLy8gSUYgWU9VIFdBTlQgVE8gU0hVRkZMRSBUSEUgREFUQSAoTk8gVElNRSBTRVJJRVMpDQojZGF0YV9zaHVmZmxlZCA8LSByZXZlbnVlICU+JSBzYW1wbGVfZnJhYygxKQ0KDQojIENhbGN1bGF0ZSB0aGUgbnVtYmVyIG9mIHJvd3MgZm9yIGVhY2ggZGF0YXNldA0Kbl90b3RhbCA8LSBucm93KHJldmVudWUpDQpuX3RyYWluIDwtIGZsb29yKDAuNyAqIG5fdG90YWwpDQpuX3ZhbGlkYXRpb24gPC0gZmxvb3IoMC4yMCAqIG5fdG90YWwpDQoNCiMgU3BsaXQgdGhlIFNIVUZGRUxFRCBkYXRhIGludG8gdHJhaW5pbmcsIHZhbGlkYXRpb24sIGFuZCB0ZXN0IGRhdGFzZXRzDQojdHJhaW5fZGF0YSA8LSBkYXRhX3NodWZmbGVkICU+JSBzbGljZSgxOm5fdHJhaW4pDQojdmFsaWRhdGlvbl9kYXRhIDwtIGRhdGFfc2h1ZmZsZWQgJT4lIHNsaWNlKChuX3RyYWluICsgMSk6KG5fdHJhaW4gKyBuX3ZhbGlkYXRpb24pKQ0KI3Rlc3RfZGF0YSA8LSBkYXRhX3NodWZmbGVkICU+JSBzbGljZSgobl90cmFpbiArIG5fdmFsaWRhdGlvbiArIDEpOm5fdG90YWwpDQoNCiMgU3BsaXQgdGhlIGRhdGEgaW50byB0cmFpbmluZywgdmFsaWRhdGlvbiwgYW5kIHRlc3QgZGF0YXNldHMNCnRyYWluX2RhdGEgPC0gcmV2ZW51ZSAlPiUgc2xpY2UoMTpuX3RyYWluKQ0KdmFsaWRhdGlvbl9kYXRhIDwtIHJldmVudWUgJT4lIHNsaWNlKChuX3RyYWluICsgMSk6KG5fdHJhaW4gKyBuX3ZhbGlkYXRpb24pKQ0KdGVzdF9kYXRhIDwtIHJldmVudWUgJT4lIHNsaWNlKChuX3RyYWluICsgbl92YWxpZGF0aW9uICsgMSk6bl90b3RhbCkNCg0KIyBDaGVjayB0aGUgZGltZW5zaW9ucyBvZiB0aGUgZGF0YXNldHMNCmNhdCgiVHJhaW5pbmcgZGF0YXNldCBkaW1lbnNpb25zOiIsIGRpbSh0cmFpbl9kYXRhKSwgIlxuIikNCmNhdCgiVmFsaWRhdGlvbiBkYXRhc2V0IGRpbWVuc2lvbnM6IiwgZGltKHZhbGlkYXRpb25fZGF0YSksICJcbiIpDQpjYXQoIlRlc3QgZGF0YXNldCBkaW1lbnNpb25zOiIsIGRpbSh0ZXN0X2RhdGEpLCAiXG4iKQ0KDQpgYGANCg0KIyMjIEJlaXNwaWVsIGVpbmVyIGVpbmZhY2hlbiBsaW5lYXJlbiBSZWdyZXNzaW9uDQoNCmBgYHtyfQ0KICBtb2QgPC0gbG0oVW1zYXR6IH4gVGVtcGVyYXR1ciArIGFzLmZhY3RvcihXZXR0ZXJjb2RlKSwgdHJhaW5fZGF0YSkNCiAgc3VtbWFyeShtb2QpDQoNCmBgYA0KDQojIyMgTnV0enVuZyBkZXMgcmVzdWx0aWVyZW5kZW4gTW9kZWxscyBmw7xyIGVpbmUgVm9oZXJzYWdlDQoNCmBgYHtyfQ0KIyBNYWtlIHByZWRpY3Rpb25zIHVzaW5nIHRoZSB0ZXN0IGRhdGENCnByZWRpY3RlZF92YWx1ZXMgPC0gcHJlZGljdChtb2QsIG5ld2RhdGEgPSB2YWxpZGF0aW9uX2RhdGEpDQoNCiMgQ29tcGFyZSB0aGUgcHJlZGljdGVkIHZhbHVlcyB3aXRoIHRoZSBhY3R1YWwgdmFsdWVzDQpjb21wYXJpc29uIDwtIHJldmVudWUuZnJhbWUoQWN0dWFsID0gdGVzdF9kYXRhJFVtc2F0eiwgUHJlZGljdGVkID0gcHJlZGljdGVkX3ZhbHVlcykNCg0KIyBDYWxjdWxhdGUgdGhlIG1lYW4gc3F1YXJlZCBlcnJvciAoUk1TRSkNCnJtc2UgPC0gc3FydChtZWFuKChjb21wYXJpc29uJEFjdHVhbCAtIGNvbXBhcmlzb24kUHJlZGljdGVkKV4yKSkNCg0KIyBEaXNwbGF5IHRoZSBjb21wYXJpc29uIGFuZCBSTVNFDQpoZWFkKGNvbXBhcmlzb24pDQpjYXQoIlJvb3QgTWVhbiBTcXVhcmVkIEVycm9yIChSTVNFKToiLCBybXNlLCAiXG4iKQ0KDQpgYGANCg0KIyMjIEJlaXNwaWVsIGVpbmVyIGxpbmVhcmVuIFJlZ3Jlc3Npb24gbWl0IFJlZ3VsYXJpc2llcnVuZw0KDQpgYGB7cn0NCmxpYnJhcnkoZ2xtbmV0KQ0KbW9kIDwtIGdsbW5ldChhcy5tYXRyaXgodHJhaW5fZGF0YVtjKCdUZW1wZXJhdHVyJywgJ1dldHRlcmNvZGUnKV0pLCB0cmFpbl9kYXRhJFVtc2F0eikNCm1vZA0KDQpgYGANCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiTGluZWFyIFJlZ3Jlc3Npb24iCmF1dGhvcjogIk9sYXYgQ29ybmVsaXVzIgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKLS0tCgojIyMjIEltcG9ydGllcmVuIGRlcyBEYXRlbnNhdHplcwoKYGBge3J9CmxpYnJhcnkocmVhZHIpCnJldmVudWUgPC0gcmVhZC5jc3YoImRhdGEvZGF0YV9jb21iaW5lZF9zb3J0ZWRfY3JvcHBlZC5jc3YiLHNlcD0iOyIpCmBgYAoKIyMjIyBUZWlsZW4gZGVzIERhdGVuc2F0emVzIGluIFRyYWluaW5ncy0gVmFsaWRpZXJ1bmdzLSB1bmQgVGVzdGRhdGVuc2F0egoKYGBge3J9CiMgTG9hZCB0aGUgZHBseXIgbGlicmFyeQpsaWJyYXJ5KGRwbHlyKQoKIyBTZXQgYSByYW5kb20gc2VlZCBmb3IgcmVwcm9kdWNpYmlsaXR5CiNzZXQuc2VlZCg0MikKCiMgU2h1ZmZsZSB0aGUgcmV2ZW51ZSAvLyBJRiBZT1UgV0FOVCBUTyBTSFVGRkxFIFRIRSBEQVRBIChOTyBUSU1FIFNFUklFUykKI2RhdGFfc2h1ZmZsZWQgPC0gcmV2ZW51ZSAlPiUgc2FtcGxlX2ZyYWMoMSkKCiMgQ2FsY3VsYXRlIHRoZSBudW1iZXIgb2Ygcm93cyBmb3IgZWFjaCBkYXRhc2V0Cm5fdG90YWwgPC0gbnJvdyhyZXZlbnVlKQpuX3RyYWluIDwtIGZsb29yKDAuNyAqIG5fdG90YWwpCm5fdmFsaWRhdGlvbiA8LSBmbG9vcigwLjIwICogbl90b3RhbCkKCiMgU3BsaXQgdGhlIFNIVUZGRUxFRCBkYXRhIGludG8gdHJhaW5pbmcsIHZhbGlkYXRpb24sIGFuZCB0ZXN0IGRhdGFzZXRzCiN0cmFpbl9kYXRhIDwtIGRhdGFfc2h1ZmZsZWQgJT4lIHNsaWNlKDE6bl90cmFpbikKI3ZhbGlkYXRpb25fZGF0YSA8LSBkYXRhX3NodWZmbGVkICU+JSBzbGljZSgobl90cmFpbiArIDEpOihuX3RyYWluICsgbl92YWxpZGF0aW9uKSkKI3Rlc3RfZGF0YSA8LSBkYXRhX3NodWZmbGVkICU+JSBzbGljZSgobl90cmFpbiArIG5fdmFsaWRhdGlvbiArIDEpOm5fdG90YWwpCgojIFNwbGl0IHRoZSBkYXRhIGludG8gdHJhaW5pbmcsIHZhbGlkYXRpb24sIGFuZCB0ZXN0IGRhdGFzZXRzCnRyYWluX2RhdGEgPC0gcmV2ZW51ZSAlPiUgc2xpY2UoMTpuX3RyYWluKQp2YWxpZGF0aW9uX2RhdGEgPC0gcmV2ZW51ZSAlPiUgc2xpY2UoKG5fdHJhaW4gKyAxKToobl90cmFpbiArIG5fdmFsaWRhdGlvbikpCnRlc3RfZGF0YSA8LSByZXZlbnVlICU+JSBzbGljZSgobl90cmFpbiArIG5fdmFsaWRhdGlvbiArIDEpOm5fdG90YWwpCgojIENoZWNrIHRoZSBkaW1lbnNpb25zIG9mIHRoZSBkYXRhc2V0cwpjYXQoIlRyYWluaW5nIGRhdGFzZXQgZGltZW5zaW9uczoiLCBkaW0odHJhaW5fZGF0YSksICJcbiIpCmNhdCgiVmFsaWRhdGlvbiBkYXRhc2V0IGRpbWVuc2lvbnM6IiwgZGltKHZhbGlkYXRpb25fZGF0YSksICJcbiIpCmNhdCgiVGVzdCBkYXRhc2V0IGRpbWVuc2lvbnM6IiwgZGltKHRlc3RfZGF0YSksICJcbiIpCgpgYGAKCiMjIyBCZWlzcGllbCBlaW5lciBlaW5mYWNoZW4gbGluZWFyZW4gUmVncmVzc2lvbgoKYGBge3J9CiAgbW9kIDwtIGxtKFVtc2F0eiB+IGFzLmZhY3RvcihXb2NoZW50YWcpLCB0cmFpbl9kYXRhKQogIHN1bW1hcnkobW9kKQoKYGBgCgojIyMgTnV0enVuZyBkZXMgcmVzdWx0aWVyZW5kZW4gTW9kZWxscyBmw7xyIGVpbmUgVm9oZXJzYWdlCgpgYGB7cn0KIyBNYWtlIHByZWRpY3Rpb25zIHVzaW5nIHRoZSB0ZXN0IGRhdGEKcHJlZGljdGVkX3ZhbHVlcyA8LSBwcmVkaWN0KG1vZCwgbmV3ZGF0YSA9IHZhbGlkYXRpb25fZGF0YSkKCiMgQ29tcGFyZSB0aGUgcHJlZGljdGVkIHZhbHVlcyB3aXRoIHRoZSBhY3R1YWwgdmFsdWVzCmNvbXBhcmlzb24gPC0gcmV2ZW51ZS5mcmFtZShBY3R1YWwgPSB0ZXN0X2RhdGEkVW1zYXR6LCBQcmVkaWN0ZWQgPSBwcmVkaWN0ZWRfdmFsdWVzKQoKIyBDYWxjdWxhdGUgdGhlIG1lYW4gc3F1YXJlZCBlcnJvciAoUk1TRSkKcm1zZSA8LSBzcXJ0KG1lYW4oKGNvbXBhcmlzb24kQWN0dWFsIC0gY29tcGFyaXNvbiRQcmVkaWN0ZWQpXjIpKQoKIyBEaXNwbGF5IHRoZSBjb21wYXJpc29uIGFuZCBSTVNFCmhlYWQoY29tcGFyaXNvbikKY2F0KCJSb290IE1lYW4gU3F1YXJlZCBFcnJvciAoUk1TRSk6Iiwgcm1zZSwgIlxuIikKCmBgYAoKIyMjIEJlaXNwaWVsIGVpbmVyIGxpbmVhcmVuIFJlZ3Jlc3Npb24gbWl0IFJlZ3VsYXJpc2llcnVuZwoKYGBge3J9CmxpYnJhcnkoZ2xtbmV0KQptb2QgPC0gZ2xtbmV0KGFzLm1hdHJpeCh0cmFpbl9kYXRhW2MoJ1RlbXBlcmF0dXInLCAnV2V0dGVyY29kZScpXSksIHRyYWluX2RhdGEkVW1zYXR6KQptb2QKCmBgYAo=</div>
 
 
 

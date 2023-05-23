@@ -48,7 +48,7 @@ cat("Test dataset dimensions:", dim(test_data), "\n")
 ### Beispiel einer einfachen linearen Regression
 
 ```{r}
-  mod <- lm(Umsatz ~ Temperatur + as.factor(Wettercode), train_data)
+  mod <- lm(Umsatz ~ as.factor(Wochentag), train_data)
   summary(mod)
 
 ```
