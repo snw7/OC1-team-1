@@ -2,10 +2,13 @@
 library(tidyverse)
 
 # Read in the CSV file
-data <- read_csv('data/data_combined.csv')
+data <- read_csv('data/data_combined_sorted_cropped.csv')
 
 # Convert 'Datum' column to date
 data$Datum <- as.Date(data$Datum, format = "%Y-%m-%d")
+
+# Drop rows where 'Warengruppe' or 'Umsatz' is NA
+data <- drop_na(data, Warengruppe, Umsatz)
 
 # Reformat the data
 reformatted_data <- data %>%
@@ -31,4 +34,5 @@ reformatted_data <- data %>%
   spread(key = Warengruppe, value = Umsatz)
 
 # Write the reformatted data to a new CSV file
-write_csv(reformatted_data, 'data_reformatted_testAR.csv')
+write_csv(reformatted_data, "data_reformatted_testAR.csv")
+
