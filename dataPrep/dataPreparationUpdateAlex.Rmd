@@ -16,7 +16,7 @@ library(tidyverse)
 revenue <- read.csv('../data/original/umsatzdaten_gekuerzt.csv')
 kiwo <- read.csv('../data/original/kiwo.csv')
 ferien <- read.csv('../data/original/schulferienSH.csv')
-feiertage <- read.csv('../data/original/FeiertageSH_AR.csv')
+feiertage <- read.csv('../data/original/feiertage.csv')
 weather <- read.csv('../data/original/weather.csv')
 
 
@@ -29,21 +29,22 @@ df <- full_join(revenue, kiwo, by = "Datum") %>%
   replace_na(list(KielerWoche = 0)) %>%
   mutate(KielerWoche = ifelse(KielerWoche == 1, TRUE, FALSE))
   
-#df
-
-
-
 # Joining the weather data with the df containing revenue and kiwo
 
 df <- full_join(df, weather, by = "Datum")
 
+# Joining the feiertage data with the df containing revenue and feiertage
+
+df <- full_join(revenue, feiertage, by = "Datum") %>%
+  replace_na(list(feiertage = 0)) %>%
+  mutate(feiertage = ifelse(feiertage == 1, TRUE, FALSE))
+  
 #df
 
 # Cleaning up the revenue data to convert Datum column to correct data type (i.e. char -> date)
 df$Datum <- as.Date(df$Datum, format = "%Y-%m-%d")
 
 #df
-
 
 # Converting the  "Warengruppe" to char, as the algorithm might interpret the numeric values as ordered, while they are categorial.
 
@@ -73,10 +74,9 @@ df <- full_join(df, ferien, by = "Datum") %>%
 
 # Adding feiertage column to data set
 feiertage$Datum <- as.Date(feiertage$Datum, format = "%Y-%m-%d")
-feiertage$FeiertageSH <- ifelse(feiertage$FeiertageSH == 1, TRUE, FALSE)
+feiertage$feiertage <- ifelse(feiertage$feiertage == 1, TRUE, FALSE)
 df <- full_join(df, feiertage, by = "Datum") %>%
-  replace_na(list(FeiertageSH = FALSE))
-
+  replace_na(list(feiertage = FALSE))
 
 # This helps us figure out if we have NA values in the dataset
 
