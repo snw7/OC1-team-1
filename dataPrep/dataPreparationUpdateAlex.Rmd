@@ -1,0 +1,86 @@
+---
+title: "dataPreparationUpdateAlex"
+author: "Philipp Meisinger, Olav Cornelius, Alexander Ruoff, Felix Wehkamp"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r}
+# Loading in the Tidyverse
+library(tidyverse)
+
+
+# Storing Data sets as data frames
+
+revenue <- read.csv('../data/original/umsatzdaten_gekuerzt.csv')
+kiwo <- read.csv('../data/original/kiwo.csv')
+ferien <- read.csv('../data/original/schulferienSH.csv')
+feiertage <- read.csv('../data/original/FeiertageSH_AR.csv')
+weather <- read.csv('../data/original/weather.csv')
+
+
+# Joining the kiwo data with the revenue data
+## Left join to keep all values of revenue
+## Replacing all instances of Kiwo = NA with Kiwo = 0
+## Reformating Column KielerWoche to boolean values
+
+df <- full_join(revenue, kiwo, by = "Datum") %>%
+  replace_na(list(KielerWoche = 0)) %>%
+  mutate(KielerWoche = ifelse(KielerWoche == 1, TRUE, FALSE))
+  
+#df
+
+
+
+# Joining the weather data with the df containing revenue and kiwo
+
+df <- full_join(df, weather, by = "Datum")
+
+#df
+
+# Cleaning up the revenue data to convert Datum column to correct data type (i.e. char -> date)
+df$Datum <- as.Date(df$Datum, format = "%Y-%m-%d")
+
+#df
+
+
+# Converting the  "Warengruppe" to char, as the algorithm might interpret the numeric values as ordered, while they are categorial.
+
+df <- df %>%
+  mutate(Warengruppe = ifelse(Warengruppe == 1, "Brot", Warengruppe)) %>%
+  mutate(Warengruppe = ifelse(Warengruppe == 2, "Brötchen", Warengruppe)) %>%
+  mutate(Warengruppe = ifelse(Warengruppe == 3, "Croissant", Warengruppe)) %>%
+  mutate(Warengruppe = ifelse(Warengruppe == 4, "Konditorei", Warengruppe)) %>%
+  mutate(Warengruppe = ifelse(Warengruppe == 5, "Kuchen", Warengruppe)) %>%
+  mutate(Warengruppe = ifelse(Warengruppe == 6, "Saisonbrot", Warengruppe))
+
+
+# Adding weekday column to data set
+
+df$weekday <- weekdays(df$Datum)
+#df
+
+
+# Adding holiday column to data set
+
+ferien$Datum <- as.Date(ferien$Datum, format = "%Y-%m-%d")
+df <- full_join(df, ferien, by = "Datum") %>%
+  replace_na(list(FerienSH = 0)) %>%
+  mutate(FerienSH = ifelse(FerienSH == 1, TRUE, FALSE))
+  
+#df
+
+# Adding feiertage column to data set
+feiertage$Datum <- as.Date(feiertage$Datum, format = "%Y-%m-%d")
+feiertage$FeiertageSH <- ifelse(feiertage$FeiertageSH == 1, TRUE, FALSE)
+df <- full_join(df, feiertage, by = "Datum") %>%
+  replace_na(list(FeiertageSH = FALSE))
+
+
+# This helps us figure out if we have NA values in the dataset
+
+any(is.na(df))
+write.csv(df, "../data/data_combined.csv", row.names = FALSE)
+```
+
