@@ -96,6 +96,15 @@ df <- full_join(df, ferien, by = "Datum") %>%
 
 ```
 
+# Adding feiertage column to data set
+```{r}
+feiertage$Datum <- as.Date(feiertage$Datum, format = "%Y-%m-%d")
+
+df <- full_join(df, feiertage, by = "Datum") %>%
+  replace_na(list(feiertage = 0)) %>%
+  mutate(feiertage = ifelse(feiertage == 1, TRUE, FALSE))
+
+```
 
 # This helps us figure out if we have NA values in the dataset
 ```{r}
