@@ -33,7 +33,6 @@ weather <- read.csv('./data/original/weather.csv')
 
 ```
 
-
 # Joining the kiwo data with the revenue data
 ## Replacing all instances of Kiwo = NA with Kiwo = 0
 ## Reformating Column KielerWoche to boolean values
@@ -48,6 +47,19 @@ df <- full_join(revenue, kiwo, by = "Datum") %>%
 # Joining the feiertage data with the revenue data
 ## Replacing all instances of feiertage = NA with feiertage = 0
 ## Reformating Column Feiertage to boolean values
+
+# Assuming df is your data frame and "Datum" is the name of the column containing date strings
+
+```{r}
+# Load the feiertage data
+feiertage <- read.csv('../data/original/FeiertageSH_AR.csv')
+
+# Convert the "Datum" column to a Date
+feiertage$Datum <- as.Date(feiertage$Datum)
+
+# View the feiertage data
+head(feiertage)
+````
 
 ```{r}
 df <- full_join(revenue, feiertage, by = "Datum") %>%

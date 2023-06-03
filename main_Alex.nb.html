@@ -1756,10 +1756,9 @@ display: none;
 <h1>Training a neural net. Basic structure and setup.</h1>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyBDcmVhdGUgbGlzdCB3aXRoIHJlcXVpcmVkIGxpYnJhcmllc1xubGlicmFyaWVzIDwtIGMoXFxkcGx5clxcLCBcXHJlYWRyXFwsIFxccmV0aWN1bGF0ZVxcLCBcXGdncGxvdDJcXCwgXFxNZXRyaWNzXFwsIFxcdGlkeXZlcnNlXFwsIFxcZ2xtbmV0XFwpXG5cblxuIyBMb29wIHRocm91Z2ggZWFjaCBsaWJyYXJ5IGFuZCBjaGVjayBpZiBpdCdzIGluc3RhbGxlZCwgaWYgbm90LCBpbnN0YWxsIGl0IGFuZCB0aGVuIGxvYWQgaXQgdG8gaW5jbHVkZSBpbiB0aGlzIHByb2plY3RcbmZvciAobGliIGluIGxpYnJhcmllcylcbntcbiAgaWYgKCFyZXF1aXJlKGxpYiwgY2hhcmFjdGVyLm9ubHkgPSBUUlVFKSlcbiAge1xuICAgIGluc3RhbGwucGFja2FnZXMobGliKVxuICAgIGxpYnJhcnkobGliLCBjaGFyYWN0ZXIub25seSA9IFRSVUUpXG4gIH1cbn1cblxuYGBgXG5gYGAifQ== -->
-<pre class="r"><code>```r
-# Create list with required libraries
-libraries &lt;- c(\dplyr\, \readr\, \reticulate\, \ggplot2\, \Metrics\, \tidyverse\, \glmnet\)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBDcmVhdGUgbGlzdCB3aXRoIHJlcXVpcmVkIGxpYnJhcmllc1xubGlicmFyaWVzIDwtIGMoXCJkcGx5clwiLCBcInJlYWRyXCIsIFwicmV0aWN1bGF0ZVwiLCBcImdncGxvdDJcIiwgXCJNZXRyaWNzXCIsIFwidGlkeXZlcnNlXCIsIFwiZ2xtbmV0XCIpXG5cblxuIyBMb29wIHRocm91Z2ggZWFjaCBsaWJyYXJ5IGFuZCBjaGVjayBpZiBpdCdzIGluc3RhbGxlZCwgaWYgbm90LCBpbnN0YWxsIGl0IGFuZCB0aGVuIGxvYWQgaXQgdG8gaW5jbHVkZSBpbiB0aGlzIHByb2plY3RcbmZvciAobGliIGluIGxpYnJhcmllcylcbntcbiAgaWYgKCFyZXF1aXJlKGxpYiwgY2hhcmFjdGVyLm9ubHkgPSBUUlVFKSlcbiAge1xuICAgIGluc3RhbGwucGFja2FnZXMobGliKVxuICAgIGxpYnJhcnkobGliLCBjaGFyYWN0ZXIub25seSA9IFRSVUUpXG4gIH1cbn1cblxuYGBgIn0= -->
+<pre class="r"><code># Create list with required libraries
+libraries &lt;- c(&quot;dplyr&quot;, &quot;readr&quot;, &quot;reticulate&quot;, &quot;ggplot2&quot;, &quot;Metrics&quot;, &quot;tidyverse&quot;, &quot;glmnet&quot;)
 
 
 # Loop through each library and check if it&#39;s installed, if not, install it and then load it to include in this project
@@ -1772,87 +1771,76 @@ for (lib in libraries)
   }
 }
 </code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-chunk-end --&gt;
-
-
-&lt;!-- rnb-text-begin --&gt;
-
-
-# Data Import
-
-&lt;!-- rnb-text-end --&gt;
-
-
-&lt;!-- rnb-chunk-begin --&gt;
-
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyBTdG9yaW5nIERhdGEgc2V0cyBhcyBkYXRhIGZyYW1lc1xuXG5yZXZlbnVlIDwtIHJlYWQuY3N2KCcuL2RhdGEvb3JpZ2luYWwvdW1zYXR6ZGF0ZW5fZ2VrdWVyenQuY3N2Jylcbmtpd28gPC0gcmVhZC5jc3YoJy4vZGF0YS9vcmlnaW5hbC9raXdvLmNzdicpXG5mZXJpZW4gPC0gcmVhZC5jc3YoJy4vZGF0YS9vcmlnaW5hbC9zY2h1bGZlcmllblNILmNzdicpXG53ZWF0aGVyIDwtIHJlYWQuY3N2KCcuL2RhdGEvb3JpZ2luYWwvd2VhdGhlci5jc3YnKVxuXG5gYGBcbmBgYCJ9 --&gt;
-
-```r
-```r
-# Storing Data sets as data frames
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="data-import" class="section level1">
+<h1>Data Import</h1>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBTdG9yaW5nIERhdGEgc2V0cyBhcyBkYXRhIGZyYW1lc1xuXG5yZXZlbnVlIDwtIHJlYWQuY3N2KCcuL2RhdGEvb3JpZ2luYWwvdW1zYXR6ZGF0ZW5fZ2VrdWVyenQuY3N2Jylcbmtpd28gPC0gcmVhZC5jc3YoJy4vZGF0YS9vcmlnaW5hbC9raXdvLmNzdicpXG5mZXJpZW4gPC0gcmVhZC5jc3YoJy4vZGF0YS9vcmlnaW5hbC9zY2h1bGZlcmllblNILmNzdicpXG5mZWllcnRhZ2UgPC0gcmVhZC5jc3YoJy4vZGF0YS9vcmlnaW5hbC9mZWllcnRhZ2UuY3N2JylcbndlYXRoZXIgPC0gcmVhZC5jc3YoJy4vZGF0YS9vcmlnaW5hbC93ZWF0aGVyLmNzdicpXG5cbmBgYCJ9 -->
+<pre class="r"><code># Storing Data sets as data frames
 
 revenue &lt;- read.csv(&#39;./data/original/umsatzdaten_gekuerzt.csv&#39;)
 kiwo &lt;- read.csv(&#39;./data/original/kiwo.csv&#39;)
 ferien &lt;- read.csv(&#39;./data/original/schulferienSH.csv&#39;)
+feiertage &lt;- read.csv(&#39;./data/original/feiertage.csv&#39;)
 weather &lt;- read.csv(&#39;./data/original/weather.csv&#39;)
 </code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-chunk-end --&gt;
-
-
-&lt;!-- rnb-text-begin --&gt;
-
-
-
-# Joining the kiwo data with the revenue data
-## Replacing all instances of Kiwo = NA with Kiwo = 0
-## Reformating Column KielerWoche to boolean values
-
-
-&lt;!-- rnb-text-end --&gt;
-
-
-&lt;!-- rnb-chunk-begin --&gt;
-
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZGYgPC0gZnVsbF9qb2luKHJldmVudWUsIGtpd28sIGJ5ID0gXFxEYXR1bVxcKSAlPiVcbiAgcmVwbGFjZV9uYShsaXN0KEtpZWxlcldvY2hlID0gMCkpICU+JVxuICBtdXRhdGUoS2llbGVyV29jaGUgPSBpZmVsc2UoS2llbGVyV29jaGUgPT0gMSwgVFJVRSwgRkFMU0UpKVxuXG5gYGBcbmBgYCJ9 --&gt;
-
-```r
-```r
-df &lt;- full_join(revenue, kiwo, by = \Datum\) %&gt;%
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="joining-the-kiwo-data-with-the-revenue-data" class="section level1">
+<h1>Joining the kiwo data with the revenue data</h1>
+<div id="replacing-all-instances-of-kiwo-na-with-kiwo-0" class="section level2">
+<h2>Replacing all instances of Kiwo = NA with Kiwo = 0</h2>
+</div>
+<div id="reformating-column-kielerwoche-to-boolean-values" class="section level2">
+<h2>Reformating Column KielerWoche to boolean values</h2>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGYgPC0gZnVsbF9qb2luKHJldmVudWUsIGtpd28sIGJ5ID0gXCJEYXR1bVwiKSAlPiVcbiAgcmVwbGFjZV9uYShsaXN0KEtpZWxlcldvY2hlID0gMCkpICU+JVxuICBtdXRhdGUoS2llbGVyV29jaGUgPSBpZmVsc2UoS2llbGVyV29jaGUgPT0gMSwgVFJVRSwgRkFMU0UpKVxuXG5gYGAifQ== -->
+<pre class="r"><code>df &lt;- full_join(revenue, kiwo, by = &quot;Datum&quot;) %&gt;%
   replace_na(list(KielerWoche = 0)) %&gt;%
   mutate(KielerWoche = ifelse(KielerWoche == 1, TRUE, FALSE))
 </code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+</div>
+<div id="joining-the-feiertage-data-with-the-revenue-data" class="section level1">
+<h1>Joining the feiertage data with the revenue data</h1>
+<div id="replacing-all-instances-of-feiertage-na-with-feiertage-0" class="section level2">
+<h2>Replacing all instances of feiertage = NA with feiertage = 0</h2>
+</div>
+<div id="reformating-column-feiertage-to-boolean-values" class="section level2">
+<h2>Reformating Column Feiertage to boolean values</h2>
+</div>
+</div>
+<div id="assuming-df-is-your-data-frame-and-datum-is-the-name-of-the-column-containing-date-strings" class="section level1">
+<h1>Assuming df is your data frame and “Datum” is the name of the column
+containing date strings</h1>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBMb2FkIHRoZSBmZWllcnRhZ2UgZGF0YVxuZmVpZXJ0YWdlIDwtIHJlYWQuY3N2KCcuLi9kYXRhL29yaWdpbmFsL0ZlaWVydGFnZVNIX0FSLmNzdicpXG5cbiMgQ29udmVydCB0aGUgXCJEYXR1bVwiIGNvbHVtbiB0byBhIERhdGVcbmZlaWVydGFnZSREYXR1bSA8LSBhcy5EYXRlKGZlaWVydGFnZSREYXR1bSlcblxuIyBWaWV3IHRoZSBmZWllcnRhZ2UgZGF0YVxuaGVhZChmZWllcnRhZ2UpXG5gYGAifQ== -->
+<pre class="r"><code># Load the feiertage data
+feiertage &lt;- read.csv(&#39;../data/original/FeiertageSH_AR.csv&#39;)
 
-&lt;!-- rnb-chunk-end --&gt;
+# Convert the &quot;Datum&quot; column to a Date
+feiertage$Datum &lt;- as.Date(feiertage$Datum)
 
-
-&lt;!-- rnb-text-begin --&gt;
-
-
-# Joining the feiertage data with the revenue data
-## Replacing all instances of feiertage = NA with feiertage = 0
-## Reformating Column Feiertage to boolean values
-
-
-&lt;!-- rnb-text-end --&gt;
-
-
-&lt;!-- rnb-chunk-begin --&gt;
-
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGYgPC0gZnVsbF9qb2luKHJldmVudWUsIGZlaWVydGFnZSwgYnkgPSBcIkRhdHVtXCIpICU+JVxuICByZXBsYWNlX25hKGxpc3QoZmVpZXJ0YWdlID0gMCkpICU+JVxuICBtdXRhdGUoZmVpZXJ0YWdlID0gaWZlbHNlKGZlaWVydGFnZSA9PSAxLCBUUlVFLCBGQUxTRSkpXG5cbmBgYCJ9 --&gt;
-
-```r
-df &lt;- full_join(revenue, feiertage, by = &quot;Datum&quot;) %&gt;%
+# View the feiertage data
+head(feiertage)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGYgPC0gZnVsbF9qb2luKHJldmVudWUsIGZlaWVydGFnZSwgYnkgPSBcIkRhdHVtXCIpICU+JVxuICByZXBsYWNlX25hKGxpc3QoZmVpZXJ0YWdlID0gMCkpICU+JVxuICBtdXRhdGUoZmVpZXJ0YWdlID0gaWZlbHNlKGZlaWVydGFnZSA9PSAxLCBUUlVFLCBGQUxTRSkpXG5cbmBgYCJ9 -->
+<pre class="r"><code>df &lt;- full_join(revenue, feiertage, by = &quot;Datum&quot;) %&gt;%
   replace_na(list(feiertage = 0)) %&gt;%
   mutate(feiertage = ifelse(feiertage == 1, TRUE, FALSE))
 </code></pre>
@@ -1865,140 +1853,73 @@ df &lt;- full_join(revenue, feiertage, by = &quot;Datum&quot;) %&gt;%
 kiwo</h1>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZGYgPC0gZnVsbF9qb2luKGRmLCB3ZWF0aGVyLCBieSA9IFxcRGF0dW1cXClcblxuYGBgXG5gYGAifQ== -->
-<pre class="r"><code>```r
-df &lt;- full_join(df, weather, by = \Datum\)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGYgPC0gZnVsbF9qb2luKGRmLCB3ZWF0aGVyLCBieSA9IFwiRGF0dW1cIilcblxuYGBgIn0= -->
+<pre class="r"><code>df &lt;- full_join(df, weather, by = &quot;Datum&quot;)
 </code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-chunk-end --&gt;
-
-
-&lt;!-- rnb-text-begin --&gt;
-
-
-# Cleaning up the revenue data to convert Datum column to correct data type (i.e. char -&gt; date)
-
-&lt;!-- rnb-text-end --&gt;
-
-
-&lt;!-- rnb-chunk-begin --&gt;
-
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZGYkRGF0dW0gPC0gYXMuRGF0ZShkZiREYXR1bSwgZm9ybWF0ID0gXFwlWS0lbS0lZFxcKVxuYGBgXG5gYGAifQ== --&gt;
-
-```r
-```r
-df$Datum &lt;- as.Date(df$Datum, format = \%Y-%m-%d\)</code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-chunk-end --&gt;
-
-
-&lt;!-- rnb-text-begin --&gt;
-
-
-
-# Converting the  &quot;Warengruppe&quot; to char, as the algorithm might interpret the numeric values as ordered, while they are categorial.
-
-&lt;!-- rnb-text-end --&gt;
-
-
-&lt;!-- rnb-chunk-begin --&gt;
-
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZGYgPC0gZGYgJT4lXG4gIG11dGF0ZShXYXJlbmdydXBwZSA9IGlmZWxzZShXYXJlbmdydXBwZSA9PSAxLCBcXEJyb3RcXCwgV2FyZW5ncnVwcGUpKSAlPiVcbiAgbXV0YXRlKFdhcmVuZ3J1cHBlID0gaWZlbHNlKFdhcmVuZ3J1cHBlID09IDIsIFxcQnLDtnRjaGVuXFwsIFdhcmVuZ3J1cHBlKSkgJT4lXG4gIG11dGF0ZShXYXJlbmdydXBwZSA9IGlmZWxzZShXYXJlbmdydXBwZSA9PSAzLCBcXENyb2lzc2FudFxcLCBXYXJlbmdydXBwZSkpICU+JVxuICBtdXRhdGUoV2FyZW5ncnVwcGUgPSBpZmVsc2UoV2FyZW5ncnVwcGUgPT0gNCwgXFxLb25kaXRvcmVpXFwsIFdhcmVuZ3J1cHBlKSkgJT4lXG4gIG11dGF0ZShXYXJlbmdydXBwZSA9IGlmZWxzZShXYXJlbmdydXBwZSA9PSA1LCBcXEt1Y2hlblxcLCBXYXJlbmdydXBwZSkpICU+JVxuICBtdXRhdGUoV2FyZW5ncnVwcGUgPSBpZmVsc2UoV2FyZW5ncnVwcGUgPT0gNiwgXFxTYWlzb25icm90XFwsIFdhcmVuZ3J1cHBlKSlcbmBgYFxuYGBgIn0= --&gt;
-
-```r
-```r
-df &lt;- df %&gt;%
-  mutate(Warengruppe = ifelse(Warengruppe == 1, \Brot\, Warengruppe)) %&gt;%
-  mutate(Warengruppe = ifelse(Warengruppe == 2, \Brötchen\, Warengruppe)) %&gt;%
-  mutate(Warengruppe = ifelse(Warengruppe == 3, \Croissant\, Warengruppe)) %&gt;%
-  mutate(Warengruppe = ifelse(Warengruppe == 4, \Konditorei\, Warengruppe)) %&gt;%
-  mutate(Warengruppe = ifelse(Warengruppe == 5, \Kuchen\, Warengruppe)) %&gt;%
-  mutate(Warengruppe = ifelse(Warengruppe == 6, \Saisonbrot\, Warengruppe))</code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-chunk-end --&gt;
-
-
-&lt;!-- rnb-text-begin --&gt;
-
-
-# Adding weekday column to data set
-
-&lt;!-- rnb-text-end --&gt;
-
-
-&lt;!-- rnb-chunk-begin --&gt;
-
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZGYkV29jaGVudGFnIDwtIHdlZWtkYXlzKGRmJERhdHVtKVxuXG5gYGBcbmBgYCJ9 --&gt;
-
-```r
-```r
-df$Wochentag &lt;- weekdays(df$Datum)
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="cleaning-up-the-revenue-data-to-convert-datum-column-to-correct-data-type-i.e.-char---date" class="section level1">
+<h1>Cleaning up the revenue data to convert Datum column to correct data
+type (i.e. char -&gt; date)</h1>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGYkRGF0dW0gPC0gYXMuRGF0ZShkZiREYXR1bSwgZm9ybWF0ID0gXCIlWS0lbS0lZFwiKVxuYGBgIn0= -->
+<pre class="r"><code>df$Datum &lt;- as.Date(df$Datum, format = &quot;%Y-%m-%d&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="converting-the-warengruppe-to-char-as-the-algorithm-might-interpret-the-numeric-values-as-ordered-while-they-are-categorial." class="section level1">
+<h1>Converting the “Warengruppe” to char, as the algorithm might
+interpret the numeric values as ordered, while they are categorial.</h1>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGYgPC0gZGYgJT4lXG4gIG11dGF0ZShXYXJlbmdydXBwZSA9IGlmZWxzZShXYXJlbmdydXBwZSA9PSAxLCBcIkJyb3RcIiwgV2FyZW5ncnVwcGUpKSAlPiVcbiAgbXV0YXRlKFdhcmVuZ3J1cHBlID0gaWZlbHNlKFdhcmVuZ3J1cHBlID09IDIsIFwiQnLDtnRjaGVuXCIsIFdhcmVuZ3J1cHBlKSkgJT4lXG4gIG11dGF0ZShXYXJlbmdydXBwZSA9IGlmZWxzZShXYXJlbmdydXBwZSA9PSAzLCBcIkNyb2lzc2FudFwiLCBXYXJlbmdydXBwZSkpICU+JVxuICBtdXRhdGUoV2FyZW5ncnVwcGUgPSBpZmVsc2UoV2FyZW5ncnVwcGUgPT0gNCwgXCJLb25kaXRvcmVpXCIsIFdhcmVuZ3J1cHBlKSkgJT4lXG4gIG11dGF0ZShXYXJlbmdydXBwZSA9IGlmZWxzZShXYXJlbmdydXBwZSA9PSA1LCBcIkt1Y2hlblwiLCBXYXJlbmdydXBwZSkpICU+JVxuICBtdXRhdGUoV2FyZW5ncnVwcGUgPSBpZmVsc2UoV2FyZW5ncnVwcGUgPT0gNiwgXCJTYWlzb25icm90XCIsIFdhcmVuZ3J1cHBlKSlcbmBgYCJ9 -->
+<pre class="r"><code>df &lt;- df %&gt;%
+  mutate(Warengruppe = ifelse(Warengruppe == 1, &quot;Brot&quot;, Warengruppe)) %&gt;%
+  mutate(Warengruppe = ifelse(Warengruppe == 2, &quot;Brötchen&quot;, Warengruppe)) %&gt;%
+  mutate(Warengruppe = ifelse(Warengruppe == 3, &quot;Croissant&quot;, Warengruppe)) %&gt;%
+  mutate(Warengruppe = ifelse(Warengruppe == 4, &quot;Konditorei&quot;, Warengruppe)) %&gt;%
+  mutate(Warengruppe = ifelse(Warengruppe == 5, &quot;Kuchen&quot;, Warengruppe)) %&gt;%
+  mutate(Warengruppe = ifelse(Warengruppe == 6, &quot;Saisonbrot&quot;, Warengruppe))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="adding-weekday-column-to-data-set" class="section level1">
+<h1>Adding weekday column to data set</h1>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGYkV29jaGVudGFnIDwtIHdlZWtkYXlzKGRmJERhdHVtKVxuXG5gYGAifQ== -->
+<pre class="r"><code>df$Wochentag &lt;- weekdays(df$Datum)
 </code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="adding-holiday-column-to-data-set" class="section level1">
+<h1>Adding holiday column to data set</h1>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmVyaWVuJERhdHVtIDwtIGFzLkRhdGUoZmVyaWVuJERhdHVtLCBmb3JtYXQgPSBcIiVZLSVtLSVkXCIpXG5cbmRmIDwtIGZ1bGxfam9pbihkZiwgZmVyaWVuLCBieSA9IFwiRGF0dW1cIikgJT4lXG4gIHJlcGxhY2VfbmEobGlzdChGZXJpZW5TSCA9IDApKSAlPiVcbiAgbXV0YXRlKEZlcmllblNIID0gaWZlbHNlKEZlcmllblNIID09IDEsIFRSVUUsIEZBTFNFKSlcblxuYGBgIn0= -->
+<pre class="r"><code>ferien$Datum &lt;- as.Date(ferien$Datum, format = &quot;%Y-%m-%d&quot;)
 
-&lt;!-- rnb-chunk-end --&gt;
-
-
-&lt;!-- rnb-text-begin --&gt;
-
-
-# Adding holiday column to data set
-
-&lt;!-- rnb-text-end --&gt;
-
-
-&lt;!-- rnb-chunk-begin --&gt;
-
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZmVyaWVuJERhdHVtIDwtIGFzLkRhdGUoZmVyaWVuJERhdHVtLCBmb3JtYXQgPSBcXCVZLSVtLSVkXFwpXG5cbmRmIDwtIGZ1bGxfam9pbihkZiwgZmVyaWVuLCBieSA9IFxcRGF0dW1cXCkgJT4lXG4gIHJlcGxhY2VfbmEobGlzdChGZXJpZW5TSCA9IDApKSAlPiVcbiAgbXV0YXRlKEZlcmllblNIID0gaWZlbHNlKEZlcmllblNIID09IDEsIFRSVUUsIEZBTFNFKSlcbmBgYFxuYGBgIn0= --&gt;
-
-```r
-```r
-ferien$Datum &lt;- as.Date(ferien$Datum, format = \%Y-%m-%d\)
-
-df &lt;- full_join(df, ferien, by = \Datum\) %&gt;%
+df &lt;- full_join(df, ferien, by = &quot;Datum&quot;) %&gt;%
   replace_na(list(FerienSH = 0)) %&gt;%
-  mutate(FerienSH = ifelse(FerienSH == 1, TRUE, FALSE))</code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogRGV0ZWN0ZWQgYW4gdW5leHBlY3RlZCBtYW55LXRvLW1hbnkgcmVsYXRpb25zaGlwIGJldHdlZW4gYHhgIGFuZCBgeWAuXG4ifQ== --&gt;
+  mutate(FerienSH = ifelse(FerienSH == 1, TRUE, FALSE))
 </code></pre>
-<p>Warning: Detected an unexpected many-to-many relationship between
-<code>x</code> and <code>y</code>.</p>
-<pre><code>
-
-
-&lt;!-- rnb-output-end --&gt;
-
-&lt;!-- rnb-chunk-end --&gt;
-
-
-&lt;!-- rnb-text-begin --&gt;
-
-
-# Adding feiertage column to data set
-
-&lt;!-- rnb-text-end --&gt;
-
-
-&lt;!-- rnb-chunk-begin --&gt;
-
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmVpZXJ0YWdlJERhdHVtIDwtIGFzLkRhdGUoZmVpZXJ0YWdlJERhdHVtLCBmb3JtYXQgPSBcIiVZLSVtLSVkXCIpXG5cbmRmIDwtIGZ1bGxfam9pbihkZiwgZmVpZXJ0YWdlLCBieSA9IFwiRGF0dW1cIikgJT4lXG4gIHJlcGxhY2VfbmEobGlzdChmZWllcnRhZ2UgPSAwKSkgJT4lXG4gIG11dGF0ZShmZWllcnRhZ2UgPSBpZmVsc2UoZmVpZXJ0YWdlID09IDEsIFRSVUUsIEZBTFNFKSlcblxuYGBgIn0= --&gt;
-
-```r
-feiertage$Datum &lt;- as.Date(feiertage$Datum, format = &quot;%Y-%m-%d&quot;)
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="adding-feiertage-column-to-data-set" class="section level1">
+<h1>Adding feiertage column to data set</h1>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmVpZXJ0YWdlJERhdHVtIDwtIGFzLkRhdGUoZmVpZXJ0YWdlJERhdHVtLCBmb3JtYXQgPSBcIiVZLSVtLSVkXCIpXG5cbmRmIDwtIGZ1bGxfam9pbihkZiwgZmVpZXJ0YWdlLCBieSA9IFwiRGF0dW1cIikgJT4lXG4gIHJlcGxhY2VfbmEobGlzdChmZWllcnRhZ2UgPSAwKSkgJT4lXG4gIG11dGF0ZShmZWllcnRhZ2UgPSBpZmVsc2UoZmVpZXJ0YWdlID09IDEsIFRSVUUsIEZBTFNFKSlcblxuYGBgIn0= -->
+<pre class="r"><code>feiertage$Datum &lt;- as.Date(feiertage$Datum, format = &quot;%Y-%m-%d&quot;)
 
 df &lt;- full_join(df, feiertage, by = &quot;Datum&quot;) %&gt;%
   replace_na(list(feiertage = 0)) %&gt;%
@@ -2012,74 +1933,38 @@ df &lt;- full_join(df, feiertage, by = &quot;Datum&quot;) %&gt;%
 <h1>This helps us figure out if we have NA values in the dataset</h1>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuYW55KGlzLm5hKGRmKSlcbmBgYFxuYGBgIn0= -->
-<pre class="r"><code>```r
-any(is.na(df))</code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-output-begin eyJkYXRhIjoiWzFdIFRSVUVcbiJ9 --&gt;
-</code></pre>
-<p>[1] TRUE</p>
-<pre><code>
-
-
-&lt;!-- rnb-output-end --&gt;
-
-&lt;!-- rnb-chunk-end --&gt;
-
-
-&lt;!-- rnb-text-begin --&gt;
-
-# Deleting all rows that contain even one NA value (This section will be replaced with data imputation later on.)
-
-&lt;!-- rnb-text-end --&gt;
-
-
-&lt;!-- rnb-chunk-begin --&gt;
-
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyBDaGVjayBmb3IgY29tcGxldGUgY2FzZXNcbmNvbXBsZXRlX3Jvd3MgPC0gY29tcGxldGUuY2FzZXMoZGYpXG5cbiMgU3Vic2V0IHRoZSBkYXRhIGZyYW1lIHRvIGtlZXAgb25seSBjb21wbGV0ZSByb3dzXG5jbGVhbl9kZiA8LSBkZltjb21wbGV0ZV9yb3dzLCBdXG5cblxuIyBBIGxpdHRsZSB0cmljazogUmVtb3ZpbmcgYWxsIG5ldyB5ZWFycyBkYXRlcyBmcm9tIHRoZSBkYXRhIHNldCwgYXMgdGhleSBzY2V3IG91ciBkYXRhIHN0cm9uZ2x5LlxueWVhcnNfdG9fZXhjbHVkZSA8LSBjKFxcMzEuMTIuMjAxM1xcLCBcXDMxLjEyLjIwMTRcXCwgXFwzMS4xMi4yMDE1XFwsIFxcMzEuMTIuMjAxNlxcLCBcXDMxLjEyLjIwMTdcXCwgXFwzMS4xMi4yMDE4XFwpXG5cbmNsZWFuX2RmIDwtIHN1YnNldChjbGVhbl9kZiwgIWZvcm1hdChEYXRlLCBcXCVZLSVtLSVkXFwpICVpbiUgeWVhcnNfdG9fZXhjbHVkZSlcblxuI0Zyb20gaGVyZSBvbiBvdXQgSSdsbCB3b3JrIHdpdGggdGhlIGNsZWFuX2RmIGRhdGEgc2V0LiBPbmNlIHRoZSBpbXB1dGF0aW9uIHN0ZXAgaXMgaW1wbGVtZW50ZWQsIHRoZSBmb2xsb3dpbmcgY29kZSBjYW4gYmUgdXNlZCBmb3IgYm90aC5cbmBgYFxuYGBgIn0= --&gt;
-
-```r
-```r
-# Check for complete cases
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYW55KGlzLm5hKGRmKSlcbmBgYCJ9 -->
+<pre class="r"><code>any(is.na(df))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="deleting-all-rows-that-contain-even-one-na-value-this-section-will-be-replaced-with-data-imputation-later-on." class="section level1">
+<h1>Deleting all rows that contain even one NA value (This section will
+be replaced with data imputation later on.)</h1>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBDaGVjayBmb3IgY29tcGxldGUgY2FzZXNcbmNvbXBsZXRlX3Jvd3MgPC0gY29tcGxldGUuY2FzZXMoZGYpXG5cbiMgU3Vic2V0IHRoZSBkYXRhIGZyYW1lIHRvIGtlZXAgb25seSBjb21wbGV0ZSByb3dzXG5jbGVhbl9kZiA8LSBkZltjb21wbGV0ZV9yb3dzLCBdXG5cbiNGcm9tIGhlcmUgb24gb3V0IEknbGwgd29yayB3aXRoIHRoZSBjbGVhbl9kZiBkYXRhIHNldC4gT25jZSB0aGUgaW1wdXRhdGlvbiBzdGVwIGlzIGltcGxlbWVudGVkLCB0aGUgZm9sbG93aW5nIGNvZGUgY2FuIGJlIHVzZWQgZm9yIGJvdGguXG5gYGAifQ== -->
+<pre class="r"><code># Check for complete cases
 complete_rows &lt;- complete.cases(df)
 
 # Subset the data frame to keep only complete rows
 clean_df &lt;- df[complete_rows, ]
 
-
-# A little trick: Removing all new years dates from the data set, as they scew our data strongly.
-years_to_exclude &lt;- c(\31.12.2013\, \31.12.2014\, \31.12.2015\, \31.12.2016\, \31.12.2017\, \31.12.2018\)
-
-clean_df &lt;- subset(clean_df, !format(Date, \%Y-%m-%d\) %in% years_to_exclude)
-
 #From here on out I&#39;ll work with the clean_df data set. Once the imputation step is implemented, the following code can be used for both.</code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-chunk-end --&gt;
-
-
-&lt;!-- rnb-text-begin --&gt;
-
-
-# Simple Linear regression model:
-
-#### Teilen des Datensatzes in Trainings- Validierungs- und Testdatensatz
-
-&lt;!-- rnb-text-end --&gt;
-
-
-&lt;!-- rnb-chunk-begin --&gt;
-
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyBTZXQgYSByYW5kb20gc2VlZCBmb3IgcmVwcm9kdWNpYmlsaXR5XG5zZXQuc2VlZCg0MilcblxuIyBTaHVmZmxlIHRoZSBkYXRhXG5kYXRhX3NodWZmbGVkIDwtIGNsZWFuX2RmICU+JSBcbiAgc2FtcGxlX2ZyYWMoMSlcblxuIyBDYWxjdWxhdGUgdGhlIG51bWJlciBvZiByb3dzIGZvciBlYWNoIGRhdGFzZXRcbm5fdG90YWwgPC0gbnJvdyhjbGVhbl9kZilcbm5fdHJhaW4gPC0gZmxvb3IoMC43ICogbl90b3RhbClcbm5fdmFsaWRhdGlvbiA8LSBmbG9vcigwLjIwICogbl90b3RhbClcblxuIyBTcGxpdCB0aGUgZGF0YSBpbnRvIHRyYWluaW5nLCB2YWxpZGF0aW9uLCBhbmQgdGVzdCBkYXRhc2V0c1xudHJhaW5fZGF0YSA8LSBkYXRhX3NodWZmbGVkICU+JVxuICBzbGljZSgxOm5fdHJhaW4pXG5cbnZhbGlkYXRpb25fZGF0YSA8LSBkYXRhX3NodWZmbGVkICU+JVxuICBzbGljZSgobl90cmFpbiArIDEpOihuX3RyYWluICsgbl92YWxpZGF0aW9uKSlcblxudGVzdF9kYXRhIDwtIGRhdGFfc2h1ZmZsZWQgJT4lXG4gIHNsaWNlKChuX3RyYWluICsgbl92YWxpZGF0aW9uICsgMSk6bl90b3RhbClcblxuIyBDaGVjayB0aGUgZGltZW5zaW9ucyBvZiB0aGUgZGF0YXNldHNcbmNhdChcXFRyYWluaW5nIGRhdGFzZXQgZGltZW5zaW9uczpcXCwgZGltKHRyYWluX2RhdGEpLCBcXFxcblxcKVxuYGBgXG5gYGAifQ== --&gt;
-
-```r
-```r
-# Set a random seed for reproducibility
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="simple-linear-regression-model" class="section level1">
+<h1>Simple Linear regression model:</h1>
+<div id="teilen-des-datensatzes-in-trainings--validierungs--und-testdatensatz" class="section level4">
+<h4>Teilen des Datensatzes in Trainings- Validierungs- und
+Testdatensatz</h4>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBTZXQgYSByYW5kb20gc2VlZCBmb3IgcmVwcm9kdWNpYmlsaXR5XG5zZXQuc2VlZCg0MilcblxuIyBTaHVmZmxlIHRoZSBkYXRhXG5kYXRhX3NodWZmbGVkIDwtIGNsZWFuX2RmICU+JSBcbiAgc2FtcGxlX2ZyYWMoMSlcblxuIyBDYWxjdWxhdGUgdGhlIG51bWJlciBvZiByb3dzIGZvciBlYWNoIGRhdGFzZXRcbm5fdG90YWwgPC0gbnJvdyhjbGVhbl9kZilcbm5fdHJhaW4gPC0gZmxvb3IoMC43ICogbl90b3RhbClcbm5fdmFsaWRhdGlvbiA8LSBmbG9vcigwLjIwICogbl90b3RhbClcblxuIyBTcGxpdCB0aGUgZGF0YSBpbnRvIHRyYWluaW5nLCB2YWxpZGF0aW9uLCBhbmQgdGVzdCBkYXRhc2V0c1xudHJhaW5fZGF0YSA8LSBkYXRhX3NodWZmbGVkICU+JVxuICBzbGljZSgxOm5fdHJhaW4pXG5cbnZhbGlkYXRpb25fZGF0YSA8LSBkYXRhX3NodWZmbGVkICU+JVxuICBzbGljZSgobl90cmFpbiArIDEpOihuX3RyYWluICsgbl92YWxpZGF0aW9uKSlcblxudGVzdF9kYXRhIDwtIGRhdGFfc2h1ZmZsZWQgJT4lXG4gIHNsaWNlKChuX3RyYWluICsgbl92YWxpZGF0aW9uICsgMSk6bl90b3RhbClcblxuIyBDaGVjayB0aGUgZGltZW5zaW9ucyBvZiB0aGUgZGF0YXNldHNcbmNhdChcIlRyYWluaW5nIGRhdGFzZXQgZGltZW5zaW9uczpcIiwgZGltKHRyYWluX2RhdGEpLCBcIlxcblwiKVxuY2F0KFwiVmFsaWRhdGlvbiBkYXRhc2V0IGRpbWVuc2lvbnM6XCIsIGRpbSh2YWxpZGF0aW9uX2RhdGEpLCBcIlxcblwiKVxuY2F0KFwiVGVzdCBkYXRhc2V0IGRpbWVuc2lvbnM6XCIsIGRpbSh0ZXN0X2RhdGEpLCBcIlxcblwiKVxuXG5gYGAifQ== -->
+<pre class="r"><code># Set a random seed for reproducibility
 set.seed(42)
 
 # Shuffle the data
@@ -2102,71 +1987,20 @@ test_data &lt;- data_shuffled %&gt;%
   slice((n_train + n_validation + 1):n_total)
 
 # Check the dimensions of the datasets
-cat(\Training dataset dimensions:\, dim(train_data), \\n\)</code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-output-begin eyJkYXRhIjoiVHJhaW5pbmcgZGF0YXNldCBkaW1lbnNpb25zOiA1ODU2IDEwIFxuIn0= --&gt;
+cat(&quot;Training dataset dimensions:&quot;, dim(train_data), &quot;\n&quot;)
+cat(&quot;Validation dataset dimensions:&quot;, dim(validation_data), &quot;\n&quot;)
+cat(&quot;Test dataset dimensions:&quot;, dim(test_data), &quot;\n&quot;)
 </code></pre>
-<p>Training dataset dimensions: 5856 10</p>
-<pre><code>
-
-
-&lt;!-- rnb-output-end --&gt;
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuY2F0KFxcVmFsaWRhdGlvbiBkYXRhc2V0IGRpbWVuc2lvbnM6XFwsIGRpbSh2YWxpZGF0aW9uX2RhdGEpLCBcXFxcblxcKVxuYGBgXG5gYGAifQ== --&gt;
-
-```r
-```r
-cat(\Validation dataset dimensions:\, dim(validation_data), \\n\)</code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-output-begin eyJkYXRhIjoiVmFsaWRhdGlvbiBkYXRhc2V0IGRpbWVuc2lvbnM6IDE2NzMgMTAgXG4ifQ== --&gt;
-</code></pre>
-<p>Validation dataset dimensions: 1673 10</p>
-<pre><code>
-
-
-&lt;!-- rnb-output-end --&gt;
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuY2F0KFxcVGVzdCBkYXRhc2V0IGRpbWVuc2lvbnM6XFwsIGRpbSh0ZXN0X2RhdGEpLCBcXFxcblxcKVxuYGBgXG5gYGAifQ== --&gt;
-
-```r
-```r
-cat(\Test dataset dimensions:\, dim(test_data), \\n\)</code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-output-begin eyJkYXRhIjoiVGVzdCBkYXRhc2V0IGRpbWVuc2lvbnM6IDgzOCAxMCBcbiJ9 --&gt;
-</code></pre>
-<p>Test dataset dimensions: 838 10</p>
-<pre><code>
-
-
-&lt;!-- rnb-output-end --&gt;
-
-&lt;!-- rnb-chunk-end --&gt;
-
-
-&lt;!-- rnb-text-begin --&gt;
-
-
-
-
-### Beispiel einer einfachen linearen Regression
-
-&lt;!-- rnb-text-end --&gt;
-
-
-&lt;!-- rnb-chunk-begin --&gt;
-
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuICBtb2QgPC0gbG0oVW1zYXR6IH4gRGF0dW0sIGNsZWFuX2RmKVxuICAgIHN1bW1hcnkobW9kKVxuICBtb2RfMSA8LSBsbShVbXNhdHogfiBEYXR1bSArIGFzLmZhY3RvcihXYXJlbmdydXBwZSksIGNsZWFuX2RmKVxuICAgIHN1bW1hcnkobW9kXzEpXG4gIG1vZF8yIDwtIGxtKFVtc2F0eiB+IERhdHVtICsgYXMuZmFjdG9yKFdhcmVuZ3J1cHBlKSArIGFzLmZhY3RvcihXb2NoZW50YWcpLCBjbGVhbl9kZilcbiAgICBzdW1tYXJ5KG1vZF8yKVxuICBtb2RfMyA8LSBsbShVbXNhdHogfiBEYXR1bSArIGFzLmZhY3RvcihXYXJlbmdydXBwZSkgKyBhcy5mYWN0b3IoV29jaGVudGFnKSArIEZlcmllblNILCBjbGVhbl9kZilcbiAgICBzdW1tYXJ5KG1vZF8zKVxuICBtb2RfNCA8LSBsbShVbXNhdHogfiBEYXR1bSArIGFzLmZhY3RvcihXYXJlbmdydXBwZSkgKyBhcy5mYWN0b3IoV29jaGVudGFnKSArIEZlcmllblNIICsgVGVtcGVyYXR1ciwgY2xlYW5fZGYpXG4gICAgc3VtbWFyeShtb2RfNClcbiAgbW9kXzUgPC0gbG0oVW1zYXR6IH4gRGF0dW0gKyBhcy5mYWN0b3IoV2FyZW5ncnVwcGUpICsgYXMuZmFjdG9yKFdvY2hlbnRhZykgKyBGZXJpZW5TSCArIFRlbXBlcmF0dXIgKyBLaWVsZXJXb2NoZSwgY2xlYW5fZGYpXG4gICAgc3VtbWFyeShtb2RfNSlcbiAgbW9kXzYgPC0gbG0oVW1zYXR6IH4gRGF0dW0gKyBhcy5mYWN0b3IoV2FyZW5ncnVwcGUpICsgYXMuZmFjdG9yKFdvY2hlbnRhZykgKyBGZXJpZW5TSCArIFRlbXBlcmF0dXIgKyBLaWVsZXJXb2NoZSArIEJld29lbGt1bmcsIGNsZWFuX2RmKVxuICAgIHN1bW1hcnkobW9kXzYpXG4gICAgIyBRdWljayBjb21tZW50OiBLaVdvIGFuZCBCZXdvZWxrdW5nIGRvIG5vdCBpbmNyZWFzZSBSLXNxdWFyZWRcbiAgICBtb2RfNyA8LSBsbShVbXNhdHogfiBEYXR1bSArIGFzLmZhY3RvcihXYXJlbmdydXBwZSkgKyBhcy5mYWN0b3IoV29jaGVudGFnKSArIEZlcmllblNIICsgVGVtcGVyYXR1ciArIEtpZWxlcldvY2hlICsgQmV3b2Vsa3VuZyArIFdpbmRnZXNjaHdpbmRpZ2tlaXQsIGNsZWFuX2RmKVxuICAgIHN1bW1hcnkobW9kXzcpXG4gICAgIyBXaW5kZ2VzY2h3aW5kaWdrZWl0IG9ubHkgaW5wcm92ZXMgUi1zcXVhcmVkIG1hcmdpbmFsbHkuXG4gIG1vZF84IDwtIGxtKFVtc2F0eiB+IERhdHVtICsgYXMuZmFjdG9yKFdhcmVuZ3J1cHBlKSArIGFzLmZhY3RvcihXb2NoZW50YWcpICsgRmVyaWVuU0ggKyBUZW1wZXJhdHVyICsgS2llbGVyV29jaGUgKyBCZXdvZWxrdW5nICsgV2luZGdlc2Nod2luZGlna2VpdCArIFdldHRlcmNvZGUsIGNsZWFuX2RmKVxuICAgIHN1bW1hcnkobW9kXzgpXG4gIFxuICBcbmBgYFxuYGBgIn0= --&gt;
-
-```r
-```r
-  mod &lt;- lm(Umsatz ~ Datum, clean_df)
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="beispiel-einer-einfachen-linearen-regression" class="section level3">
+<h3>Beispiel einer einfachen linearen Regression</h3>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICBtb2QgPC0gbG0oVW1zYXR6IH4gRGF0dW0sIGNsZWFuX2RmKVxuICAgIHN1bW1hcnkobW9kKVxuICBtb2RfMSA8LSBsbShVbXNhdHogfiBEYXR1bSArIGFzLmZhY3RvcihXYXJlbmdydXBwZSksIGNsZWFuX2RmKVxuICAgIHN1bW1hcnkobW9kXzEpXG4gIG1vZF8yIDwtIGxtKFVtc2F0eiB+IERhdHVtICsgYXMuZmFjdG9yKFdhcmVuZ3J1cHBlKSArIGFzLmZhY3RvcihXb2NoZW50YWcpLCBjbGVhbl9kZilcbiAgICBzdW1tYXJ5KG1vZF8yKVxuICBtb2RfMyA8LSBsbShVbXNhdHogfiBEYXR1bSArIGFzLmZhY3RvcihXYXJlbmdydXBwZSkgKyBhcy5mYWN0b3IoV29jaGVudGFnKSArIEZlcmllblNILCBjbGVhbl9kZilcbiAgICBzdW1tYXJ5KG1vZF8zKVxuICBtb2RfNCA8LSBsbShVbXNhdHogfiBEYXR1bSArIGFzLmZhY3RvcihXYXJlbmdydXBwZSkgKyBhcy5mYWN0b3IoV29jaGVudGFnKSArIEZlcmllblNIICsgVGVtcGVyYXR1ciwgY2xlYW5fZGYpXG4gICAgc3VtbWFyeShtb2RfNClcbiAgbW9kXzUgPC0gbG0oVW1zYXR6IH4gRGF0dW0gKyBhcy5mYWN0b3IoV2FyZW5ncnVwcGUpICsgYXMuZmFjdG9yKFdvY2hlbnRhZykgKyBGZXJpZW5TSCArIFRlbXBlcmF0dXIgKyBLaWVsZXJXb2NoZSwgY2xlYW5fZGYpXG4gICAgc3VtbWFyeShtb2RfNSlcbiAgbW9kXzYgPC0gbG0oVW1zYXR6IH4gRGF0dW0gKyBhcy5mYWN0b3IoV2FyZW5ncnVwcGUpICsgYXMuZmFjdG9yKFdvY2hlbnRhZykgKyBGZXJpZW5TSCArIFRlbXBlcmF0dXIgKyBLaWVsZXJXb2NoZSArIEJld29lbGt1bmcsIGNsZWFuX2RmKVxuICAgIHN1bW1hcnkobW9kXzYpXG4gICAgIyBRdWljayBjb21tZW50OiBLaVdvIGFuZCBCZXdvZWxrdW5nIGRvIG5vdCBpbmNyZWFzZSBSLXNxdWFyZWRcbiAgICBtb2RfNyA8LSBsbShVbXNhdHogfiBEYXR1bSArIGFzLmZhY3RvcihXYXJlbmdydXBwZSkgKyBhcy5mYWN0b3IoV29jaGVudGFnKSArIEZlcmllblNIICsgVGVtcGVyYXR1ciArIEtpZWxlcldvY2hlICsgQmV3b2Vsa3VuZyArIFdpbmRnZXNjaHdpbmRpZ2tlaXQsIGNsZWFuX2RmKVxuICAgIHN1bW1hcnkobW9kXzcpXG4gICAgIyBXaW5kZ2VzY2h3aW5kaWdrZWl0IG9ubHkgaW5wcm92ZXMgUi1zcXVhcmVkIG1hcmdpbmFsbHkuXG4gIG1vZF84IDwtIGxtKFVtc2F0eiB+IERhdHVtICsgYXMuZmFjdG9yKFdhcmVuZ3J1cHBlKSArIGFzLmZhY3RvcihXb2NoZW50YWcpICsgRmVyaWVuU0ggKyBUZW1wZXJhdHVyICsgS2llbGVyV29jaGUgKyBCZXdvZWxrdW5nICsgV2luZGdlc2Nod2luZGlna2VpdCArIFdldHRlcmNvZGUsIGNsZWFuX2RmKVxuICAgIHN1bW1hcnkobW9kXzgpXG4gIFxuICBcbmBgYCJ9 -->
+<pre class="r"><code>  mod &lt;- lm(Umsatz ~ Datum, clean_df)
     summary(mod)
   mod_1 &lt;- lm(Umsatz ~ Datum + as.factor(Warengruppe), clean_df)
     summary(mod_1)
@@ -2188,28 +2022,16 @@ cat(\Test dataset dimensions:\, dim(test_data), \\n\)</code></pre>
     summary(mod_8)
   
   </code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-chunk-end --&gt;
-
-
-&lt;!-- rnb-text-begin --&gt;
-
-
-### Nutzung des resultierenden Modells für eine Vohersage
-
-&lt;!-- rnb-text-end --&gt;
-
-
-&lt;!-- rnb-chunk-begin --&gt;
-
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyBNYWtlIHByZWRpY3Rpb25zIHVzaW5nIHRoZSB0ZXN0IGRhdGFcbnByZWRpY3RlZF92YWx1ZXMgPC0gcHJlZGljdChtb2QsIG5ld2RhdGEgPSB2YWxpZGF0aW9uX2RhdGEpXG5cbiMgQ29tcGFyZSB0aGUgcHJlZGljdGVkIHZhbHVlcyB3aXRoIHRoZSBhY3R1YWwgdmFsdWVzXG5jb21wYXJpc29uIDwtIGRhdGEuZnJhbWUoQWN0dWFsID0gdmFsaWRhdGlvbl9kYXRhJFVtc2F0eiwgUHJlZGljdGVkID0gcHJlZGljdGVkX3ZhbHVlcylcblxuIyBDYWxjdWxhdGUgdGhlIG1lYW4gc3F1YXJlZCBlcnJvciAoUk1TRSlcbnJtc2UgPC0gc3FydChtZWFuKChjb21wYXJpc29uJEFjdHVhbCAtIGNvbXBhcmlzb24kUHJlZGljdGVkKV4yKSlcblxuIyBEaXNwbGF5IHRoZSBjb21wYXJpc29uIGFuZCBSTVNFXG5oZWFkKGNvbXBhcmlzb24pXG5jYXQoXFxSb290IE1lYW4gU3F1YXJlZCBFcnJvciAoUk1TRSk6XFwsIHJtc2UsIFxcXFxuXFwpXG5cbmBgYFxuYGBgIn0= --&gt;
-
-```r
-```r
-# Make predictions using the test data
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="nutzung-des-resultierenden-modells-für-eine-vohersage" class="section level3">
+<h3>Nutzung des resultierenden Modells für eine Vohersage</h3>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBNYWtlIHByZWRpY3Rpb25zIHVzaW5nIHRoZSB0ZXN0IGRhdGFcbnByZWRpY3RlZF92YWx1ZXMgPC0gcHJlZGljdChtb2QsIG5ld2RhdGEgPSB2YWxpZGF0aW9uX2RhdGEpXG5cbiMgQ29tcGFyZSB0aGUgcHJlZGljdGVkIHZhbHVlcyB3aXRoIHRoZSBhY3R1YWwgdmFsdWVzXG5jb21wYXJpc29uIDwtIGRhdGEuZnJhbWUoQWN0dWFsID0gdmFsaWRhdGlvbl9kYXRhJFVtc2F0eiwgUHJlZGljdGVkID0gcHJlZGljdGVkX3ZhbHVlcylcblxuIyBDYWxjdWxhdGUgdGhlIG1lYW4gc3F1YXJlZCBlcnJvciAoUk1TRSlcbnJtc2UgPC0gc3FydChtZWFuKChjb21wYXJpc29uJEFjdHVhbCAtIGNvbXBhcmlzb24kUHJlZGljdGVkKV4yKSlcblxuIyBEaXNwbGF5IHRoZSBjb21wYXJpc29uIGFuZCBSTVNFXG5oZWFkKGNvbXBhcmlzb24pXG5jYXQoXCJSb290IE1lYW4gU3F1YXJlZCBFcnJvciAoUk1TRSk6XCIsIHJtc2UsIFwiXFxuXCIpXG5cbmBgYCJ9 -->
+<pre class="r"><code># Make predictions using the test data
 predicted_values &lt;- predict(mod, newdata = validation_data)
 
 # Compare the predicted values with the actual values
@@ -2220,41 +2042,28 @@ rmse &lt;- sqrt(mean((comparison$Actual - comparison$Predicted)^2))
 
 # Display the comparison and RMSE
 head(comparison)
-cat(\Root Mean Squared Error (RMSE):\, rmse, \\n\)
+cat(&quot;Root Mean Squared Error (RMSE):&quot;, rmse, &quot;\n&quot;)
 </code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-chunk-end --&gt;
-
-
-&lt;!-- rnb-text-begin --&gt;
-
-
-
-### Beispiel einer linearen Regression mit Regularisierung
-
-&lt;!-- rnb-text-end --&gt;
-
-
-&lt;!-- rnb-chunk-begin --&gt;
-
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxubW9kIDwtIGdsbW5ldChhcy5tYXRyaXgodHJhaW5fZGF0YVtjKCdEYXR1bScsICdUZW1wZXJhdHVyJyldKSwgdHJhaW5fZGF0YSRVbXNhdHopXG5tb2RcblxuYGBgXG5gYGAifQ== --&gt;
-
-```r
-```r
-mod &lt;- glmnet(as.matrix(train_data[c(&#39;Datum&#39;, &#39;Temperatur&#39;)]), train_data$Umsatz)
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="beispiel-einer-linearen-regression-mit-regularisierung" class="section level3">
+<h3>Beispiel einer linearen Regression mit Regularisierung</h3>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW9kIDwtIGdsbW5ldChhcy5tYXRyaXgodHJhaW5fZGF0YVtjKCdEYXR1bScsICdUZW1wZXJhdHVyJyldKSwgdHJhaW5fZGF0YSRVbXNhdHopXG5tb2RcblxuYGBgIn0= -->
+<pre class="r"><code>mod &lt;- glmnet(as.matrix(train_data[c(&#39;Datum&#39;, &#39;Temperatur&#39;)]), train_data$Umsatz)
 mod
 </code></pre>
-<p>```</p>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 </div>
+</div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKIyBUcmFpbmluZyBhIG5ldXJhbCBuZXQuIEJhc2ljIHN0cnVjdHVyZSBhbmQgc2V0dXAuCmBgYHtyfQojIENyZWF0ZSBsaXN0IHdpdGggcmVxdWlyZWQgbGlicmFyaWVzCmxpYnJhcmllcyA8LSBjKCJkcGx5ciIsICJyZWFkciIsICJyZXRpY3VsYXRlIiwgImdncGxvdDIiLCAiTWV0cmljcyIsICJ0aWR5dmVyc2UiLCAiZ2xtbmV0IikKCgojIExvb3AgdGhyb3VnaCBlYWNoIGxpYnJhcnkgYW5kIGNoZWNrIGlmIGl0J3MgaW5zdGFsbGVkLCBpZiBub3QsIGluc3RhbGwgaXQgYW5kIHRoZW4gbG9hZCBpdCB0byBpbmNsdWRlIGluIHRoaXMgcHJvamVjdApmb3IgKGxpYiBpbiBsaWJyYXJpZXMpCnsKICBpZiAoIXJlcXVpcmUobGliLCBjaGFyYWN0ZXIub25seSA9IFRSVUUpKQogIHsKICAgIGluc3RhbGwucGFja2FnZXMobGliKQogICAgbGlicmFyeShsaWIsIGNoYXJhY3Rlci5vbmx5ID0gVFJVRSkKICB9Cn0KCmBgYAoKIyBEYXRhIEltcG9ydApgYGB7cn0KIyBTdG9yaW5nIERhdGEgc2V0cyBhcyBkYXRhIGZyYW1lcwoKcmV2ZW51ZSA8LSByZWFkLmNzdignLi9kYXRhL29yaWdpbmFsL3Vtc2F0emRhdGVuX2dla3Vlcnp0LmNzdicpCmtpd28gPC0gcmVhZC5jc3YoJy4vZGF0YS9vcmlnaW5hbC9raXdvLmNzdicpCmZlcmllbiA8LSByZWFkLmNzdignLi9kYXRhL29yaWdpbmFsL3NjaHVsZmVyaWVuU0guY3N2JykKZmVpZXJ0YWdlIDwtIHJlYWQuY3N2KCcuL2RhdGEvb3JpZ2luYWwvZmVpZXJ0YWdlLmNzdicpCndlYXRoZXIgPC0gcmVhZC5jc3YoJy4vZGF0YS9vcmlnaW5hbC93ZWF0aGVyLmNzdicpCgpgYGAKCgojIEpvaW5pbmcgdGhlIGtpd28gZGF0YSB3aXRoIHRoZSByZXZlbnVlIGRhdGEKIyMgUmVwbGFjaW5nIGFsbCBpbnN0YW5jZXMgb2YgS2l3byA9IE5BIHdpdGggS2l3byA9IDAKIyMgUmVmb3JtYXRpbmcgQ29sdW1uIEtpZWxlcldvY2hlIHRvIGJvb2xlYW4gdmFsdWVzCgpgYGB7cn0KZGYgPC0gZnVsbF9qb2luKHJldmVudWUsIGtpd28sIGJ5ID0gIkRhdHVtIikgJT4lCiAgcmVwbGFjZV9uYShsaXN0KEtpZWxlcldvY2hlID0gMCkpICU+JQogIG11dGF0ZShLaWVsZXJXb2NoZSA9IGlmZWxzZShLaWVsZXJXb2NoZSA9PSAxLCBUUlVFLCBGQUxTRSkpCgpgYGAKCiMgSm9pbmluZyB0aGUgZmVpZXJ0YWdlIGRhdGEgd2l0aCB0aGUgcmV2ZW51ZSBkYXRhCiMjIFJlcGxhY2luZyBhbGwgaW5zdGFuY2VzIG9mIGZlaWVydGFnZSA9IE5BIHdpdGggZmVpZXJ0YWdlID0gMAojIyBSZWZvcm1hdGluZyBDb2x1bW4gRmVpZXJ0YWdlIHRvIGJvb2xlYW4gdmFsdWVzCgpgYGB7cn0KZGYgPC0gZnVsbF9qb2luKHJldmVudWUsIGZlaWVydGFnZSwgYnkgPSAiRGF0dW0iKSAlPiUKICByZXBsYWNlX25hKGxpc3QoZmVpZXJ0YWdlID0gMCkpICU+JQogIG11dGF0ZShmZWllcnRhZ2UgPSBpZmVsc2UoZmVpZXJ0YWdlID09IDEsIFRSVUUsIEZBTFNFKSkKCmBgYAoKIyBKb2luaW5nIHRoZSB3ZWF0aGVyIGRhdGEgd2l0aCB0aGUgZGYgY29udGFpbmluZyByZXZlbnVlIGFuZCBraXdvCgpgYGB7cn0KZGYgPC0gZnVsbF9qb2luKGRmLCB3ZWF0aGVyLCBieSA9ICJEYXR1bSIpCgpgYGAKCiMgQ2xlYW5pbmcgdXAgdGhlIHJldmVudWUgZGF0YSB0byBjb252ZXJ0IERhdHVtIGNvbHVtbiB0byBjb3JyZWN0IGRhdGEgdHlwZSAoaS5lLiBjaGFyIC0+IGRhdGUpCmBgYHtyfQpkZiREYXR1bSA8LSBhcy5EYXRlKGRmJERhdHVtLCBmb3JtYXQgPSAiJVktJW0tJWQiKQpgYGAKCgojIENvbnZlcnRpbmcgdGhlICAiV2FyZW5ncnVwcGUiIHRvIGNoYXIsIGFzIHRoZSBhbGdvcml0aG0gbWlnaHQgaW50ZXJwcmV0IHRoZSBudW1lcmljIHZhbHVlcyBhcyBvcmRlcmVkLCB3aGlsZSB0aGV5IGFyZSBjYXRlZ29yaWFsLgpgYGB7cn0KZGYgPC0gZGYgJT4lCiAgbXV0YXRlKFdhcmVuZ3J1cHBlID0gaWZlbHNlKFdhcmVuZ3J1cHBlID09IDEsICJCcm90IiwgV2FyZW5ncnVwcGUpKSAlPiUKICBtdXRhdGUoV2FyZW5ncnVwcGUgPSBpZmVsc2UoV2FyZW5ncnVwcGUgPT0gMiwgIkJyw7Z0Y2hlbiIsIFdhcmVuZ3J1cHBlKSkgJT4lCiAgbXV0YXRlKFdhcmVuZ3J1cHBlID0gaWZlbHNlKFdhcmVuZ3J1cHBlID09IDMsICJDcm9pc3NhbnQiLCBXYXJlbmdydXBwZSkpICU+JQogIG11dGF0ZShXYXJlbmdydXBwZSA9IGlmZWxzZShXYXJlbmdydXBwZSA9PSA0LCAiS29uZGl0b3JlaSIsIFdhcmVuZ3J1cHBlKSkgJT4lCiAgbXV0YXRlKFdhcmVuZ3J1cHBlID0gaWZlbHNlKFdhcmVuZ3J1cHBlID09IDUsICJLdWNoZW4iLCBXYXJlbmdydXBwZSkpICU+JQogIG11dGF0ZShXYXJlbmdydXBwZSA9IGlmZWxzZShXYXJlbmdydXBwZSA9PSA2LCAiU2Fpc29uYnJvdCIsIFdhcmVuZ3J1cHBlKSkKYGBgCgojIEFkZGluZyB3ZWVrZGF5IGNvbHVtbiB0byBkYXRhIHNldApgYGB7cn0KZGYkV29jaGVudGFnIDwtIHdlZWtkYXlzKGRmJERhdHVtKQoKYGBgCgojIEFkZGluZyBob2xpZGF5IGNvbHVtbiB0byBkYXRhIHNldApgYGB7cn0KZmVyaWVuJERhdHVtIDwtIGFzLkRhdGUoZmVyaWVuJERhdHVtLCBmb3JtYXQgPSAiJVktJW0tJWQiKQoKZGYgPC0gZnVsbF9qb2luKGRmLCBmZXJpZW4sIGJ5ID0gIkRhdHVtIikgJT4lCiAgcmVwbGFjZV9uYShsaXN0KEZlcmllblNIID0gMCkpICU+JQogIG11dGF0ZShGZXJpZW5TSCA9IGlmZWxzZShGZXJpZW5TSCA9PSAxLCBUUlVFLCBGQUxTRSkpCgpgYGAKCiMgQWRkaW5nIGZlaWVydGFnZSBjb2x1bW4gdG8gZGF0YSBzZXQKYGBge3J9CmZlaWVydGFnZSREYXR1bSA8LSBhcy5EYXRlKGZlaWVydGFnZSREYXR1bSwgZm9ybWF0ID0gIiVZLSVtLSVkIikKCmRmIDwtIGZ1bGxfam9pbihkZiwgZmVpZXJ0YWdlLCBieSA9ICJEYXR1bSIpICU+JQogIHJlcGxhY2VfbmEobGlzdChmZWllcnRhZ2UgPSAwKSkgJT4lCiAgbXV0YXRlKGZlaWVydGFnZSA9IGlmZWxzZShmZWllcnRhZ2UgPT0gMSwgVFJVRSwgRkFMU0UpKQoKYGBgCgojIFRoaXMgaGVscHMgdXMgZmlndXJlIG91dCBpZiB3ZSBoYXZlIE5BIHZhbHVlcyBpbiB0aGUgZGF0YXNldApgYGB7cn0KYW55KGlzLm5hKGRmKSkKYGBgCiMgRGVsZXRpbmcgYWxsIHJvd3MgdGhhdCBjb250YWluIGV2ZW4gb25lIE5BIHZhbHVlIChUaGlzIHNlY3Rpb24gd2lsbCBiZSByZXBsYWNlZCB3aXRoIGRhdGEgaW1wdXRhdGlvbiBsYXRlciBvbi4pCmBgYHtyfQojIENoZWNrIGZvciBjb21wbGV0ZSBjYXNlcwpjb21wbGV0ZV9yb3dzIDwtIGNvbXBsZXRlLmNhc2VzKGRmKQoKIyBTdWJzZXQgdGhlIGRhdGEgZnJhbWUgdG8ga2VlcCBvbmx5IGNvbXBsZXRlIHJvd3MKY2xlYW5fZGYgPC0gZGZbY29tcGxldGVfcm93cywgXQoKI0Zyb20gaGVyZSBvbiBvdXQgSSdsbCB3b3JrIHdpdGggdGhlIGNsZWFuX2RmIGRhdGEgc2V0LiBPbmNlIHRoZSBpbXB1dGF0aW9uIHN0ZXAgaXMgaW1wbGVtZW50ZWQsIHRoZSBmb2xsb3dpbmcgY29kZSBjYW4gYmUgdXNlZCBmb3IgYm90aC4KYGBgCgojIFNpbXBsZSBMaW5lYXIgcmVncmVzc2lvbiBtb2RlbDoKCiMjIyMgVGVpbGVuIGRlcyBEYXRlbnNhdHplcyBpbiBUcmFpbmluZ3MtIFZhbGlkaWVydW5ncy0gdW5kIFRlc3RkYXRlbnNhdHoKYGBge3J9CiMgU2V0IGEgcmFuZG9tIHNlZWQgZm9yIHJlcHJvZHVjaWJpbGl0eQpzZXQuc2VlZCg0MikKCiMgU2h1ZmZsZSB0aGUgZGF0YQpkYXRhX3NodWZmbGVkIDwtIGNsZWFuX2RmICU+JSAKICBzYW1wbGVfZnJhYygxKQoKIyBDYWxjdWxhdGUgdGhlIG51bWJlciBvZiByb3dzIGZvciBlYWNoIGRhdGFzZXQKbl90b3RhbCA8LSBucm93KGNsZWFuX2RmKQpuX3RyYWluIDwtIGZsb29yKDAuNyAqIG5fdG90YWwpCm5fdmFsaWRhdGlvbiA8LSBmbG9vcigwLjIwICogbl90b3RhbCkKCiMgU3BsaXQgdGhlIGRhdGEgaW50byB0cmFpbmluZywgdmFsaWRhdGlvbiwgYW5kIHRlc3QgZGF0YXNldHMKdHJhaW5fZGF0YSA8LSBkYXRhX3NodWZmbGVkICU+JQogIHNsaWNlKDE6bl90cmFpbikKCnZhbGlkYXRpb25fZGF0YSA8LSBkYXRhX3NodWZmbGVkICU+JQogIHNsaWNlKChuX3RyYWluICsgMSk6KG5fdHJhaW4gKyBuX3ZhbGlkYXRpb24pKQoKdGVzdF9kYXRhIDwtIGRhdGFfc2h1ZmZsZWQgJT4lCiAgc2xpY2UoKG5fdHJhaW4gKyBuX3ZhbGlkYXRpb24gKyAxKTpuX3RvdGFsKQoKIyBDaGVjayB0aGUgZGltZW5zaW9ucyBvZiB0aGUgZGF0YXNldHMKY2F0KCJUcmFpbmluZyBkYXRhc2V0IGRpbWVuc2lvbnM6IiwgZGltKHRyYWluX2RhdGEpLCAiXG4iKQpjYXQoIlZhbGlkYXRpb24gZGF0YXNldCBkaW1lbnNpb25zOiIsIGRpbSh2YWxpZGF0aW9uX2RhdGEpLCAiXG4iKQpjYXQoIlRlc3QgZGF0YXNldCBkaW1lbnNpb25zOiIsIGRpbSh0ZXN0X2RhdGEpLCAiXG4iKQoKYGBgCgoKCiMjIyBCZWlzcGllbCBlaW5lciBlaW5mYWNoZW4gbGluZWFyZW4gUmVncmVzc2lvbgpgYGB7cn0KICBtb2QgPC0gbG0oVW1zYXR6IH4gRGF0dW0sIGNsZWFuX2RmKQogICAgc3VtbWFyeShtb2QpCiAgbW9kXzEgPC0gbG0oVW1zYXR6IH4gRGF0dW0gKyBhcy5mYWN0b3IoV2FyZW5ncnVwcGUpLCBjbGVhbl9kZikKICAgIHN1bW1hcnkobW9kXzEpCiAgbW9kXzIgPC0gbG0oVW1zYXR6IH4gRGF0dW0gKyBhcy5mYWN0b3IoV2FyZW5ncnVwcGUpICsgYXMuZmFjdG9yKFdvY2hlbnRhZyksIGNsZWFuX2RmKQogICAgc3VtbWFyeShtb2RfMikKICBtb2RfMyA8LSBsbShVbXNhdHogfiBEYXR1bSArIGFzLmZhY3RvcihXYXJlbmdydXBwZSkgKyBhcy5mYWN0b3IoV29jaGVudGFnKSArIEZlcmllblNILCBjbGVhbl9kZikKICAgIHN1bW1hcnkobW9kXzMpCiAgbW9kXzQgPC0gbG0oVW1zYXR6IH4gRGF0dW0gKyBhcy5mYWN0b3IoV2FyZW5ncnVwcGUpICsgYXMuZmFjdG9yKFdvY2hlbnRhZykgKyBGZXJpZW5TSCArIFRlbXBlcmF0dXIsIGNsZWFuX2RmKQogICAgc3VtbWFyeShtb2RfNCkKICBtb2RfNSA8LSBsbShVbXNhdHogfiBEYXR1bSArIGFzLmZhY3RvcihXYXJlbmdydXBwZSkgKyBhcy5mYWN0b3IoV29jaGVudGFnKSArIEZlcmllblNIICsgVGVtcGVyYXR1ciArIEtpZWxlcldvY2hlLCBjbGVhbl9kZikKICAgIHN1bW1hcnkobW9kXzUpCiAgbW9kXzYgPC0gbG0oVW1zYXR6IH4gRGF0dW0gKyBhcy5mYWN0b3IoV2FyZW5ncnVwcGUpICsgYXMuZmFjdG9yKFdvY2hlbnRhZykgKyBGZXJpZW5TSCArIFRlbXBlcmF0dXIgKyBLaWVsZXJXb2NoZSArIEJld29lbGt1bmcsIGNsZWFuX2RmKQogICAgc3VtbWFyeShtb2RfNikKICAgICMgUXVpY2sgY29tbWVudDogS2lXbyBhbmQgQmV3b2Vsa3VuZyBkbyBub3QgaW5jcmVhc2UgUi1zcXVhcmVkCiAgICBtb2RfNyA8LSBsbShVbXNhdHogfiBEYXR1bSArIGFzLmZhY3RvcihXYXJlbmdydXBwZSkgKyBhcy5mYWN0b3IoV29jaGVudGFnKSArIEZlcmllblNIICsgVGVtcGVyYXR1ciArIEtpZWxlcldvY2hlICsgQmV3b2Vsa3VuZyArIFdpbmRnZXNjaHdpbmRpZ2tlaXQsIGNsZWFuX2RmKQogICAgc3VtbWFyeShtb2RfNykKICAgICMgV2luZGdlc2Nod2luZGlna2VpdCBvbmx5IGlucHJvdmVzIFItc3F1YXJlZCBtYXJnaW5hbGx5LgogIG1vZF84IDwtIGxtKFVtc2F0eiB+IERhdHVtICsgYXMuZmFjdG9yKFdhcmVuZ3J1cHBlKSArIGFzLmZhY3RvcihXb2NoZW50YWcpICsgRmVyaWVuU0ggKyBUZW1wZXJhdHVyICsgS2llbGVyV29jaGUgKyBCZXdvZWxrdW5nICsgV2luZGdlc2Nod2luZGlna2VpdCArIFdldHRlcmNvZGUsIGNsZWFuX2RmKQogICAgc3VtbWFyeShtb2RfOCkKICAKICAKYGBgCgojIyMgTnV0enVuZyBkZXMgcmVzdWx0aWVyZW5kZW4gTW9kZWxscyBmw7xyIGVpbmUgVm9oZXJzYWdlCmBgYHtyfQojIE1ha2UgcHJlZGljdGlvbnMgdXNpbmcgdGhlIHRlc3QgZGF0YQpwcmVkaWN0ZWRfdmFsdWVzIDwtIHByZWRpY3QobW9kLCBuZXdkYXRhID0gdmFsaWRhdGlvbl9kYXRhKQoKIyBDb21wYXJlIHRoZSBwcmVkaWN0ZWQgdmFsdWVzIHdpdGggdGhlIGFjdHVhbCB2YWx1ZXMKY29tcGFyaXNvbiA8LSBkYXRhLmZyYW1lKEFjdHVhbCA9IHZhbGlkYXRpb25fZGF0YSRVbXNhdHosIFByZWRpY3RlZCA9IHByZWRpY3RlZF92YWx1ZXMpCgojIENhbGN1bGF0ZSB0aGUgbWVhbiBzcXVhcmVkIGVycm9yIChSTVNFKQpybXNlIDwtIHNxcnQobWVhbigoY29tcGFyaXNvbiRBY3R1YWwgLSBjb21wYXJpc29uJFByZWRpY3RlZCleMikpCgojIERpc3BsYXkgdGhlIGNvbXBhcmlzb24gYW5kIFJNU0UKaGVhZChjb21wYXJpc29uKQpjYXQoIlJvb3QgTWVhbiBTcXVhcmVkIEVycm9yIChSTVNFKToiLCBybXNlLCAiXG4iKQoKYGBgCgoKIyMjIEJlaXNwaWVsIGVpbmVyIGxpbmVhcmVuIFJlZ3Jlc3Npb24gbWl0IFJlZ3VsYXJpc2llcnVuZwpgYGB7cn0KbW9kIDwtIGdsbW5ldChhcy5tYXRyaXgodHJhaW5fZGF0YVtjKCdEYXR1bScsICdUZW1wZXJhdHVyJyldKSwgdHJhaW5fZGF0YSRVbXNhdHopCm1vZAoKYGBgCgo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKIyBUcmFpbmluZyBhIG5ldXJhbCBuZXQuIEJhc2ljIHN0cnVjdHVyZSBhbmQgc2V0dXAuCmBgYHtyfQojIENyZWF0ZSBsaXN0IHdpdGggcmVxdWlyZWQgbGlicmFyaWVzCmxpYnJhcmllcyA8LSBjKCJkcGx5ciIsICJyZWFkciIsICJyZXRpY3VsYXRlIiwgImdncGxvdDIiLCAiTWV0cmljcyIsICJ0aWR5dmVyc2UiLCAiZ2xtbmV0IikKCgojIExvb3AgdGhyb3VnaCBlYWNoIGxpYnJhcnkgYW5kIGNoZWNrIGlmIGl0J3MgaW5zdGFsbGVkLCBpZiBub3QsIGluc3RhbGwgaXQgYW5kIHRoZW4gbG9hZCBpdCB0byBpbmNsdWRlIGluIHRoaXMgcHJvamVjdApmb3IgKGxpYiBpbiBsaWJyYXJpZXMpCnsKICBpZiAoIXJlcXVpcmUobGliLCBjaGFyYWN0ZXIub25seSA9IFRSVUUpKQogIHsKICAgIGluc3RhbGwucGFja2FnZXMobGliKQogICAgbGlicmFyeShsaWIsIGNoYXJhY3Rlci5vbmx5ID0gVFJVRSkKICB9Cn0KCmBgYAoKIyBEYXRhIEltcG9ydApgYGB7cn0KIyBTdG9yaW5nIERhdGEgc2V0cyBhcyBkYXRhIGZyYW1lcwoKcmV2ZW51ZSA8LSByZWFkLmNzdignLi9kYXRhL29yaWdpbmFsL3Vtc2F0emRhdGVuX2dla3Vlcnp0LmNzdicpCmtpd28gPC0gcmVhZC5jc3YoJy4vZGF0YS9vcmlnaW5hbC9raXdvLmNzdicpCmZlcmllbiA8LSByZWFkLmNzdignLi9kYXRhL29yaWdpbmFsL3NjaHVsZmVyaWVuU0guY3N2JykKZmVpZXJ0YWdlIDwtIHJlYWQuY3N2KCcuL2RhdGEvb3JpZ2luYWwvZmVpZXJ0YWdlLmNzdicpCndlYXRoZXIgPC0gcmVhZC5jc3YoJy4vZGF0YS9vcmlnaW5hbC93ZWF0aGVyLmNzdicpCgpgYGAKCiMgSm9pbmluZyB0aGUga2l3byBkYXRhIHdpdGggdGhlIHJldmVudWUgZGF0YQojIyBSZXBsYWNpbmcgYWxsIGluc3RhbmNlcyBvZiBLaXdvID0gTkEgd2l0aCBLaXdvID0gMAojIyBSZWZvcm1hdGluZyBDb2x1bW4gS2llbGVyV29jaGUgdG8gYm9vbGVhbiB2YWx1ZXMKCmBgYHtyfQpkZiA8LSBmdWxsX2pvaW4ocmV2ZW51ZSwga2l3bywgYnkgPSAiRGF0dW0iKSAlPiUKICByZXBsYWNlX25hKGxpc3QoS2llbGVyV29jaGUgPSAwKSkgJT4lCiAgbXV0YXRlKEtpZWxlcldvY2hlID0gaWZlbHNlKEtpZWxlcldvY2hlID09IDEsIFRSVUUsIEZBTFNFKSkKCmBgYAoKIyBKb2luaW5nIHRoZSBmZWllcnRhZ2UgZGF0YSB3aXRoIHRoZSByZXZlbnVlIGRhdGEKIyMgUmVwbGFjaW5nIGFsbCBpbnN0YW5jZXMgb2YgZmVpZXJ0YWdlID0gTkEgd2l0aCBmZWllcnRhZ2UgPSAwCiMjIFJlZm9ybWF0aW5nIENvbHVtbiBGZWllcnRhZ2UgdG8gYm9vbGVhbiB2YWx1ZXMKCiMgQXNzdW1pbmcgZGYgaXMgeW91ciBkYXRhIGZyYW1lIGFuZCAiRGF0dW0iIGlzIHRoZSBuYW1lIG9mIHRoZSBjb2x1bW4gY29udGFpbmluZyBkYXRlIHN0cmluZ3MKCmBgYHtyfQojIExvYWQgdGhlIGZlaWVydGFnZSBkYXRhCmZlaWVydGFnZSA8LSByZWFkLmNzdignLi4vZGF0YS9vcmlnaW5hbC9GZWllcnRhZ2VTSF9BUi5jc3YnKQoKIyBDb252ZXJ0IHRoZSAiRGF0dW0iIGNvbHVtbiB0byBhIERhdGUKZmVpZXJ0YWdlJERhdHVtIDwtIGFzLkRhdGUoZmVpZXJ0YWdlJERhdHVtKQoKIyBWaWV3IHRoZSBmZWllcnRhZ2UgZGF0YQpoZWFkKGZlaWVydGFnZSkKYGBgYAoKYGBge3J9CmRmIDwtIGZ1bGxfam9pbihyZXZlbnVlLCBmZWllcnRhZ2UsIGJ5ID0gIkRhdHVtIikgJT4lCiAgcmVwbGFjZV9uYShsaXN0KGZlaWVydGFnZSA9IDApKSAlPiUKICBtdXRhdGUoZmVpZXJ0YWdlID0gaWZlbHNlKGZlaWVydGFnZSA9PSAxLCBUUlVFLCBGQUxTRSkpCgpgYGAKCiMgSm9pbmluZyB0aGUgd2VhdGhlciBkYXRhIHdpdGggdGhlIGRmIGNvbnRhaW5pbmcgcmV2ZW51ZSBhbmQga2l3bwoKYGBge3J9CmRmIDwtIGZ1bGxfam9pbihkZiwgd2VhdGhlciwgYnkgPSAiRGF0dW0iKQoKYGBgCgojIENsZWFuaW5nIHVwIHRoZSByZXZlbnVlIGRhdGEgdG8gY29udmVydCBEYXR1bSBjb2x1bW4gdG8gY29ycmVjdCBkYXRhIHR5cGUgKGkuZS4gY2hhciAtPiBkYXRlKQpgYGB7cn0KZGYkRGF0dW0gPC0gYXMuRGF0ZShkZiREYXR1bSwgZm9ybWF0ID0gIiVZLSVtLSVkIikKYGBgCgoKIyBDb252ZXJ0aW5nIHRoZSAgIldhcmVuZ3J1cHBlIiB0byBjaGFyLCBhcyB0aGUgYWxnb3JpdGhtIG1pZ2h0IGludGVycHJldCB0aGUgbnVtZXJpYyB2YWx1ZXMgYXMgb3JkZXJlZCwgd2hpbGUgdGhleSBhcmUgY2F0ZWdvcmlhbC4KYGBge3J9CmRmIDwtIGRmICU+JQogIG11dGF0ZShXYXJlbmdydXBwZSA9IGlmZWxzZShXYXJlbmdydXBwZSA9PSAxLCAiQnJvdCIsIFdhcmVuZ3J1cHBlKSkgJT4lCiAgbXV0YXRlKFdhcmVuZ3J1cHBlID0gaWZlbHNlKFdhcmVuZ3J1cHBlID09IDIsICJCcsO2dGNoZW4iLCBXYXJlbmdydXBwZSkpICU+JQogIG11dGF0ZShXYXJlbmdydXBwZSA9IGlmZWxzZShXYXJlbmdydXBwZSA9PSAzLCAiQ3JvaXNzYW50IiwgV2FyZW5ncnVwcGUpKSAlPiUKICBtdXRhdGUoV2FyZW5ncnVwcGUgPSBpZmVsc2UoV2FyZW5ncnVwcGUgPT0gNCwgIktvbmRpdG9yZWkiLCBXYXJlbmdydXBwZSkpICU+JQogIG11dGF0ZShXYXJlbmdydXBwZSA9IGlmZWxzZShXYXJlbmdydXBwZSA9PSA1LCAiS3VjaGVuIiwgV2FyZW5ncnVwcGUpKSAlPiUKICBtdXRhdGUoV2FyZW5ncnVwcGUgPSBpZmVsc2UoV2FyZW5ncnVwcGUgPT0gNiwgIlNhaXNvbmJyb3QiLCBXYXJlbmdydXBwZSkpCmBgYAoKIyBBZGRpbmcgd2Vla2RheSBjb2x1bW4gdG8gZGF0YSBzZXQKYGBge3J9CmRmJFdvY2hlbnRhZyA8LSB3ZWVrZGF5cyhkZiREYXR1bSkKCmBgYAoKIyBBZGRpbmcgaG9saWRheSBjb2x1bW4gdG8gZGF0YSBzZXQKYGBge3J9CmZlcmllbiREYXR1bSA8LSBhcy5EYXRlKGZlcmllbiREYXR1bSwgZm9ybWF0ID0gIiVZLSVtLSVkIikKCmRmIDwtIGZ1bGxfam9pbihkZiwgZmVyaWVuLCBieSA9ICJEYXR1bSIpICU+JQogIHJlcGxhY2VfbmEobGlzdChGZXJpZW5TSCA9IDApKSAlPiUKICBtdXRhdGUoRmVyaWVuU0ggPSBpZmVsc2UoRmVyaWVuU0ggPT0gMSwgVFJVRSwgRkFMU0UpKQoKYGBgCgojIEFkZGluZyBmZWllcnRhZ2UgY29sdW1uIHRvIGRhdGEgc2V0CmBgYHtyfQpmZWllcnRhZ2UkRGF0dW0gPC0gYXMuRGF0ZShmZWllcnRhZ2UkRGF0dW0sIGZvcm1hdCA9ICIlWS0lbS0lZCIpCgpkZiA8LSBmdWxsX2pvaW4oZGYsIGZlaWVydGFnZSwgYnkgPSAiRGF0dW0iKSAlPiUKICByZXBsYWNlX25hKGxpc3QoZmVpZXJ0YWdlID0gMCkpICU+JQogIG11dGF0ZShmZWllcnRhZ2UgPSBpZmVsc2UoZmVpZXJ0YWdlID09IDEsIFRSVUUsIEZBTFNFKSkKCmBgYAoKIyBUaGlzIGhlbHBzIHVzIGZpZ3VyZSBvdXQgaWYgd2UgaGF2ZSBOQSB2YWx1ZXMgaW4gdGhlIGRhdGFzZXQKYGBge3J9CmFueShpcy5uYShkZikpCmBgYAojIERlbGV0aW5nIGFsbCByb3dzIHRoYXQgY29udGFpbiBldmVuIG9uZSBOQSB2YWx1ZSAoVGhpcyBzZWN0aW9uIHdpbGwgYmUgcmVwbGFjZWQgd2l0aCBkYXRhIGltcHV0YXRpb24gbGF0ZXIgb24uKQpgYGB7cn0KIyBDaGVjayBmb3IgY29tcGxldGUgY2FzZXMKY29tcGxldGVfcm93cyA8LSBjb21wbGV0ZS5jYXNlcyhkZikKCiMgU3Vic2V0IHRoZSBkYXRhIGZyYW1lIHRvIGtlZXAgb25seSBjb21wbGV0ZSByb3dzCmNsZWFuX2RmIDwtIGRmW2NvbXBsZXRlX3Jvd3MsIF0KCiNGcm9tIGhlcmUgb24gb3V0IEknbGwgd29yayB3aXRoIHRoZSBjbGVhbl9kZiBkYXRhIHNldC4gT25jZSB0aGUgaW1wdXRhdGlvbiBzdGVwIGlzIGltcGxlbWVudGVkLCB0aGUgZm9sbG93aW5nIGNvZGUgY2FuIGJlIHVzZWQgZm9yIGJvdGguCmBgYAoKIyBTaW1wbGUgTGluZWFyIHJlZ3Jlc3Npb24gbW9kZWw6CgojIyMjIFRlaWxlbiBkZXMgRGF0ZW5zYXR6ZXMgaW4gVHJhaW5pbmdzLSBWYWxpZGllcnVuZ3MtIHVuZCBUZXN0ZGF0ZW5zYXR6CmBgYHtyfQojIFNldCBhIHJhbmRvbSBzZWVkIGZvciByZXByb2R1Y2liaWxpdHkKc2V0LnNlZWQoNDIpCgojIFNodWZmbGUgdGhlIGRhdGEKZGF0YV9zaHVmZmxlZCA8LSBjbGVhbl9kZiAlPiUgCiAgc2FtcGxlX2ZyYWMoMSkKCiMgQ2FsY3VsYXRlIHRoZSBudW1iZXIgb2Ygcm93cyBmb3IgZWFjaCBkYXRhc2V0Cm5fdG90YWwgPC0gbnJvdyhjbGVhbl9kZikKbl90cmFpbiA8LSBmbG9vcigwLjcgKiBuX3RvdGFsKQpuX3ZhbGlkYXRpb24gPC0gZmxvb3IoMC4yMCAqIG5fdG90YWwpCgojIFNwbGl0IHRoZSBkYXRhIGludG8gdHJhaW5pbmcsIHZhbGlkYXRpb24sIGFuZCB0ZXN0IGRhdGFzZXRzCnRyYWluX2RhdGEgPC0gZGF0YV9zaHVmZmxlZCAlPiUKICBzbGljZSgxOm5fdHJhaW4pCgp2YWxpZGF0aW9uX2RhdGEgPC0gZGF0YV9zaHVmZmxlZCAlPiUKICBzbGljZSgobl90cmFpbiArIDEpOihuX3RyYWluICsgbl92YWxpZGF0aW9uKSkKCnRlc3RfZGF0YSA8LSBkYXRhX3NodWZmbGVkICU+JQogIHNsaWNlKChuX3RyYWluICsgbl92YWxpZGF0aW9uICsgMSk6bl90b3RhbCkKCiMgQ2hlY2sgdGhlIGRpbWVuc2lvbnMgb2YgdGhlIGRhdGFzZXRzCmNhdCgiVHJhaW5pbmcgZGF0YXNldCBkaW1lbnNpb25zOiIsIGRpbSh0cmFpbl9kYXRhKSwgIlxuIikKY2F0KCJWYWxpZGF0aW9uIGRhdGFzZXQgZGltZW5zaW9uczoiLCBkaW0odmFsaWRhdGlvbl9kYXRhKSwgIlxuIikKY2F0KCJUZXN0IGRhdGFzZXQgZGltZW5zaW9uczoiLCBkaW0odGVzdF9kYXRhKSwgIlxuIikKCmBgYAoKCgojIyMgQmVpc3BpZWwgZWluZXIgZWluZmFjaGVuIGxpbmVhcmVuIFJlZ3Jlc3Npb24KYGBge3J9CiAgbW9kIDwtIGxtKFVtc2F0eiB+IERhdHVtLCBjbGVhbl9kZikKICAgIHN1bW1hcnkobW9kKQogIG1vZF8xIDwtIGxtKFVtc2F0eiB+IERhdHVtICsgYXMuZmFjdG9yKFdhcmVuZ3J1cHBlKSwgY2xlYW5fZGYpCiAgICBzdW1tYXJ5KG1vZF8xKQogIG1vZF8yIDwtIGxtKFVtc2F0eiB+IERhdHVtICsgYXMuZmFjdG9yKFdhcmVuZ3J1cHBlKSArIGFzLmZhY3RvcihXb2NoZW50YWcpLCBjbGVhbl9kZikKICAgIHN1bW1hcnkobW9kXzIpCiAgbW9kXzMgPC0gbG0oVW1zYXR6IH4gRGF0dW0gKyBhcy5mYWN0b3IoV2FyZW5ncnVwcGUpICsgYXMuZmFjdG9yKFdvY2hlbnRhZykgKyBGZXJpZW5TSCwgY2xlYW5fZGYpCiAgICBzdW1tYXJ5KG1vZF8zKQogIG1vZF80IDwtIGxtKFVtc2F0eiB+IERhdHVtICsgYXMuZmFjdG9yKFdhcmVuZ3J1cHBlKSArIGFzLmZhY3RvcihXb2NoZW50YWcpICsgRmVyaWVuU0ggKyBUZW1wZXJhdHVyLCBjbGVhbl9kZikKICAgIHN1bW1hcnkobW9kXzQpCiAgbW9kXzUgPC0gbG0oVW1zYXR6IH4gRGF0dW0gKyBhcy5mYWN0b3IoV2FyZW5ncnVwcGUpICsgYXMuZmFjdG9yKFdvY2hlbnRhZykgKyBGZXJpZW5TSCArIFRlbXBlcmF0dXIgKyBLaWVsZXJXb2NoZSwgY2xlYW5fZGYpCiAgICBzdW1tYXJ5KG1vZF81KQogIG1vZF82IDwtIGxtKFVtc2F0eiB+IERhdHVtICsgYXMuZmFjdG9yKFdhcmVuZ3J1cHBlKSArIGFzLmZhY3RvcihXb2NoZW50YWcpICsgRmVyaWVuU0ggKyBUZW1wZXJhdHVyICsgS2llbGVyV29jaGUgKyBCZXdvZWxrdW5nLCBjbGVhbl9kZikKICAgIHN1bW1hcnkobW9kXzYpCiAgICAjIFF1aWNrIGNvbW1lbnQ6IEtpV28gYW5kIEJld29lbGt1bmcgZG8gbm90IGluY3JlYXNlIFItc3F1YXJlZAogICAgbW9kXzcgPC0gbG0oVW1zYXR6IH4gRGF0dW0gKyBhcy5mYWN0b3IoV2FyZW5ncnVwcGUpICsgYXMuZmFjdG9yKFdvY2hlbnRhZykgKyBGZXJpZW5TSCArIFRlbXBlcmF0dXIgKyBLaWVsZXJXb2NoZSArIEJld29lbGt1bmcgKyBXaW5kZ2VzY2h3aW5kaWdrZWl0LCBjbGVhbl9kZikKICAgIHN1bW1hcnkobW9kXzcpCiAgICAjIFdpbmRnZXNjaHdpbmRpZ2tlaXQgb25seSBpbnByb3ZlcyBSLXNxdWFyZWQgbWFyZ2luYWxseS4KICBtb2RfOCA8LSBsbShVbXNhdHogfiBEYXR1bSArIGFzLmZhY3RvcihXYXJlbmdydXBwZSkgKyBhcy5mYWN0b3IoV29jaGVudGFnKSArIEZlcmllblNIICsgVGVtcGVyYXR1ciArIEtpZWxlcldvY2hlICsgQmV3b2Vsa3VuZyArIFdpbmRnZXNjaHdpbmRpZ2tlaXQgKyBXZXR0ZXJjb2RlLCBjbGVhbl9kZikKICAgIHN1bW1hcnkobW9kXzgpCiAgCiAgCmBgYAoKIyMjIE51dHp1bmcgZGVzIHJlc3VsdGllcmVuZGVuIE1vZGVsbHMgZsO8ciBlaW5lIFZvaGVyc2FnZQpgYGB7cn0KIyBNYWtlIHByZWRpY3Rpb25zIHVzaW5nIHRoZSB0ZXN0IGRhdGEKcHJlZGljdGVkX3ZhbHVlcyA8LSBwcmVkaWN0KG1vZCwgbmV3ZGF0YSA9IHZhbGlkYXRpb25fZGF0YSkKCiMgQ29tcGFyZSB0aGUgcHJlZGljdGVkIHZhbHVlcyB3aXRoIHRoZSBhY3R1YWwgdmFsdWVzCmNvbXBhcmlzb24gPC0gZGF0YS5mcmFtZShBY3R1YWwgPSB2YWxpZGF0aW9uX2RhdGEkVW1zYXR6LCBQcmVkaWN0ZWQgPSBwcmVkaWN0ZWRfdmFsdWVzKQoKIyBDYWxjdWxhdGUgdGhlIG1lYW4gc3F1YXJlZCBlcnJvciAoUk1TRSkKcm1zZSA8LSBzcXJ0KG1lYW4oKGNvbXBhcmlzb24kQWN0dWFsIC0gY29tcGFyaXNvbiRQcmVkaWN0ZWQpXjIpKQoKIyBEaXNwbGF5IHRoZSBjb21wYXJpc29uIGFuZCBSTVNFCmhlYWQoY29tcGFyaXNvbikKY2F0KCJSb290IE1lYW4gU3F1YXJlZCBFcnJvciAoUk1TRSk6Iiwgcm1zZSwgIlxuIikKCmBgYAoKCiMjIyBCZWlzcGllbCBlaW5lciBsaW5lYXJlbiBSZWdyZXNzaW9uIG1pdCBSZWd1bGFyaXNpZXJ1bmcKYGBge3J9Cm1vZCA8LSBnbG1uZXQoYXMubWF0cml4KHRyYWluX2RhdGFbYygnRGF0dW0nLCAnVGVtcGVyYXR1cicpXSksIHRyYWluX2RhdGEkVW1zYXR6KQptb2QKCmBgYAoK</div>
 
 
 
