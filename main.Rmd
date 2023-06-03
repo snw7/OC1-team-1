@@ -1,56 +1,65 @@
 ---
-title: "dataPreparationPhilipp"
-author: "Philipp Meisinger, Olav Cornelius, Alexander Ruoff, Felix Wehkamp"
-date: "`r Sys.Date()`"
-output: html_document
+title: "R Notebook"
+output: html_notebook
 ---
 
-
+# Training a neural net. Basic structure and setup.
 ```{r}
-# Loading in the Tidyverse
-library(tidyverse)
+# Create list with required libraries
+libraries <- c("dplyr", "readr", "reticulate", "ggplot2", "Metrics", "tidyverse")
 
 
+# Loop through each library and check if it's installed, if not, install it and then load it to include in this project
+for (lib in libraries)
+{
+  if (!require(lib, character.only = TRUE))
+  {
+    install.packages(lib)
+    library(lib, character.only = TRUE)
+  }
+}
+
+```
+
+# Data Import
+```{r}
 # Storing Data sets as data frames
 
-revenue <- read.csv('../data/original/umsatzdaten_gekuerzt.csv')
-kiwo <- read.csv('../data/original/kiwo.csv')
-ferien <- read.csv('../data/original/schulferienSH.csv')
-weather <- read.csv('../data/original/weather.csv')
+revenue <- read.csv('./data/original/umsatzdaten_gekuerzt.csv')
+kiwo <- read.csv('./data/original/kiwo.csv')
+ferien <- read.csv('./data/original/schulferienSH.csv')
+weather <- read.csv('./data/original/weather.csv')
 
 ```
 
 
-```{r}
 # Joining the kiwo data with the revenue data
-## Left join to keep all values of revenue
 ## Replacing all instances of Kiwo = NA with Kiwo = 0
 ## Reformating Column KielerWoche to boolean values
 
+```{r}
 df <- full_join(revenue, kiwo, by = "Datum") %>%
   replace_na(list(KielerWoche = 0)) %>%
   mutate(KielerWoche = ifelse(KielerWoche == 1, TRUE, FALSE))
-  
-#df
 
 ```
 
 
-```{r}
 # Joining the weather data with the df containing revenue and kiwo
 
+```{r}
 df <- full_join(df, weather, by = "Datum")
 
-#df
+```
 
 # Cleaning up the revenue data to convert Datum column to correct data type (i.e. char -> date)
+```{r}
 df$Datum <- as.Date(df$Datum, format = "%Y-%m-%d")
-
-#df
+```
 
 
 # Converting the  "Warengruppe" to char, as the algorithm might interpret the numeric values as ordered, while they are categorial.
-
+```{r}
 df <- df %>%
   mutate(Warengruppe = ifelse(Warengruppe == 1, "Brot", Warengruppe)) %>%
   mutate(Warengruppe = ifelse(Warengruppe == 2, "Brötchen", Warengruppe)) %>%
@@ -58,32 +67,41 @@ df <- df %>%
   mutate(Warengruppe = ifelse(Warengruppe == 4, "Konditorei", Warengruppe)) %>%
   mutate(Warengruppe = ifelse(Warengruppe == 5, "Kuchen", Warengruppe)) %>%
   mutate(Warengruppe = ifelse(Warengruppe == 6, "Saisonbrot", Warengruppe))
+```
+
+# Adding weekday column to data set
+```{r}
+df$weekday <- weekdays(df$Datum)
 
 ```
 
-```{r}
-
-# Adding weekday column to data set
-
-df$weekday <- weekdays(df$Datum)
-#df
-
-
 # Adding holiday column to data set
-
+```{r}
 ferien$Datum <- as.Date(ferien$Datum, format = "%Y-%m-%d")
+
 df <- full_join(df, ferien, by = "Datum") %>%
   replace_na(list(FerienSH = 0)) %>%
   mutate(FerienSH = ifelse(FerienSH == 1, TRUE, FALSE))
-  
-#df
+
+```
 
 
 # This helps us figure out if we have NA values in the dataset
-
+```{r}
 any(is.na(df))
-
 ```
+# Deleting all rows that contain even one NA value (This section will be replaced with data imputation later on.)
+```{r}
+# Check for complete cases
+complete_rows <- complete.cases(df)
+
+# Subset the data frame to keep only complete rows
+clean_df <- df[complete_rows, ]
+
+#From here on out I'll work with the clean_df data set. Once the imputation step is implemented, the following code can be used for both.
+```
+
+
 
 
 
