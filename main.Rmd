@@ -6,7 +6,7 @@ output: html_notebook
 # Training a neural net. Basic structure and setup.
 ```{r}
 # Create list with required libraries
-libraries <- c("dplyr", "readr", "reticulate", "ggplot2", "Metrics", "tidyverse")
+libraries <- c("dplyr", "readr", "reticulate", "ggplot2", "Metrics", "tidyverse", "glmnet")
 
 
 # Loop through each library and check if it's installed, if not, install it and then load it to include in this project
@@ -71,7 +71,7 @@ df <- df %>%
 
 # Adding weekday column to data set
 ```{r}
-df$weekday <- weekdays(df$Datum)
+df$Wochentag <- weekdays(df$Datum)
 
 ```
 
@@ -101,7 +101,89 @@ clean_df <- df[complete_rows, ]
 #From here on out I'll work with the clean_df data set. Once the imputation step is implemented, the following code can be used for both.
 ```
 
+# Simple Linear regression model:
+
+#### Teilen des Datensatzes in Trainings- Validierungs- und Testdatensatz
+```{r}
+# Set a random seed for reproducibility
+set.seed(42)
+
+# Shuffle the data
+data_shuffled <- clean_df %>% 
+  sample_frac(1)
+
+# Calculate the number of rows for each dataset
+n_total <- nrow(clean_df)
+n_train <- floor(0.7 * n_total)
+n_validation <- floor(0.20 * n_total)
+
+# Split the data into training, validation, and test datasets
+train_data <- data_shuffled %>%
+  slice(1:n_train)
+
+validation_data <- data_shuffled %>%
+  slice((n_train + 1):(n_train + n_validation))
+
+test_data <- data_shuffled %>%
+  slice((n_train + n_validation + 1):n_total)
+
+# Check the dimensions of the datasets
+cat("Training dataset dimensions:", dim(train_data), "\n")
+cat("Validation dataset dimensions:", dim(validation_data), "\n")
+cat("Test dataset dimensions:", dim(test_data), "\n")
+
+```
 
 
 
+### Beispiel einer einfachen linearen Regression
+```{r}
+  mod <- lm(Umsatz ~ Datum, clean_df)
+    summary(mod)
+  mod_1 <- lm(Umsatz ~ Datum + as.factor(Warengruppe), clean_df)
+    summary(mod_1)
+  mod_2 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag), clean_df)
+    summary(mod_2)
+  mod_3 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH, clean_df)
+    summary(mod_3)
+  mod_4 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur, clean_df)
+    summary(mod_4)
+  mod_5 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche, clean_df)
+    summary(mod_5)
+  mod_6 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung, clean_df)
+    summary(mod_6)
+    # Quick comment: KiWo and Bewoelkung do not increase R-squared
+    mod_7 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit, clean_df)
+    summary(mod_7)
+    # Windgeschwindigkeit only inproves R-squared marginally.
+  mod_8 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit + Wettercode, clean_df)
+    summary(mod_8)
+  
+  
+```
+
+### Nutzung des resultierenden Modells für eine Vohersage
+```{r}
+# Make predictions using the test data
+predicted_values <- predict(mod, newdata = validation_data)
+
+# Compare the predicted values with the actual values
+comparison <- data.frame(Actual = validation_data$Umsatz, Predicted = predicted_values)
+
+# Calculate the mean squared error (RMSE)
+rmse <- sqrt(mean((comparison$Actual - comparison$Predicted)^2))
+
+# Display the comparison and RMSE
+head(comparison)
+cat("Root Mean Squared Error (RMSE):", rmse, "\n")
+
+```
+
+
+### Beispiel einer linearen Regression mit Regularisierung
+```{r}
+mod <- glmnet(as.matrix(train_data[c('Datum', 'Temperatur')]), train_data$Umsatz)
+mod
+
+```
 
