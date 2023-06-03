@@ -55,7 +55,7 @@ df <- full_join(revenue, kiwo, by = "Datum") %>%
 feiertage <- read.csv('./data/original/feiertage.csv')
 
 # Convert the "Datum" column to a Date
-feiertage$Datum <- as.Date(feiertage$Datum)
+feiertage$Datum <- as.Date(feiertage$Datum, format = "%Y-%m-%d")
 
 # View the feiertage data
 head(feiertage)
