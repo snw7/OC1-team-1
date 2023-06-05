@@ -135,7 +135,6 @@ cat("Test dataset dimensions:", dim(test_data), "\n")
 ```
 
 
-
 ### Beispiel einer einfachen linearen Regression
 ```{r}
   mod <- lm(Umsatz ~ Datum, clean_df)
