@@ -1,0 +1,221 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# Training a neural net. Basic structure and setup.
+```{r}
+# Create list with required libraries
+libraries <- c("dplyr", "readr", "reticulate", "ggplot2", "Metrics", "tidyverse", "glmnet")
+
+
+# Loop through each library and check if it's installed, if not, install it and then load it to include in this project
+for (lib in libraries)
+{
+  if (!require(lib, character.only = TRUE))
+  {
+    install.packages(lib)
+    library(lib, character.only = TRUE)
+  }
+}
+
+```
+
+# Data Import
+```{r}
+# Storing Data sets as data frames
+
+revenue <- read.csv('./data/original/umsatzdaten_gekuerzt.csv')
+kiwo <- read.csv('./data/original/kiwo.csv')
+ferien <- read.csv('./data/original/schulferienSH.csv')
+feiertage <- read.csv('./data/original/feiertage.csv')
+weather <- read.csv('./data/original/weather.csv')
+
+```
+
+# Joining the kiwo data with the revenue data
+## Replacing all instances of Kiwo = NA with Kiwo = 0
+## Reformating Column KielerWoche to boolean values
+
+```{r}
+df <- full_join(revenue, kiwo, by = "Datum") %>%
+  replace_na(list(KielerWoche = 0)) %>%
+  mutate(KielerWoche = ifelse(KielerWoche == 1, TRUE, FALSE))
+
+```
+
+# Joining the feiertage data with the revenue data
+## Replacing all instances of feiertage = NA with feiertage = 0
+## Reformating Column Feiertage to boolean values
+
+# Assuming df is your data frame and "Datum" is the name of the column containing date strings
+
+```{r}
+# Load the feiertage data
+feiertage <- read.csv('./data/original/feiertage.csv')
+
+# Convert the "Datum" column to a Date
+feiertage$Datum <- as.Date(feiertage$Datum, format = "%Y-%m-%d")
+
+# View the feiertage data
+head(feiertage)
+````
+
+```{r}
+df <- full_join(revenue, feiertage, by = "Datum") %>%
+  replace_na(list(feiertage = 0)) %>%
+  mutate(feiertage = ifelse(feiertage == 1, TRUE, FALSE))
+
+```
+
+# Joining the weather data with the df containing revenue and kiwo
+
+```{r}
+df <- full_join(df, weather, by = "Datum")
+
+```
+
+# Cleaning up the revenue data to convert Datum column to correct data type (i.e. char -> date)
+```{r}
+df$Datum <- as.Date(df$Datum, format = "%Y-%m-%d")
+```
+
+
+# Converting the  "Warengruppe" to char, as the algorithm might interpret the numeric values as ordered, while they are categorial.
+```{r}
+df <- df %>%
+  mutate(Warengruppe = ifelse(Warengruppe == 1, "Brot", Warengruppe)) %>%
+  mutate(Warengruppe = ifelse(Warengruppe == 2, "Brötchen", Warengruppe)) %>%
+  mutate(Warengruppe = ifelse(Warengruppe == 3, "Croissant", Warengruppe)) %>%
+  mutate(Warengruppe = ifelse(Warengruppe == 4, "Konditorei", Warengruppe)) %>%
+  mutate(Warengruppe = ifelse(Warengruppe == 5, "Kuchen", Warengruppe)) %>%
+  mutate(Warengruppe = ifelse(Warengruppe == 6, "Saisonbrot", Warengruppe))
+```
+
+# Adding weekday column to data set
+```{r}
+df$Wochentag <- weekdays(df$Datum)
+
+```
+
+# Adding holiday column to data set
+```{r}
+ferien$Datum <- as.Date(ferien$Datum, format = "%Y-%m-%d")
+
+df <- full_join(df, ferien, by = "Datum") %>%
+  replace_na(list(FerienSH = 0)) %>%
+  mutate(FerienSH = ifelse(FerienSH == 1, TRUE, FALSE))
+
+```
+
+# Adding feiertage column to data set
+```{r}
+feiertage$Datum <- as.Date(feiertage$Datum, format = "%Y-%m-%d")
+
+df <- full_join(df, feiertage, by = "Datum") %>%
+  replace_na(list(feiertage = 0)) %>%
+  mutate(feiertage = ifelse(feiertage == 1, TRUE, FALSE))
+
+```
+
+# This helps us figure out if we have NA values in the dataset
+```{r}
+any(is.na(df))
+```
+# Deleting all rows that contain even one NA value (This section will be replaced with data imputation later on.)
+```{r}
+# Check for complete cases
+complete_rows <- complete.cases(df)
+
+# Subset the data frame to keep only complete rows
+clean_df <- df[complete_rows, ]
+
+#From here on out I'll work with the clean_df data set. Once the imputation step is implemented, the following code can be used for both.
+```
+
+# Simple Linear regression model:
+
+#### Teilen des Datensatzes in Trainings- Validierungs- und Testdatensatz
+```{r}
+# Set a random seed for reproducibility
+set.seed(42)
+
+# Shuffle the data
+data_shuffled <- clean_df %>% 
+  sample_frac(1)
+
+# Calculate the number of rows for each dataset
+n_total <- nrow(clean_df)
+n_train <- floor(0.7 * n_total)
+n_validation <- floor(0.20 * n_total)
+
+# Split the data into training, validation, and test datasets
+train_data <- data_shuffled %>%
+  slice(1:n_train)
+
+validation_data <- data_shuffled %>%
+  slice((n_train + 1):(n_train + n_validation))
+
+test_data <- data_shuffled %>%
+  slice((n_train + n_validation + 1):n_total)
+
+# Check the dimensions of the datasets
+cat("Training dataset dimensions:", dim(train_data), "\n")
+cat("Validation dataset dimensions:", dim(validation_data), "\n")
+cat("Test dataset dimensions:", dim(test_data), "\n")
+
+```
+
+
+
+### Beispiel einer einfachen linearen Regression
+```{r}
+  mod <- lm(Umsatz ~ Datum, clean_df)
+    summary(mod)
+  mod_1 <- lm(Umsatz ~ Datum + as.factor(Warengruppe), clean_df)
+    summary(mod_1)
+  mod_2 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag), clean_df)
+    summary(mod_2)
+  mod_3 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH, clean_df)
+    summary(mod_3)
+  mod_4 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur, clean_df)
+    summary(mod_4)
+  mod_5 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche, clean_df)
+    summary(mod_5)
+  mod_6 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung, clean_df)
+    summary(mod_6)
+    # Quick comment: KiWo and Bewoelkung do not increase R-squared
+    mod_7 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit, clean_df)
+    summary(mod_7)
+    # Windgeschwindigkeit only inproves R-squared marginally.
+  mod_8 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit + Wettercode, clean_df)
+    summary(mod_8)
+  
+  
+```
+
+### Nutzung des resultierenden Modells für eine Vohersage
+```{r}
+# Make predictions using the test data
+predicted_values <- predict(mod, newdata = validation_data)
+
+# Compare the predicted values with the actual values
+comparison <- data.frame(Actual = validation_data$Umsatz, Predicted = predicted_values)
+
+# Calculate the mean squared error (RMSE)
+rmse <- sqrt(mean((comparison$Actual - comparison$Predicted)^2))
+
+# Display the comparison and RMSE
+head(comparison)
+cat("Root Mean Squared Error (RMSE):", rmse, "\n")
+
+```
+
+
+### Beispiel einer linearen Regression mit Regularisierung
+```{r}
+mod <- glmnet(as.matrix(train_data[c('Datum', 'Temperatur')]), train_data$Umsatz)
+mod
+
+```
+
