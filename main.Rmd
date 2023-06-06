@@ -8,7 +8,7 @@ output: html_notebook
 This program includes the data read-in, to the data preparation, data imputation and visualization. It then continues on to test out initial linear regression models before heading on over to the implementation of a neural network. { DE or EN ?}
 
 ## Datenaufbereitung und Visualisierung
-
+We have to install the Python environment in order to run the following pieces of code.
 ```{r}
 
 if (!requireNamespace("reticulate", quietly = TRUE)) {
@@ -29,7 +29,48 @@ for (lib in libraries)
   }
 }
 
+# Install the reticulate package if you haven't already
+if (!requireNamespace("reticulate", quietly = TRUE)) {
+  install.packages("reticulate")
+}
 
+# Load the reticulate package
+library(reticulate)
+
+# Custom function to check if a Conda environment exists
+condaenv_exists <- function(env_name) {
+  conda_envs <- conda_list()
+  return(env_name %in% conda_envs$name)
+}
+
+# Check if conda is installed, if not, install miniconda
+conda_envs <- conda_list()
+if (length(conda_envs) == 0) {
+  install_miniconda()
+}
+
+# Create a specific Python environment if it doesn't exist
+if (!condaenv_exists("r-reticulate")) {
+  conda_create("r-reticulate", python_version = "3.8")
+}
+
+# Get the list of installed packages in the created environment
+conda_envs <- conda_list()
+r_reticulate_env <- conda_envs[conda_envs$name == "r-reticulate", ]
+installed_packages <- r_reticulate_env$packages
+
+# Install required packages in the created environment
+required_packages <- c("pandas", "numpy", "tensorflow", "h5py")
+
+for (pkg in required_packages) {
+  if (!(pkg %in% installed_packages)) {
+    conda_install("r-reticulate", pkg)
+  }
+}
+
+# If this doesn't install 'tensorflow', go ahead and download anaconda from "https://www.anaconda.com/", open it up, go to environment and choose "r-reticulate". Then install the packages ""pandas", "numpy", "tensorflow", "h5py"" from the UI.
+# Error associated with this fix:
+# 'InvalidArchiveError("Error with archive C:\\Users\\ [...] \\\compose_set_interface.h.inc'")'
 ```
 
 ### Data Import
@@ -206,7 +247,7 @@ mod_svm_1 <- svm(Umsatz ~ Datum, train_data)
 ```{r}
 mod_svm_tune_1 <- tune(svm, Umsatz ~ Datum + Warengruppe + Bewoelkung + Wochentag, data=train_data, ranges = list(epsilon = seq(0.2, 1, 0.1), cost = 2^(2:3)))
 
-mod_svm_tune_2 <- tune(svm, Umsatz ~ Warengruppe + Wochentag, data=train_data, ranges = list(epsilon = seq(0.2, 1, 0.1), cost = 2^(2:3)))
+# mod_svm_tune_2 <- tune(svm, Umsatz ~ Warengruppe + Wochentag, data=train_data, ranges = list(epsilon = seq(0.2, 1, 0.1), cost = 2^(2:3)))
 ```
 
 Chat GPT: Explanation of the tune() function and especially of the tuning parameters:
@@ -244,9 +285,10 @@ cat("The Mape on custom_2 hyperparameter svm is:", mape(test_data$Umsatz, pred_t
 ```
 
 #### NN Neural Net
-We have to install the Python environment in order to run the following pieces of code.
-```{r}
 
+```{r}
+# Use the created Python environment
+use_condaenv("r-reticulate", required = TRUE)
 ```
 
 
