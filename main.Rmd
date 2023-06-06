@@ -3,10 +3,20 @@ title: "R Notebook"
 output: html_notebook
 ---
 
-# Training a neural net. Basic structure and setup.
+#ML Course Opencampus SoSe 2023
+
+This program includes the data read-in, to the data preparation, data imputation and visualization. It then continues on to test out initial linear regression models before heading on over to the implementation of a neural network. { DE or EN ?}
+
+## Datenaufbereitung und Visualisierung
+
 ```{r}
+
+if (!requireNamespace("reticulate", quietly = TRUE)) {
+  install.packages("reticulate")
+}
+
 # Create list with required libraries
-libraries <- c("dplyr", "readr", "reticulate", "ggplot2", "Metrics", "tidyverse", "glmnet")
+libraries <- c("dplyr", "readr", "reticulate", "ggplot2", "Metrics", "tidyverse", "glmnet", "e1071", "Metrics")
 
 
 # Loop through each library and check if it's installed, if not, install it and then load it to include in this project
@@ -19,10 +29,12 @@ for (lib in libraries)
   }
 }
 
+
 ```
 
-# Data Import
-```{r}
+### Data Import
+
+```{r include=FALSE}
 # Storing Data sets as data frames
 
 revenue <- read.csv('./data/original/umsatzdaten_gekuerzt.csv')
@@ -32,34 +44,33 @@ weather <- read.csv('./data/original/weather.csv')
 
 ```
 
+### Joining the kiwo data with the revenue data
 
-# Joining the kiwo data with the revenue data
-## Replacing all instances of Kiwo = NA with Kiwo = 0
-## Reformating Column KielerWoche to boolean values
+Replacing all instances of Kiwo = NA with Kiwo = 0 Reformating Column KielerWoche to boolean values
 
-```{r}
+```{r include=FALSE}
 df <- full_join(revenue, kiwo, by = "Datum") %>%
   replace_na(list(KielerWoche = 0)) %>%
   mutate(KielerWoche = ifelse(KielerWoche == 1, TRUE, FALSE))
 
 ```
 
+### Joining the weather data with the df containing revenue and kiwo
 
-# Joining the weather data with the df containing revenue and kiwo
-
-```{r}
+```{r include=FALSE}
 df <- full_join(df, weather, by = "Datum")
 
 ```
 
-# Cleaning up the revenue data to convert Datum column to correct data type (i.e. char -> date)
-```{r}
+### Cleaning up the revenue data to convert Datum column to correct data type (i.e. char -\> date)
+
+```{r include=FALSE}
 df$Datum <- as.Date(df$Datum, format = "%Y-%m-%d")
 ```
 
+### Converting the "Warengruppe" to char, as the algorithm might interpret the numeric values as ordered, while they are categorial.
 
-# Converting the  "Warengruppe" to char, as the algorithm might interpret the numeric values as ordered, while they are categorial.
-```{r}
+```{r include=FALSE}
 df <- df %>%
   mutate(Warengruppe = ifelse(Warengruppe == 1, "Brot", Warengruppe)) %>%
   mutate(Warengruppe = ifelse(Warengruppe == 2, "Brötchen", Warengruppe)) %>%
@@ -69,14 +80,16 @@ df <- df %>%
   mutate(Warengruppe = ifelse(Warengruppe == 6, "Saisonbrot", Warengruppe))
 ```
 
-# Adding weekday column to data set
-```{r}
+### Adding weekday column to data set
+
+```{r include=FALSE}
 df$Wochentag <- weekdays(df$Datum)
 
 ```
 
-# Adding holiday column to data set
-```{r}
+### Adding holiday column to data set
+
+```{r include=FALSE}
 ferien$Datum <- as.Date(ferien$Datum, format = "%Y-%m-%d")
 
 df <- full_join(df, ferien, by = "Datum") %>%
@@ -85,13 +98,15 @@ df <- full_join(df, ferien, by = "Datum") %>%
 
 ```
 
+### This helps us figure out if we have NA values in the dataset
 
-# This helps us figure out if we have NA values in the dataset
-```{r}
+```{r include=FALSE}
 any(is.na(df))
 ```
-# Deleting all rows that contain even one NA value (This section will be replaced with data imputation later on.)
-```{r}
+
+### Deleting all rows that contain even one NA value (This section will be replaced with data imputation later on.)
+
+```{r include=FALSE}
 # Check for complete cases
 complete_rows <- complete.cases(df)
 
@@ -101,10 +116,11 @@ clean_df <- df[complete_rows, ]
 #From here on out I'll work with the clean_df data set. Once the imputation step is implemented, the following code can be used for both.
 ```
 
-# Simple Linear regression model:
+## Prediction Models (LR, SVM, NN)
 
-#### Teilen des Datensatzes in Trainings- Validierungs- und Testdatensatz
-```{r}
+Teilen des Datensatzes in Trainings- Validierungs- und Testdatensatz. Diese werden für LR und SVM verwendet.
+
+```{r include=FALSE}
 # Set a random seed for reproducibility
 set.seed(42)
 
@@ -134,35 +150,36 @@ cat("Test dataset dimensions:", dim(test_data), "\n")
 
 ```
 
+### LR Beispiel einer einfachen linearen Regression
 
-### Beispiel einer einfachen linearen Regression
-```{r}
-  mod <- lm(Umsatz ~ Datum, clean_df)
+```{r include=FALSE}
+  mod_lr <- lm(Umsatz ~ Datum, clean_df)
     summary(mod)
-  mod_1 <- lm(Umsatz ~ Datum + as.factor(Warengruppe), clean_df)
-    summary(mod_1)
-  mod_2 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag), clean_df)
-    summary(mod_2)
-  mod_3 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH, clean_df)
-    summary(mod_3)
-  mod_4 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur, clean_df)
-    summary(mod_4)
-  mod_5 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche, clean_df)
-    summary(mod_5)
-  mod_6 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung, clean_df)
-    summary(mod_6)
+  mod_lr_1 <- lm(Umsatz ~ Datum + as.factor(Warengruppe), clean_df)
+    summary(mod_lr_1)
+  mod_lr_2 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag), clean_df)
+    summary(mod_lr_2)
+  mod_lr_3 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH, clean_df)
+    summary(mod_lr_3)
+  mod_lr_4 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur, clean_df)
+    summary(mod_lr_4)
+  mod_lr_5 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche, clean_df)
+    summary(mod_lr_5)
+  mod_lr_6 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung, clean_df)
+    summary(mod_lr_6)
     # Quick comment: KiWo and Bewoelkung do not increase R-squared
-    mod_7 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit, clean_df)
-    summary(mod_7)
+    mod_lr_7 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit, clean_df)
+    summary(mod_lr_7)
     # Windgeschwindigkeit only inproves R-squared marginally.
-  mod_8 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit + Wettercode, clean_df)
-    summary(mod_8)
+  mod_lr_8 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit + Wettercode, clean_df)
+    summary(mod_lr_8)
   
   
 ```
 
-### Nutzung des resultierenden Modells für eine Vohersage
-```{r}
+#### Nutzung des resultierenden Modells für eine Vohersage
+
+```{r include=FALSE}
 # Make predictions using the test data
 predicted_values <- predict(mod, newdata = validation_data)
 
@@ -178,11 +195,61 @@ cat("Root Mean Squared Error (RMSE):", rmse, "\n")
 
 ```
 
+### SVM Support Vektor Maschine
 
-### Beispiel einer linearen Regression mit Regularisierung
+Das Training kann mit Default Hyperparametern durchgeführt werden, oder gegebenenfalls mit selbst angepassten Hyperparametern. Zunächst wird ein Modell trainiert, welches die Standardparameter verwendet.
+
 ```{r}
-mod <- glmnet(as.matrix(train_data[c('Datum', 'Temperatur')]), train_data$Umsatz)
-mod
+mod_svm_1 <- svm(Umsatz ~ Datum, train_data)
+```
+
+```{r}
+mod_svm_tune_1 <- tune(svm, Umsatz ~ Datum + Warengruppe + Bewoelkung + Wochentag, data=train_data, ranges = list(epsilon = seq(0.2, 1, 0.1), cost = 2^(2:3)))
+
+mod_svm_tune_2 <- tune(svm, Umsatz ~ Warengruppe + Wochentag, data=train_data, ranges = list(epsilon = seq(0.2, 1, 0.1), cost = 2^(2:3)))
+```
+
+Chat GPT: Explanation of the tune() function and especially of the tuning parameters:
+'
+- 'epsilon' is a tuning parameter for the svm function. It specifies the epsilon value, which controls the tolerance for error in the SVM model. In this case, epsilon is set to a sequence of values generated using the seq() function. The seq(0.2, 1, 0.1) generates a sequence from 0.2 to 1, incrementing by 0.1 at each step.
+
+- 'cost' is another tuning parameter for the svm function. It controls the 'cost' parameter, which determines the trade-off between achieving a low training error and allowing more flexibility in the SVM model. Here, cost is set to 2\^(2:3). The 2:3 generates the sequence 2, 3, and 2\^(2:3) calculates 2\^2 and 2\^3, resulting in the values 4 and 8, respectively."
+'
+
+Vorhersagequalität der SVM ohne angepasste Hyperparameter:
+```{r}
+pred_train_default <- predict(mod_svm_1, train_data)
+mape(train_data$Umsatz, pred_train_default)
+```
+
+Vorhersagequalität der SVM mit angepassten Hyperparametern:
+```{r}
+pred_train_custom_1 <- predict(mod_svm_tune_1$best.model, train_data)
+mape(train_data$Umsatz, pred_train_custom_1)
+
+pred_train_custom_2 <- predict(mod_svm_tune_2$best.model, train_data)
+mape(train_data$Umsatz, pred_train_custom_2)
+```
+
+Now we also have to check, whether the trained model is capable of explaining the test data set.
+```{r}
+pred_test_default <- predict(mod_svm_1, test_data)
+cat("The Mape on default hyperparameter svm is:", mape(test_data$Umsatz, pred_test_default), "\n")
+
+pred_test_custom_1 <- predict(mod_svm_tune_1$best.model, test_data)
+cat("The Mape on custom_1 hyperparameter svm is:", mape(test_data$Umsatz, pred_test_custom_1), "\n")
+
+pred_test_custom_2 <- predict(mod_svm_tune_2$best.model, test_data)
+cat("The Mape on custom_2 hyperparameter svm is:", mape(test_data$Umsatz, pred_test_custom_2), "\n")
+```
+
+#### NN Neural Net
+We have to install the Python environment in order to run the following pieces of code.
+```{r}
 
 ```
+
+
+
+
 
