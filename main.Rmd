@@ -8,10 +8,8 @@ output: html_notebook
 This program includes the data read-in, to the data preparation, data imputation and visualization. It then continues on to test out initial linear regression models before heading on over to the implementation of a neural network. { DE or EN ?}
 
 ## Datenaufbereitung und Visualisierung
-
 We have to install the Python environment in order to run the following pieces of code.
-
-```{r}
+```{r include=FALSE}
 
 if (!requireNamespace("reticulate", quietly = TRUE)) {
   install.packages("reticulate")
@@ -57,20 +55,20 @@ if (!condaenv_exists("r-reticulate")) {
 }
 
 # Get the list of installed packages in the created environment
-conda_envs <- conda_list()
-r_reticulate_env <- conda_envs[conda_envs$name == "r-reticulate", ]
-installed_packages <- r_reticulate_env$packages
+# conda_envs <- conda_list()
+# r_reticulate_env <- conda_envs[conda_envs$name == "r-reticulate", ]
+# installed_packages <- r_reticulate_env$packages
 
 # Install required packages in the created environment
-required_packages <- c("pandas", "numpy", "tensorflow", "h5py")
+# required_packages <- c("pandas", "numpy", "tensorflow", "h5py")
+#
+# for (pkg in required_packages) {
+#   if (!(pkg %in% installed_packages)) {
+#     conda_install("r-reticulate", pkg)
+#   }
+# }
 
-for (pkg in required_packages) {
-  if (!(pkg %in% installed_packages)) {
-    conda_install("r-reticulate", pkg)
-  }
-}
-
-# If this doesn't install 'tensorflow', go ahead and download anaconda from "https://www.anaconda.com/", open it up, go to environment and choose "r-reticulate". Then install the packages ""pandas", "numpy", "tensorflow", "h5py"" from the UI.
+# If this doesn't install 'tensorflow', go ahead and download anaconda from "https://www.anaconda.com/", open it up, go to environment and choose "r-reticulate". Then install the packages " "pandas", "numpy", "tensorflow", "h5py" " from the UI.
 # Error associated with this fix:
 # 'InvalidArchiveError("Error with archive C:\\Users\\ [...] \\\compose_set_interface.h.inc'")'
 ```
@@ -243,38 +241,41 @@ cat("Root Mean Squared Error (RMSE):", rmse, "\n")
 Das Training kann mit Default Hyperparametern durchgeführt werden, oder gegebenenfalls mit selbst angepassten Hyperparametern. Zunächst wird ein Modell trainiert, welches die Standardparameter verwendet.
 
 ```{r}
-mod_svm_1 <- svm(Umsatz ~ Datum, train_data)
+# mod_svm_1 <- svm(Umsatz ~ Datum, train_data)
+# save(mod_svm_1, file = "./ML_models/mod_svm_1")
+load("./ML_models/mod_svm_1")
 ```
 
 ```{r}
-mod_svm_tune_1 <- tune(svm, Umsatz ~ Datum + Warengruppe + Bewoelkung + Wochentag, data=train_data, ranges = list(epsilon = seq(0.2, 1, 0.1), cost = 2^(2:3)))
-
+# mod_svm_tune_1 <- tune(svm, Umsatz ~ Datum + Warengruppe + Bewoelkung + Wochentag, data=train_data, ranges = list(epsilon = seq(0.2, 1, 0.1), cost = 2^(2:3)))
+#save(mod_svm_tune_1, file = "mod_svm_tune_1.RData")
+load("./ML_models/mod_svm_tune_1.RData")
 # mod_svm_tune_2 <- tune(svm, Umsatz ~ Warengruppe + Wochentag, data=train_data, ranges = list(epsilon = seq(0.2, 1, 0.1), cost = 2^(2:3)))
 ```
 
-Chat GPT: Explanation of the tune() function and especially of the tuning parameters: ' - 'epsilon' is a tuning parameter for the svm function. It specifies the epsilon value, which controls the tolerance for error in the SVM model. In this case, epsilon is set to a sequence of values generated using the seq() function. The seq(0.2, 1, 0.1) generates a sequence from 0.2 to 1, incrementing by 0.1 at each step.
+Chat GPT: Explanation of the tune() function and especially of the tuning parameters:
+'
+- 'epsilon' is a tuning parameter for the svm function. It specifies the epsilon value, which controls the tolerance for error in the SVM model. In this case, epsilon is set to a sequence of values generated using the seq() function. The seq(0.2, 1, 0.1) generates a sequence from 0.2 to 1, incrementing by 0.1 at each step.
 
--   'cost' is another tuning parameter for the svm function. It controls the 'cost' parameter, which determines the trade-off between achieving a low training error and allowing more flexibility in the SVM model. Here, cost is set to 2\^(2:3). The 2:3 generates the sequence 2, 3, and 2\^(2:3) calculates 2\^2 and 2\^3, resulting in the values 4 and 8, respectively." '
+- 'cost' is another tuning parameter for the svm function. It controls the 'cost' parameter, which determines the trade-off between achieving a low training error and allowing more flexibility in the SVM model. Here, cost is set to 2\^(2:3). The 2:3 generates the sequence 2, 3, and 2\^(2:3) calculates 2\^2 and 2\^3, resulting in the values 4 and 8, respectively."
+'
 
 Vorhersagequalität der SVM ohne angepasste Hyperparameter:
-
 ```{r}
 pred_train_default <- predict(mod_svm_1, train_data)
 mape(train_data$Umsatz, pred_train_default)
 ```
 
 Vorhersagequalität der SVM mit angepassten Hyperparametern:
-
 ```{r}
 pred_train_custom_1 <- predict(mod_svm_tune_1$best.model, train_data)
 mape(train_data$Umsatz, pred_train_custom_1)
 
-pred_train_custom_2 <- predict(mod_svm_tune_2$best.model, train_data)
-mape(train_data$Umsatz, pred_train_custom_2)
+# pred_train_custom_2 <- predict(mod_svm_tune_2$best.model, train_data)
+# mape(train_data$Umsatz, pred_train_custom_2)
 ```
 
 Now we also have to check, whether the trained model is capable of explaining the test data set.
-
 ```{r}
 pred_test_default <- predict(mod_svm_1, test_data)
 cat("The Mape on default hyperparameter svm is:", mape(test_data$Umsatz, pred_test_default), "\n")
@@ -282,8 +283,8 @@ cat("The Mape on default hyperparameter svm is:", mape(test_data$Umsatz, pred_te
 pred_test_custom_1 <- predict(mod_svm_tune_1$best.model, test_data)
 cat("The Mape on custom_1 hyperparameter svm is:", mape(test_data$Umsatz, pred_test_custom_1), "\n")
 
-pred_test_custom_2 <- predict(mod_svm_tune_2$best.model, test_data)
-cat("The Mape on custom_2 hyperparameter svm is:", mape(test_data$Umsatz, pred_test_custom_2), "\n")
+# pred_test_custom_2 <- predict(mod_svm_tune_2$best.model, test_data)
+# cat("The Mape on custom_2 hyperparameter svm is:", mape(test_data$Umsatz, pred_test_custom_2), "\n")
 ```
 
 #### NN Neural Net
@@ -292,3 +293,7 @@ cat("The Mape on custom_2 hyperparameter svm is:", mape(test_data$Umsatz, pred_t
 # Use the created Python environment
 use_condaenv("r-reticulate", required = TRUE)
 ```
+
+
+
+
