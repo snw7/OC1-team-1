@@ -90,7 +90,7 @@ weather <- read.csv('./data/original/weather.csv')
 Replacing all instances of Kiwo = NA with Kiwo = 0 Reformating Column KielerWoche to boolean values
 
 ```{r include=FALSE}
-df <- full_join(revenue, kiwo, by = "Datum") %>%
+df <- left_join(revenue, kiwo, by = "Datum") %>%
   replace_na(list(KielerWoche = 0)) %>%
   mutate(KielerWoche = ifelse(KielerWoche == 1, TRUE, FALSE))
 
@@ -99,7 +99,7 @@ df <- full_join(revenue, kiwo, by = "Datum") %>%
 ### Joining the weather data with the df containing revenue and kiwo
 
 ```{r include=FALSE}
-df <- full_join(df, weather, by = "Datum")
+df <- left_join(df, weather, by = "Datum")
 
 ```
 
@@ -133,16 +133,36 @@ df$Wochentag <- weekdays(df$Datum)
 ```{r include=FALSE}
 ferien$Datum <- as.Date(ferien$Datum, format = "%Y-%m-%d")
 
-df <- full_join(df, ferien, by = "Datum") %>%
+df <- left_join(df, ferien, by = "Datum") %>%
   replace_na(list(FerienSH = 0)) %>%
   mutate(FerienSH = ifelse(FerienSH == 1, TRUE, FALSE))
 
 ```
 
+### Adding Month variable
+```{r}
+
+
+```
+
+
 ### This helps us figure out if we have NA values in the dataset
 
 ```{r include=FALSE}
 any(is.na(df))
+
+any(is.na(df$Datum))
+any(is.na(df$Warengruppe))
+any(is.na(df$Umsatz))
+any(is.na(df$KielerWoche))
+any(is.na(df$Wochentag))
+any(is.na(df$FerienSH))
+
+any(is.na(df$Bewoelkung))
+any(is.na(df$Temperatur))
+any(is.na(df$Windgeschwindigkeit))
+any(is.na(df$Wettercode))
+
 ```
 
 ### Deleting all rows that contain even one NA value (This section will be replaced with data imputation later on.)
@@ -195,25 +215,38 @@ cat("Test dataset dimensions:", dim(test_data), "\n")
 
 ```{r include=FALSE}
   mod_lr <- lm(Umsatz ~ Datum, clean_df)
-    summary(mod)
+    summary(mod_lr)
+    
   mod_lr_1 <- lm(Umsatz ~ Datum + as.factor(Warengruppe), clean_df)
     summary(mod_lr_1)
+    
   mod_lr_2 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag), clean_df)
     summary(mod_lr_2)
+    
   mod_lr_3 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH, clean_df)
     summary(mod_lr_3)
+    
   mod_lr_4 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur, clean_df)
     summary(mod_lr_4)
+  
   mod_lr_5 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche, clean_df)
     summary(mod_lr_5)
+  
   mod_lr_6 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung, clean_df)
     summary(mod_lr_6)
+    
     # Quick comment: KiWo and Bewoelkung do not increase R-squared
     mod_lr_7 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit, clean_df)
     summary(mod_lr_7)
+  
     # Windgeschwindigkeit only inproves R-squared marginally.
   mod_lr_8 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit + Wettercode, clean_df)
     summary(mod_lr_8)
+    
+mod_lr_9 <- lm(Umsatz ~ Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit + Wettercode, clean_df)
+    summary(mod_lr_9)
+
+    # Monat als
   
   
 ```
@@ -222,7 +255,7 @@ cat("Test dataset dimensions:", dim(test_data), "\n")
 
 ```{r include=FALSE}
 # Make predictions using the test data
-predicted_values <- predict(mod, newdata = validation_data)
+predicted_values <- predict(mod_lr, newdata = validation_data)
 
 # Compare the predicted values with the actual values
 comparison <- data.frame(Actual = validation_data$Umsatz, Predicted = predicted_values)
