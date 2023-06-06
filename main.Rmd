@@ -8,7 +8,9 @@ output: html_notebook
 This program includes the data read-in, to the data preparation, data imputation and visualization. It then continues on to test out initial linear regression models before heading on over to the implementation of a neural network. { DE or EN ?}
 
 ## Datenaufbereitung und Visualisierung
+
 We have to install the Python environment in order to run the following pieces of code.
+
 ```{r}
 
 if (!requireNamespace("reticulate", quietly = TRUE)) {
@@ -250,20 +252,19 @@ mod_svm_tune_1 <- tune(svm, Umsatz ~ Datum + Warengruppe + Bewoelkung + Wochenta
 # mod_svm_tune_2 <- tune(svm, Umsatz ~ Warengruppe + Wochentag, data=train_data, ranges = list(epsilon = seq(0.2, 1, 0.1), cost = 2^(2:3)))
 ```
 
-Chat GPT: Explanation of the tune() function and especially of the tuning parameters:
-'
-- 'epsilon' is a tuning parameter for the svm function. It specifies the epsilon value, which controls the tolerance for error in the SVM model. In this case, epsilon is set to a sequence of values generated using the seq() function. The seq(0.2, 1, 0.1) generates a sequence from 0.2 to 1, incrementing by 0.1 at each step.
+Chat GPT: Explanation of the tune() function and especially of the tuning parameters: ' - 'epsilon' is a tuning parameter for the svm function. It specifies the epsilon value, which controls the tolerance for error in the SVM model. In this case, epsilon is set to a sequence of values generated using the seq() function. The seq(0.2, 1, 0.1) generates a sequence from 0.2 to 1, incrementing by 0.1 at each step.
 
-- 'cost' is another tuning parameter for the svm function. It controls the 'cost' parameter, which determines the trade-off between achieving a low training error and allowing more flexibility in the SVM model. Here, cost is set to 2\^(2:3). The 2:3 generates the sequence 2, 3, and 2\^(2:3) calculates 2\^2 and 2\^3, resulting in the values 4 and 8, respectively."
-'
+-   'cost' is another tuning parameter for the svm function. It controls the 'cost' parameter, which determines the trade-off between achieving a low training error and allowing more flexibility in the SVM model. Here, cost is set to 2\^(2:3). The 2:3 generates the sequence 2, 3, and 2\^(2:3) calculates 2\^2 and 2\^3, resulting in the values 4 and 8, respectively." '
 
 Vorhersagequalität der SVM ohne angepasste Hyperparameter:
+
 ```{r}
 pred_train_default <- predict(mod_svm_1, train_data)
 mape(train_data$Umsatz, pred_train_default)
 ```
 
 Vorhersagequalität der SVM mit angepassten Hyperparametern:
+
 ```{r}
 pred_train_custom_1 <- predict(mod_svm_tune_1$best.model, train_data)
 mape(train_data$Umsatz, pred_train_custom_1)
@@ -273,6 +274,7 @@ mape(train_data$Umsatz, pred_train_custom_2)
 ```
 
 Now we also have to check, whether the trained model is capable of explaining the test data set.
+
 ```{r}
 pred_test_default <- predict(mod_svm_1, test_data)
 cat("The Mape on default hyperparameter svm is:", mape(test_data$Umsatz, pred_test_default), "\n")
@@ -290,8 +292,3 @@ cat("The Mape on custom_2 hyperparameter svm is:", mape(test_data$Umsatz, pred_t
 # Use the created Python environment
 use_condaenv("r-reticulate", required = TRUE)
 ```
-
-
-
-
-
