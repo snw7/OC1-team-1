@@ -29,10 +29,10 @@ for (lib in libraries)
 ```{r include=FALSE}
 # Storing Data sets as data frames
 
-revenue <- read.csv('./data/original/umsatzdaten_gekuerzt.csv')
-kiwo <- read.csv('./data/original/kiwo.csv')
-ferien <- read.csv('./data/original/schulferienSH.csv')
-weather <- read.csv('./data/original/weather.csv')
+revenue <- read.csv('../data/umsatzdaten_gekuerzt.csv')
+kiwo <- read.csv('../data/kiwo.csv')
+ferien <- read.csv('../data/schulferienSH.csv')
+weather <- read.csv('../data/weather.csv')
 
 ```
 
@@ -76,7 +76,6 @@ df <- df %>%
 
 ```{r include=FALSE}
 df$Wochentag <- weekdays(df$Datum)
-
 ```
 
 ### Adding holiday column to data set
@@ -87,7 +86,6 @@ ferien$Datum <- as.Date(ferien$Datum, format = "%Y-%m-%d")
 df <- left_join(df, ferien, by = "Datum") %>%
   replace_na(list(FerienSH = 0)) %>%
   mutate(FerienSH = ifelse(FerienSH == 1, TRUE, FALSE))
-
 ```
 
 ### Adding Month variable
@@ -131,7 +129,7 @@ complete_rows <- complete.cases(df)
 # Subset the data frame to keep only complete rows
 clean_df <- df[complete_rows, ]
 
-write_csv(clean_df, "./data_files/test_data.csv")
+write_csv(clean_df, "../data/data.csv")
 
 #From here on out I'll work with the clean_df data set. Once the imputation step is implemented, the following code can be used for both.
 ```
