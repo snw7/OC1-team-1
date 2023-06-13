@@ -93,6 +93,28 @@ df_prep <- left_join(df_prep, ferien, by = "Datum") %>%
 df_prep$Monat <- month(df_prep$Datum)
 ```
 
+```{r}
+# Deleting Column Wettercode from df:
+
+df_prep <- select(df_prep, -Wettercode)
+```
+
+
+```{r}
+
+df_prep_lag <- df_prep %>%
+  arrange(Datum, Warengruppe) %>%
+  group_by(Warengruppe) %>%
+  mutate(value_prev_year = lag(Umsatz, default = NA, n = 365)) %>%
+  ungroup()
+
+
+
+df_prep_lag$value_prev_year <- ifelse(is.na(df_prep_lag$value_prev_year), df_prep_lag$Umsatz, df_prep_lag$value_prev_year)
+
+
+```
+
 
 ### This helps us figure out if we have NA values in the dataset
 
@@ -106,7 +128,7 @@ any(is.na(df_prep$Windgeschwindigkeit))
 any(is.na(df_prep$Wettercode))
 
 missing_values <- df_prep %>%
-  filter(is.na(Temperatur) & is.na(Bewoelkung) & is.na(Windgeschwindigkeit) & is.na(Wettercode))
+  filter(is.na(Temperatur) | is.na(Bewoelkung) | is.na(Windgeschwindigkeit))
 
 ```
 
@@ -123,9 +145,18 @@ df_prep %>%
 #  aggr(combined=TRUE, numbers=TRUE)
 
 # VIM Hot-Deck Imputation
-df_hotdeck1 <- df_prep %>%  hotdeck()
-df_hotdeck1 %>%
+df_hotdeck_1 <- df_prep %>%  hotdeck()
+df_hotdeck_1 %>%
   aggr(combined=TRUE, numbers=TRUE)
+
+df_hotdeck_1_clean <- df_hotdeck_1 %>%
+  select(-ends_with('_imp'))
+
+
+df_hotdeck_1_lag <- df_prep_lag %>% hotdeck()
+
+df_hotdeck_1_clean_lag <- df_hotdeck_1_lag %>%
+  select(-ends_with('_imp'))
 
  # ggplot(df_hotdeck1) +
  #  geom_point(aes(
@@ -134,12 +165,12 @@ df_hotdeck1 %>%
  #    color=Temperatur_imp
  #    )
  #  )
-
-df_hotdeck2 <- df_prep %>% 
-  hotdeck(ord_var = "Datum")
-
-df_hotdeck2 %>%
-  aggr(combined=TRUE, numbers=TRUE)
+# 
+# df_hotdeck2 <- df_prep %>% 
+#   hotdeck(ord_var = "Datum")
+# 
+# df_hotdeck2 %>%
+#   aggr(combined=TRUE, numbers=TRUE)
 
 # ggplot(df_hotdeck2) +
 #  geom_point(aes(
@@ -148,22 +179,28 @@ df_hotdeck2 %>%
 #    color=Temperatur_imp
 #    )
 #  )
-
-sleep_hotdeck3 <- sleep_hotdeck2 %>%  hotdeck(ord_var = "Sleep")
-sleep_hotdeck3 %>% aggr(combined=TRUE, numbers=TRUE)
+# 
+# sleep_hotdeck3 <- sleep_hotdeck2 %>%  hotdeck(ord_var = "Sleep")
+# sleep_hotdeck3 %>% aggr(combined=TRUE, numbers=TRUE)
 
 # VIM Iterative Robust Model Imputation (IRMI)
-sleep_irmi <- sleep %>%  irmi()
-ggplot(sleep_irmi) +
-  geom_point(aes(x=Sleep, y=Dream, color=Sleep_imp))
+# df_irmi <- df_prep %>%  irmi(df_prep$Windgeschwindigkeit)
+# ggplot(sleep_irmi) +
+#   geom_point(aes(x=Sleep, y=Dream, color=Sleep_imp))
 
 
 # Impact
 # cor(sleep_deletion$Sleep, sleep_deletion$Dream)
-cor(df_hotdeck1$Datum, sleep_hotdeck1$Temperatur, use = "complete.obs")
-cor(df_hotdeck2$Sleep, sleep_hotdeck2$Temperatur, use = "complete.obs")
-cor(df_hotdeck3$Sleep, sleep_hotdeck3$Temperatur, use = "complete.obs")
+# cor(df_hotdeck1$Datum, df_hotdeck1$Temperatur, use = "complete.obs")
+# cor(df_hotdeck2$Sleep, sleep_hotdeck2$Temperatur, use = "complete.obs")
+# cor(df_hotdeck3$Sleep, sleep_hotdeck3$Temperatur, use = "complete.obs")
 # cor(df_irmi$Sleep, sleep_irmi$Dream)
+```
+
+
+```{r}
+any(is.na(df_hotdeck_1_clean))
+
 ```
 
 
@@ -178,6 +215,8 @@ cor(df_hotdeck3$Sleep, sleep_hotdeck3$Temperatur, use = "complete.obs")
 # clean_df <- df_prep[complete_rows, ]
 
 # write_csv(clean_df, "../data/data.csv")
+write_csv(df_hotdeck_1_clean, "../data/data_clean.csv")
+write_csv(df_hotdeck_1_clean_lag, "../data/data_clean_lag.csv")
 
 #From here on out I'll work with the clean_df data set. Once the imputation step is implemented, the following code can be used for both.
 ```
