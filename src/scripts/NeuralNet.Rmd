@@ -54,7 +54,7 @@ use_condaenv("r-reticulate", required = TRUE)
 ```
 
 Preparing data once more in a different configuration
-```{r}
+```{r include=FALSE}
 # Preparation of independent variables ('features') by dummy coding the categorical variables
 features <- as_tibble(model.matrix(Umsatz ~ as.factor(Warengruppe) + as.factor(Wettercode) +  as.factor(Wochentag) + as.factor(Monat) + Datum + Bewoelkung + Temperatur + KielerWoche + Windgeschwindigkeit, df))
 names(features)
@@ -116,7 +116,7 @@ cat("Test label dimensions:", dim(test_label), "\n")
 
 Now let's go on to train the Neural Network!
 ### Definition des Neuronalen Netzes
-```{python}
+```{python include=FALSE}
 # Import needed Python libraries and functions
 import numpy as np
 import tensorflow as tf
@@ -137,23 +137,23 @@ model_1 = Sequential([
 model_2 = Sequential([
   InputLayer(input_shape=(len(r.training_features.keys()), )),
   BatchNormalization(),
-  Dense(20, activation='relu'),
-  Dense(5, activation='relu'),
-  Dense(2)
+  Dense(10, activation='relu'),
+  Dense(4, activation='relu'),
+  Dense(1)
 ])
 
 model_3 = Sequential([
   InputLayer(input_shape=(len(r.training_features.keys()), )),
   BatchNormalization(),
-  Dense(30, activation='relu'),
-  Dense(7, activation='relu'),
-  Dense(3)
+  Dense(10, activation='relu'),
+  Dense(4, activation='relu'),
+  Dense(1)
 ])
 
 # Ausgabe einer Zusammenfassung zur Form des Modells, das geschaetzt wird (nicht notwendig)
-model_1.summary()
-model_2.summary()
-model_3.summary()
+# model_1.summary()
+# model_2.summary()
+# model_3.summary()
 
 ```
 
@@ -162,18 +162,24 @@ model_3.summary()
 ```{python}
 
 # Definition der Kosten-(Loss-)Funktion und der Optimierungsfunktion mit seinen Hyperparametern
-model_1.compile(loss="mse", optimizer=Adam(learning_rate=0.01))
-model_2.compile(loss="mse", optimizer=Adam(learning_rate=0.01))
-model_3.compile(loss="mse", optimizer=Adam(learning_rate=0.01))
+# model_1.compile(loss="mse", optimizer=Adam(learning_rate=0.001))
+# model_2.compile(loss="mse", optimizer=Adam(learning_rate=0.001))
+# model_3.compile(loss="mse", optimizer=Adam(learning_rate=0.001))
 
 # Schaetzung des Modells
-history_1 = model_1.fit(r.training_features, r.training_label, epochs=200,
+history_1 = model_1.fit(r.training_features, r.training_label, epochs=100,
+                    validation_data = (r.validation_features, r.validation_label), verbose=0)
+
+history_2 = model_1.fit(r.training_features, r.training_label, epochs=200,
+                    validation_data = (r.validation_features, r.validation_label), verbose=0)
+                    
+history_3 = model_1.fit(r.training_features, r.training_label, epochs=300,
                     validation_data = (r.validation_features, r.validation_label), verbose=0)
 
 # Ggf. Speichern des geschaetzten Modells
-model_1.save("../ML_models/mod_nn_4.h5")
-model_2.save("../ML_models/mod_nn_5.h5")
-model_3.save("../ML_models/mod_nn_6.h5")
+# model_1.save("../ML_models/mod_nn_2.h5")
+# model_2.save("../ML_models/mod_nn_3.h5")
+model_3.save("../ML_models/mod_nn_2.h5")
 
 ```
 
@@ -182,11 +188,18 @@ model_3.save("../ML_models/mod_nn_6.h5")
 # Grafische Ausgabe der Modelloptimierung
 
 # create data
-data <- data.frame(val_loss = unlist(py$history$history$val_loss),
-                  loss = unlist(py$history$history$loss))
+data_1 <- data.frame(val_loss = unlist(py$history_1$history$val_loss),
+                  loss = unlist(py$history_1$history$loss))
+
+data_2 <- data.frame(val_loss = unlist(py$history_2$history$val_loss),
+                  loss = unlist(py$history_2$history$loss))
+
+data_3 <- data.frame(val_loss = unlist(py$history_3$history$val_loss),
+                  loss = unlist(py$history_3$history$loss))
+
 
 # Plot
-ggplot(data[-(1:10),]) +
+ggplot(data_1[-(1:10),]) +
   geom_line( aes(x=1:length(val_loss), y=val_loss, colour = "Validation Loss" )) +
   geom_line( aes(x=1:length(loss), y=loss, colour = "Training Loss" )) +
   scale_colour_manual( values = c("Training Loss"="blue", "Validation Loss"="red") ) +
@@ -194,13 +207,28 @@ ggplot(data[-(1:10),]) +
   xlab("Iteration Number") +
   ylab("Loss") 
 
+ggplot(data_1[-(1:10),]) +
+  geom_line( aes(x=1:length(val_loss), y=val_loss, colour = "Validation Loss" )) +
+  geom_line( aes(x=1:length(loss), y=loss, colour = "Training Loss" )) +
+  scale_colour_manual( values = c("Training Loss"="blue", "Validation Loss"="red") ) +
+  labs(title="Loss Function Values During Optimization") +
+  xlab("Iteration Number") +
+  ylab("Loss") 
 
+ggplot(data_1[-(1:10),]) +
+  geom_line( aes(x=1:length(val_loss), y=val_loss, colour = "Validation Loss" )) +
+  geom_line( aes(x=1:length(loss), y=loss, colour = "Training Loss" )) +
+  scale_colour_manual( values = c("Training Loss"="blue", "Validation Loss"="red") ) +
+  labs(title="Loss Function Values During Optimization") +
+  xlab("Iteration Number") +
+  ylab("Loss") 
 ```
 
 
 ### Auswertung der Schätzergebnisse ###
 ```{r}
-test <- load_model_hdf5("../ML_models/mod_nn_3.h5")
+# test <- load_model_hdf5("../ML_models/mod_nn_3.h5")
+model <- py$model_1
 
 # Schätzung der (normierten) Preise für die Trainings- und Testdaten
 training_predictions <- py$model$predict(training_features)
