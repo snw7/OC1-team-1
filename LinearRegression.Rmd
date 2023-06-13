@@ -1,0 +1,160 @@
+```{r include=FALSE}
+
+if (!requireNamespace("reticulate", quietly = TRUE)) {
+  install.packages("reticulate")
+}
+
+# Create list with required libraries
+libraries <- c("dplyr", "readr", "reticulate", "ggplot2", "Metrics", "tidyverse", "glmnet", "e1071", "lubridate")
+
+
+# Loop through each library and check if it's installed, if not, install it and then load it to include in this project
+for (lib in libraries)
+{
+  if (!require(lib, character.only = TRUE))
+  {
+    install.packages(lib)
+    library(lib, character.only = TRUE)
+  }
+}
+
+# Install the reticulate package if you haven't already
+#if (!requireNamespace("reticulate", quietly = TRUE)) {
+#  install.packages("reticulate")
+#}
+
+# Custom function to check if a Conda environment exists
+#condaenv_exists <- function(env_name) {
+#  conda_envs <- conda_list()
+#  return(env_name %in% conda_envs$name)
+#}
+
+# Check if conda is installed, if not, install miniconda
+#conda_envs <- conda_list()
+#if (length(conda_envs) == 0) {
+#  install_miniconda()
+#}
+
+# Create a specific Python environment if it doesn't exist
+#if (!condaenv_exists("r-reticulate")) {
+#  conda_create("r-reticulate", python_version = "3.8")
+#}
+
+# Get the list of installed packages in the created environment
+# conda_envs <- conda_list()
+# r_reticulate_env <- conda_envs[conda_envs$name == "r-reticulate", ]
+# installed_packages <- r_reticulate_env$packages
+
+# Install required packages in the created environment
+# required_packages <- c("pandas", "numpy", "tensorflow", "h5py")
+#
+# for (pkg in required_packages) {
+#   if (!(pkg %in% installed_packages)) {
+#     conda_install("r-reticulate", pkg)
+#   }
+# }
+
+# If this doesn't install 'tensorflow', go ahead and download anaconda from "https://www.anaconda.com/", open it up, go to environment and choose "r-reticulate". Then install the packages " "pandas", "numpy", "tensorflow", "h5py" " from the UI.
+# Error associated with this fix:
+# 'InvalidArchiveError("Error with archive C:\\Users\\ [...] \\\compose_set_interface.h.inc'")'
+```
+
+```{r}
+df <- read_csv("./data_files/test_data.csv", show_col_types = FALSE)
+```
+
+
+## Prediction Models (LR, SVM, NN)
+
+Teilen des Datensatzes in Trainings- Validierungs- und Testdatensatz. Diese werden für LR und SVM verwendet.
+
+```{r include=FALSE}
+# Set a random seed for reproducibility
+set.seed(42)
+
+# Shuffle the data
+data_shuffled <- df %>% 
+  sample_frac(1)
+
+# Calculate the number of rows for each dataset
+n_total <- nrow(df)
+n_train <- floor(0.7 * n_total)
+n_validation <- floor(0.20 * n_total)
+
+# Split the data into training, validation, and test datasets
+train_data <- data_shuffled %>%
+  slice(1:n_train)
+
+validation_data <- data_shuffled %>%
+  slice((n_train + 1):(n_train + n_validation))
+
+test_data <- data_shuffled %>%
+  slice((n_train + n_validation + 1):n_total)
+
+# Check the dimensions of the datasets
+cat("Training dataset dimensions:", dim(train_data), "\n")
+cat("Validation dataset dimensions:", dim(validation_data), "\n")
+cat("Test dataset dimensions:", dim(test_data), "\n")
+
+```
+
+### LR Beispiel einer einfachen linearen Regression
+
+```{r include=FALSE}
+  mod_lr <- lm(Umsatz ~ Datum, df)
+    summary(mod_lr)
+    
+  mod_lr_1 <- lm(Umsatz ~ Datum + as.factor(Warengruppe), df)
+    summary(mod_lr_1)
+    
+  mod_lr_2 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag), df)
+    summary(mod_lr_2)
+    
+  mod_lr_3 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH, df)
+    summary(mod_lr_3)
+    
+  mod_lr_4 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur, df)
+    summary(mod_lr_4)
+  
+  mod_lr_5 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche, df)
+    summary(mod_lr_5)
+  
+  mod_lr_6 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung, df)
+    summary(mod_lr_6)
+    
+    # Quick comment: KiWo and Bewoelkung do not increase R-squared
+    mod_lr_7 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit, df)
+    summary(mod_lr_7)
+  
+    # Windgeschwindigkeit only inproves R-squared marginally.
+  mod_lr_8 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit + Wettercode, df)
+    summary(mod_lr_8)
+
+mod_lr_9 <- lm(Umsatz ~ Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit + Wettercode, df)
+    summary(mod_lr_9)
+    
+mod_lr_10 <- lm(Umsatz ~ Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit + as.factor(Wettercode), df)
+    summary(mod_lr_10)
+    
+mod_lr_11 <- lm(Umsatz ~ Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit + as.factor(Wettercode) + Monat, df)
+    summary(mod_lr_11)
+    
+mod_lr_12 <- lm(Umsatz ~ Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit + as.factor(Wettercode) + Monat + Monat * Temperatur, df)
+    summary(mod_lr_12)
+
+```
+
+#### Nutzung des resultierenden Modells für eine Vohersage
+
+```{r include=FALSE}
+# Make predictions using the test data
+predicted_values <- predict(mod_lr_12, newdata = validation_data)
+
+# Compare the predicted values with the actual values
+comparison <- data.frame(Actual = validation_data$Umsatz, Predicted = predicted_values)
+
+# Display the comparison and RMSE
+head(comparison)
+cat("Mean Absolute Percentage Error (MAPE):", mape(comparison$Actual, comparison$Predicted), "\n")
+
+```

@@ -1,0 +1,5 @@
+# Data Visualization
+## Selbsterdachte Variablen
+## Balkendiagramm + Konfidenzinterval
+# ML Modelle
+## Lineare Regression
