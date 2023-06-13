@@ -201,6 +201,9 @@ df_hotdeck_1_clean_lag <- df_hotdeck_1_lag %>%
 ```{r}
 any(is.na(df_hotdeck_1_clean))
 
+df_hotdeck_1_clean <- df_hotdeck_1_clean %>%
+  arrange(Datum)
+
 ```
 
 

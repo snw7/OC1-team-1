@@ -134,21 +134,21 @@ model_1 = Sequential([
   Dense(2)
 ])
 
-model_2 = Sequential([
-  InputLayer(input_shape=(len(r.training_features.keys()), )),
-  BatchNormalization(),
-  Dense(10, activation='relu'),
-  Dense(4, activation='relu'),
-  Dense(1)
-])
-
-model_3 = Sequential([
-  InputLayer(input_shape=(len(r.training_features.keys()), )),
-  BatchNormalization(),
-  Dense(10, activation='relu'),
-  Dense(4, activation='relu'),
-  Dense(1)
-])
+# model_2 = Sequential([
+#   InputLayer(input_shape=(len(r.training_features.keys()), )),
+#   BatchNormalization(),
+#   Dense(10, activation='relu'),
+#   Dense(4, activation='relu'),
+#   Dense(1)
+# ])
+# 
+# model_3 = Sequential([
+#   InputLayer(input_shape=(len(r.training_features.keys()), )),
+#   BatchNormalization(),
+#   Dense(10, activation='relu'),
+#   Dense(4, activation='relu'),
+#   Dense(1)
+# ])
 
 # Ausgabe einer Zusammenfassung zur Form des Modells, das geschaetzt wird (nicht notwendig)
 # model_1.summary()
@@ -167,7 +167,7 @@ model_3 = Sequential([
  # model_3.compile(loss="mse", optimizer=Adam(learning_rate=0.001))
 
 # Schaetzung des Modells
-history_1 = model_1.fit(r.training_features, r.training_label, epochs=300,
+history_1 = model_1.fit(r.training_features, r.training_label, epochs=750,
                     validation_data = (r.validation_features, r.validation_label), verbose=0)
 
 # history_2 = model_1.fit(r.training_features, r.training_label, epochs=200,
@@ -179,7 +179,7 @@ history_1 = model_1.fit(r.training_features, r.training_label, epochs=300,
 # Ggf. Speichern des geschaetzten Modells
 # model_1.save("../ML_models/mod_nn_2.h5")
 # model_2.save("../ML_models/mod_nn_3.h5")
-model_1.save("../ML_models/mod_nn_12.h5")
+model_1.save("../ML_models/mod_nn_16.h5")
 
 ```
 
