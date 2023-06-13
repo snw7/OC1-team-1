@@ -8,7 +8,9 @@ output: html_notebook
 This program includes the data read-in, to the data preparation, data imputation and visualization. It then continues on to test out initial linear regression models before heading on over to the implementation of a neural network. { DE or EN ?}
 
 ## Datenaufbereitung und Visualisierung
+
 We have to install the Python environment in order to run the following pieces of code.
+
 ```{r include=FALSE}
 
 if (!requireNamespace("reticulate", quietly = TRUE)) {
@@ -119,6 +121,45 @@ df <- df %>%
   mutate(Warengruppe = ifelse(Warengruppe == 4, "Konditorei", Warengruppe)) %>%
   mutate(Warengruppe = ifelse(Warengruppe == 5, "Kuchen", Warengruppe)) %>%
   mutate(Warengruppe = ifelse(Warengruppe == 6, "Saisonbrot", Warengruppe))
+```
+
+### Categorizing the "Wettercodes" to have more distinction. Chosen categories are: 'Clear/Stable', 'Impaired visibility', 'Percipitation', 'Fog', 'Thunderstorm' and 'Other'
+
+```{r include=FALSE}
+df <- df %>%
+  mutate(Wettercode = case_when(
+    Wettercode %in% c(0, 1, 2, 3) ~ "Clear/Stable",
+    Wettercode %in% c(4, 5, 6, 7, 8, 9) ~ "Impaired visibility",
+    Wettercode %in% c(14, 15, 16, 20, 21, 22, 23, 24, 25, 26, 27, 28, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94) ~ "Percipitation",
+    Wettercode %in% c(10, 11, 12, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49) ~ "Fog",
+    Wettercode %in% c(17, 29, 91, 92, 93, 94, 95, 96, 97, 98, 99) ~ "Thunderstorm",
+    Wettercode %in% c(13, 18, 19) ~ "Other",
+    TRUE ~ as.character(Wettercode)  # If none of the cases are true, the value does not change.
+  ))
+
+```
+
+### Changing the "Windgeschwindigkeit" from m/s to the Beaufort-scale
+
+```{r include=FALSE}
+df <- df %>%
+  mutate(Windgeschwindigkeit = case_when(
+    between(Windgeschwindigkeit, 0, 0.2) ~ "0",
+    between(Windgeschwindigkeit, 0.3, 1.5) ~ "1",
+    between(Windgeschwindigkeit, 1.6, 3.3) ~ "2",
+    between(Windgeschwindigkeit, 3.4, 5.4) ~ "3",
+    between(Windgeschwindigkeit, 5.5, 7.9) ~ "4",
+    between(Windgeschwindigkeit, 8, 10.7) ~ "5",
+    between(Windgeschwindigkeit, 10.8, 13.8) ~ "6",
+    between(Windgeschwindigkeit, 13.9, 17.1) ~ "7",
+    between(Windgeschwindigkeit, 17.2, 20.7) ~ "8",
+    between(Windgeschwindigkeit, 20.8, 24.4) ~ "9",
+    between(Windgeschwindigkeit, 24.5, 28.4) ~ "10",
+    between(Windgeschwindigkeit, 28.5, 32.6) ~ "11",
+    Windgeschwindigkeit >= 32.7 ~ "12",
+    TRUE ~ as.character(Windgeschwindigkeit)  # If none of the cases are true, the value does not change.
+  ))
+
 ```
 
 ### Adding weekday column to data set
@@ -253,20 +294,19 @@ load("./ML_models/mod_svm_tune_1.RData")
 # mod_svm_tune_2 <- tune(svm, Umsatz ~ Warengruppe + Wochentag, data=train_data, ranges = list(epsilon = seq(0.2, 1, 0.1), cost = 2^(2:3)))
 ```
 
-Chat GPT: Explanation of the tune() function and especially of the tuning parameters:
-'
-- 'epsilon' is a tuning parameter for the svm function. It specifies the epsilon value, which controls the tolerance for error in the SVM model. In this case, epsilon is set to a sequence of values generated using the seq() function. The seq(0.2, 1, 0.1) generates a sequence from 0.2 to 1, incrementing by 0.1 at each step.
+Chat GPT: Explanation of the tune() function and especially of the tuning parameters: ' - 'epsilon' is a tuning parameter for the svm function. It specifies the epsilon value, which controls the tolerance for error in the SVM model. In this case, epsilon is set to a sequence of values generated using the seq() function. The seq(0.2, 1, 0.1) generates a sequence from 0.2 to 1, incrementing by 0.1 at each step.
 
-- 'cost' is another tuning parameter for the svm function. It controls the 'cost' parameter, which determines the trade-off between achieving a low training error and allowing more flexibility in the SVM model. Here, cost is set to 2\^(2:3). The 2:3 generates the sequence 2, 3, and 2\^(2:3) calculates 2\^2 and 2\^3, resulting in the values 4 and 8, respectively."
-'
+-   'cost' is another tuning parameter for the svm function. It controls the 'cost' parameter, which determines the trade-off between achieving a low training error and allowing more flexibility in the SVM model. Here, cost is set to 2\^(2:3). The 2:3 generates the sequence 2, 3, and 2\^(2:3) calculates 2\^2 and 2\^3, resulting in the values 4 and 8, respectively." '
 
 Vorhersagequalität der SVM ohne angepasste Hyperparameter:
+
 ```{r}
 pred_train_default <- predict(mod_svm_1, train_data)
 mape(train_data$Umsatz, pred_train_default)
 ```
 
 Vorhersagequalität der SVM mit angepassten Hyperparametern:
+
 ```{r}
 pred_train_custom_1 <- predict(mod_svm_tune_1$best.model, train_data)
 mape(train_data$Umsatz, pred_train_custom_1)
@@ -276,6 +316,7 @@ mape(train_data$Umsatz, pred_train_custom_1)
 ```
 
 Now we also have to check, whether the trained model is capable of explaining the test data set.
+
 ```{r}
 pred_test_default <- predict(mod_svm_1, test_data)
 cat("The Mape on default hyperparameter svm is:", mape(test_data$Umsatz, pred_test_default), "\n")
@@ -293,7 +334,3 @@ cat("The Mape on custom_1 hyperparameter svm is:", mape(test_data$Umsatz, pred_t
 # Use the created Python environment
 use_condaenv("r-reticulate", required = TRUE)
 ```
-
-
-
-
