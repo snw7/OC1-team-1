@@ -1896,8 +1896,8 @@ mape(train_data$Umsatz, pred_train_default)</code></pre>
 <pre class="r"><code>pred_train_custom_1 &lt;- predict(mod_svm_tune_1$best.model, train_data)
 mape(train_data$Umsatz, pred_train_custom_1)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDAuMjUxOTM3MVxuIn0= -->
-<pre><code>[1] 0.2519371</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDAuMzQyODMzM1xuIn0= -->
+<pre><code>[1] 0.3428333</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBwcmVkX3RyYWluX2N1c3RvbV8yIDwtIHByZWRpY3QobW9kX3N2bV90dW5lXzIkYmVzdC5tb2RlbCwgdHJhaW5fZGF0YSlcbiMgbWFwZSh0cmFpbl9kYXRhJFVtc2F0eiwgcHJlZF90cmFpbl9jdXN0b21fMilcbmBgYCJ9 -->
 <pre class="r"><code># pred_train_custom_2 &lt;- predict(mod_svm_tune_2$best.model, train_data)
@@ -1909,13 +1909,24 @@ mape(train_data$Umsatz, pred_train_custom_1)</code></pre>
 explaining the test data set.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2F0KFwiVGhlIE1hcGUgb24gY3VzdG9tXzEgaHlwZXJwYXJhbWV0ZXIgc3ZtIGlzOlwiLCBtYXBlKHRlc3RfZGF0YSRVbXNhdHosIHByZWRfdGVzdF9jdXN0b21fMSksIFwiXFxuXCIpXG5cbmBgYCJ9 -->
-<pre class="r"><code>cat(&quot;The Mape on custom_1 hyperparameter svm is:&quot;, mape(test_data$Umsatz, pred_test_custom_1), &quot;\n&quot;)
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucHJlZF90ZXN0X2RlZmF1bHQgPC0gcHJlZGljdChtb2Rfc3ZtXzEsIHRlc3RfZGF0YSlcbmNhdChcIlRoZSBNYXBlIG9uIGRlZmF1bHQgaHlwZXJwYXJhbWV0ZXIgc3ZtIGlzOlwiLCBtYXBlKHRlc3RfZGF0YSRVbXNhdHosIHByZWRfdGVzdF9kZWZhdWx0KSwgXCJcXG5cIilcbmBgYCJ9 -->
+<pre class="r"><code>pred_test_default &lt;- predict(mod_svm_1, test_data)
+cat(&quot;The Mape on default hyperparameter svm is:&quot;, mape(test_data$Umsatz, pred_test_default), &quot;\n&quot;)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiVGhlIE1hcGUgb24gY3VzdG9tXzEgaHlwZXJwYXJhbWV0ZXIgc3ZtIGlzOiAwLjI1MjE0ODMgXG4ifQ== -->
-<pre><code>The Mape on custom_1 hyperparameter svm is: 0.2521483 </code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiVGhlIE1hcGUgb24gZGVmYXVsdCBoeXBlcnBhcmFtZXRlciBzdm0gaXM6IDAuNjMzMjQwNiBcbiJ9 -->
+<pre><code>The Mape on default hyperparameter svm is: 0.6332406 </code></pre>
 <!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucHJlZF90ZXN0X2N1c3RvbV8xIDwtIHByZWRpY3QobW9kX3N2bV90dW5lXzEkYmVzdC5tb2RlbCwgdGVzdF9kYXRhKVxuY2F0KFwiVGhlIE1hcGUgb24gY3VzdG9tXzEgaHlwZXJwYXJhbWV0ZXIgc3ZtIGlzOlwiLCBtYXBlKHRlc3RfZGF0YSRVbXNhdHosIHByZWRfdGVzdF9jdXN0b21fMSksIFwiXFxuXCIpXG5gYGAifQ== -->
+<pre class="r"><code>pred_test_custom_1 &lt;- predict(mod_svm_tune_1$best.model, test_data)
+cat(&quot;The Mape on custom_1 hyperparameter svm is:&quot;, mape(test_data$Umsatz, pred_test_custom_1), &quot;\n&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiVGhlIE1hcGUgb24gY3VzdG9tXzEgaHlwZXJwYXJhbWV0ZXIgc3ZtIGlzOiAwLjM1MDU4MDcgXG4ifQ== -->
+<pre><code>The Mape on custom_1 hyperparameter svm is: 0.3505807 </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBwcmVkX3Rlc3RfY3VzdG9tXzIgPC0gcHJlZGljdChtb2Rfc3ZtX3R1bmVfMiRiZXN0Lm1vZGVsLCB0ZXN0X2RhdGEpXG4jIGNhdChcIlRoZSBNYXBlIG9uIGN1c3RvbV8yIGh5cGVycGFyYW1ldGVyIHN2bSBpczpcIiwgbWFwZSh0ZXN0X2RhdGEkVW1zYXR6LCBwcmVkX3Rlc3RfY3VzdG9tXzIpLCBcIlxcblwiKVxuYGBgIn0= -->
+<pre class="r"><code># pred_test_custom_2 &lt;- predict(mod_svm_tune_2$best.model, test_data)
+# cat(&quot;The Mape on custom_2 hyperparameter svm is:&quot;, mape(test_data$Umsatz, pred_test_custom_2), &quot;\n&quot;)</code></pre>
+<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <div id="nn-neural-net" class="section level4">
