@@ -139,6 +139,29 @@ df <- df %>%
 
 ```
 
+### Changing the "Windgeschwindigkeit" from m/s to the Beaufort-scale
+
+```{r include=FALSE}
+df <- df %>%
+  mutate(Windgeschwindigkeit = case_when(
+    between(Windgeschwindigkeit, 0, 0.2) ~ "0",
+    between(Windgeschwindigkeit, 0.3, 1.5) ~ "1",
+    between(Windgeschwindigkeit, 1.6, 3.3) ~ "2",
+    between(Windgeschwindigkeit, 3.4, 5.4) ~ "3",
+    between(Windgeschwindigkeit, 5.5, 7.9) ~ "4",
+    between(Windgeschwindigkeit, 8, 10.7) ~ "5",
+    between(Windgeschwindigkeit, 10.8, 13.8) ~ "6",
+    between(Windgeschwindigkeit, 13.9, 17.1) ~ "7",
+    between(Windgeschwindigkeit, 17.2, 20.7) ~ "8",
+    between(Windgeschwindigkeit, 20.8, 24.4) ~ "9",
+    between(Windgeschwindigkeit, 24.5, 28.4) ~ "10",
+    between(Windgeschwindigkeit, 28.5, 32.6) ~ "11",
+    Windgeschwindigkeit >= 32.7 ~ "12",
+    TRUE ~ as.character(Windgeschwindigkeit)  # If none of the cases are true, the value does not change.
+  ))
+
+```
+
 ### Adding weekday column to data set
 
 ```{r include=FALSE}
