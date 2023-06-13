@@ -129,7 +129,7 @@ from tensorflow.keras.optimizers import Adam
 model_1 = Sequential([
   InputLayer(input_shape=(len(r.training_features.keys()), )),
   BatchNormalization(),
-  Dense(15, activation='tanh'),
+  Dense(16, activation='tanh'),
   Dense(8, activation='relu'),
   Dense(2)
 ])
@@ -179,7 +179,7 @@ history_1 = model_1.fit(r.training_features, r.training_label, epochs=300,
 # Ggf. Speichern des geschaetzten Modells
 # model_1.save("../ML_models/mod_nn_2.h5")
 # model_2.save("../ML_models/mod_nn_3.h5")
-model_1.save("../ML_models/mod_nn_11.h5")
+model_1.save("../ML_models/mod_nn_12.h5")
 
 ```
 
