@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # CSV-Datei einlesen
-data = pd.read_csv('data/final/data_training.csv', delimiter=';')
+data = pd.read_csv('data/final/data_clean_lag.csv', delimiter=';')
 
 grouped_data = data.groupby(["KielerWoche", "FerienSH"])["Umsatz"].agg(["mean", "std"]).reset_index()
 
