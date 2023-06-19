@@ -224,15 +224,19 @@ ggplot(data_1[-(1:10),]) +
 
 ### Auswertung der Schätzergebnisse ###
 ```{r}
-test <- load_model_hdf5("../ML_models/mod_nn_3.h5")
+# test <- load_model_hdf5("../ML_models/mod_nn_3.h5")
 # model <- py$model_1
 
 
 
 # Schätzung der (normierten) Preise für die Trainings- und Testdaten
-training_predictions <- py$model_1$predict(training_features)
-validation_predictions <- py$model_1$predict(validation_features)
-test_predictions <- test$predict(test_features)
+# training_predictions <- py$model_1$predict(training_features)
+# validation_predictions <- py$model_1$predict(validation_features)
+
+temp <- test_features[2, ]
+
+test_predictions <- py$model_1$predict(temp)
+test_predictions
 
 # Need to save the predicted values in a .csv file.
 
@@ -304,6 +308,19 @@ library(httr)
 
 # name must not be provided; however, each team must upload at least one not
 # anonymous prediction
+
+# prediction_temp <- read.csv("../data/prediction_template.csv")
+
+predictions <- test_predictions
+predictions
+
+# prediction_temp$predicted <- predict(mod_lr_12, newdata = test_data)
+#
+# prediction_temp <- select(prediction_temp, -Umsatz)
+#
+# prediction_temp <- prediction_temp %>%
+#   rename(Umsatz = predicted)
+
 name <- "Gruppe 11"
 
 # Execution of the request

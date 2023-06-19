@@ -19,12 +19,21 @@ for (lib in libraries)
     library(lib, character.only = TRUE)
   }
 }
-
-# Load the saved model
-model <- load_model_hdf5("../ML_models/mod_nn_17.h5")
-
-predictions <- model$predict(test_features)
-predictions
-
 ```
+
+
+```{r}
+# Load the saved model
+model <- load_model_hdf5("../ML_models/mod_nn_18.h5")
+
+temp <- test_features[2, ]
+
+test_predictions <- model$predict(temp)
+test_predictions
+
+# 
+# predictions <- model$predict(test_features)
+# predictions
+```
+
 
