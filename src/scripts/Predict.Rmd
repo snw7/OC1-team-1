@@ -1,0 +1,30 @@
+---
+title: "test"
+author: "Philipp Meisinger"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r}
+libraries <- c("dplyr", "readr", "reticulate", "ggplot2", "Metrics", "tidyverse", "glmnet", "e1071", "lubridate", "keras")
+
+
+# Loop through each library and check if it's installed, if not, install it and then load it to include in this project
+for (lib in libraries)
+{
+  if (!require(lib, character.only = TRUE))
+  {
+    install.packages(lib)
+    library(lib, character.only = TRUE)
+  }
+}
+
+# Load the saved model
+model <- load_model_hdf5("../ML_models/mod_nn_17.h5")
+
+predictions <- model$predict(test_features)
+predictions
+
+```
+

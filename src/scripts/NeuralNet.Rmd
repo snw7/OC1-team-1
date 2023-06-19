@@ -169,7 +169,14 @@ history_1 = model_1.fit(r.training_features, r.training_label, epochs=750,
 # Ggf. Speichern des geschaetzten Modells
 # model_1.save("../ML_models/mod_nn_2.h5")
 # model_2.save("../ML_models/mod_nn_3.h5")
-model_1.save("../ML_models/mod_nn_19.h5")
+# model_1.save("../ML_models/mod_nn_19.h5")
+
+
+```
+```{r}
+# model_test <- load_model_hdf5("../ML_models/mod_nn_19.h5")
+# 
+# model_history <- model_test$history
 
 ```
 
@@ -181,8 +188,8 @@ model_1.save("../ML_models/mod_nn_19.h5")
 data_1 <- data.frame(val_loss = unlist(py$history_1$history$val_loss),
                   loss = unlist(py$history_1$history$loss))
 
-# data_2 <- data.frame(val_loss = unlist(py$history_2$history$val_loss),
-#                   loss = unlist(py$history_2$history$loss))
+# data_2 <- data.frame(val_loss = unlist(model_history$history$val_loss),
+#                   loss = unlist(model_history$history$loss))
 # 
 # data_3 <- data.frame(val_loss = unlist(py$history_3$history$val_loss),
 #                   loss = unlist(py$history_3$history$loss))
@@ -217,7 +224,7 @@ ggplot(data_1[-(1:10),]) +
 
 ### Auswertung der Schätzergebnisse ###
 ```{r}
-# test <- load_model_hdf5("../ML_models/mod_nn_3.h5")
+test <- load_model_hdf5("../ML_models/mod_nn_3.h5")
 # model <- py$model_1
 
 
@@ -225,7 +232,7 @@ ggplot(data_1[-(1:10),]) +
 # Schätzung der (normierten) Preise für die Trainings- und Testdaten
 training_predictions <- py$model_1$predict(training_features)
 validation_predictions <- py$model_1$predict(validation_features)
-test_predictions <- py$model_1$predict(test_features)
+test_predictions <- test$predict(test_features)
 
 # Need to save the predicted values in a .csv file.
 
@@ -277,22 +284,22 @@ cat(paste0("\nTatsächlicher Umsatz:\t", validation_label[[1]][100]))
 
 ```{r}
 library(httr)
+# 
+# # Dataframe for request must include columns `Datum`, `Warengruppe` und `Umsatz`
+# predictions_temp <- read_csv("../data/prediction_template.csv")
+# 
+# predictions <- as.data.frame(test_predictions)
+# 
+# predictions$Datum <- predictions_temp$Datum
+#   
+# predictions <- left_join(predictions, predictions_temp, by = "Datum")
+# 
+# predictions$Umsatz <- predictions$V1
+# 
+# df_hotdeck_1_clean <- df_hotdeck_1_clean %>%
+#   rename(Umsatz = Umsatz.x, Warengruppe = Warengruppe.x)
 
-# Dataframe for request must include columns `Datum`, `Warengruppe` und `Umsatz`
-predictions_temp <- read_csv("../data/prediction_template.csv")
-
-predictions <- as.data.frame(test_predictions)
-
-predictions$Datum <- predictions_temp$Datum
-  
-predictions <- left_join(predictions, predictions_temp, by = "Datum")
-
-predictions$Umsatz <- predictions$V1
-
-df_hotdeck_1_clean <- df_hotdeck_1_clean %>%
-  rename(Umsatz = Umsatz.x, Warengruppe = Warengruppe.x)
-
-rename()
+# rename()
 
 
 # name must not be provided; however, each team must upload at least one not

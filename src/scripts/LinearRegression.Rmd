@@ -132,9 +132,15 @@ mod_lr_12 <- lm(Umsatz ~ Datum + Datum * Temperatur + as.factor(Warengruppe) + a
 
 ```{r include=FALSE}
 # Make predictions using the test data
-predictions <- predict(mod_lr_12, newdata = test_data)
+prediction_temp <- read.csv("../data/prediction_template.csv") 
 
-predictions
+prediction_temp$predicted <- predict(mod_lr_12, newdata = test_data)
+
+prediction_temp <- select(prediction_temp, -Umsatz)
+
+prediction_temp <- prediction_temp %>%
+  rename(Umsatz = predicted)
+
 
 # Compare the predicted values with the actual values
 # comparison <- data.frame(Actual = validation_data$Umsatz, Predicted = predicted_values)
@@ -142,18 +148,16 @@ predictions
 # Display the comparison and RMSE
 # head(comparison)
 # cat("Mean Absolute Percentage Error (MAPE):", mape(comparison$Actual, comparison$Predicted), "\n")
-df
+
+
 
 
 ```
 
 ```{r}
 library(httr)
+predictions <- prediction_temp
 
-predictions <- 
-
-head(predicted_values)
-  
 name <- "Gruppe 11"
 
 # Execution of the request
