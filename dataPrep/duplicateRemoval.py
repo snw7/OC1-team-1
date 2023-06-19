@@ -10,7 +10,6 @@ transferDict = {}
 lastDate = ""
 valuesToTransfer = ["Datum", "KielerWoche", "Bewoelkung", "Temperatur", "Windgeschwindigkeit", "Wettercode", "Wochentag", "FerienSH"]
 
-
 with open('../data/data_combined_sorted_cropped.csv', newline='') as csvfile: # insert ordered dataset!! (chronolgically)
     reader = csv.DictReader(csvfile, delimiter=';')
     for row in reader: 
