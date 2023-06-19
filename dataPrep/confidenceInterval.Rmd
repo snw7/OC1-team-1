@@ -1,0 +1,78 @@
+---
+title: "Week_2"
+author: "Felix W"
+date: "`r Sys.Date()`"
+output: html_document
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r}
+library(tidyverse)
+
+data <- read_csv("data/final/data_clean_lag.csv")
+# * # Calculate mean and standard error for each weekday
+umsatz_summary <- data %>%
+  group_by(Wochentag) %>%
+  summarise(mean = mean(Umsatz),
+            se = sd(Umsatz) / sqrt(n()))
+
+# Add error bars to bar plot
+plot_bar_3 <- ggplot(umsatz_summary, aes(x = Wochentag, y = mean)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  geom_errorbar(aes(ymin = mean - 1.96*se, ymax = mean + 1.96*se), width = 0.4)
+plot_bar_3
+# *
+# * In this code, we first use group_by() and summarise() to calculate the mean and standard error of Umsatz for each weekday. We then use geom_errorbar() to add error bars to the plot. The ymin and ymax arguments in geom_errorbar() specify the lower and upper bounds of the confidence interval, respectively, using a multiplier of 1.96 times the standard error to represent the 95% confidence interval. The width argument controls the width of the error bars. *
+
+```
+```{r}
+
+
+# create a list of dataframes for each day of the week
+data_list <- split(data, data$Wochentag)
+
+# create a barplot with confidence intervals for each day of the week
+for (i in 1:7) {
+  plot_data <- data_list[[i]]
+  p <- ggplot(plot_data, aes(x=Warengruppe, y=Umsatz)) +
+         geom_bar(stat="identity", fill="#619CFF") +
+         stat_summary(fun.data=mean_cl_normal, geom="errorbar", width=0.2, color="#F8766D") +
+         scale_x_continuous(breaks=1:6, labels=c("1","2","3","4","5","6")) +
+         labs(title=paste("Mean Umsatz per Warengruppe on", weekdays(as.Date(plot_data$Datum[1]))),
+              x="Warengruppe", y="Umsatz") +
+         theme_minimal()
+  print(p)
+}
+
+
+
+```
+
+```{r}
+library(tidyverse)
+
+data <- read_csv("../data/final/data_clean_lag.csv")
+
+# Filter the dataset to include only the observations during KielerWoche
+kieler_woche_data <- data %>%
+  filter(FerienSH == TRUE)
+
+# Calculate mean and standard error for each weekday during KielerWoche
+kieler_woche_summary <- kieler_woche_data %>%
+  group_by(Wochentag) %>%
+  summarise(mean = mean(Umsatz),
+            se = sd(Umsatz) / sqrt(n()))
+
+# Add error bars to bar plot
+plot_bar_kieler_woche <- ggplot(kieler_woche_summary, aes(x = Wochentag, y = mean)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  geom_errorbar(aes(ymin = mean - 1.96 * se, ymax = mean + 1.96 * se), width = 0.4) +
+  labs(title = "Mean Umsatz per Wochentag during FerienSH",
+       x = "Wochentag",
+       y = "Umsatz") +
+  theme_minimal()
+
+plot_bar_kieler_woche
+```
