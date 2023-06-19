@@ -76,3 +76,38 @@ plot_bar_kieler_woche <- ggplot(kieler_woche_summary, aes(x = Wochentag, y = mea
 
 plot_bar_kieler_woche
 ```
+
+```{r}
+
+library(tidyverse)
+
+# Define the desired order of weekdays
+weekday_order <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+
+# Filter the dataset to include only the observations during KielerWoche
+kieler_woche_data <- data #%>%
+  #filter(KielerWoche == TRUE)
+
+# Convert Wochentag to a factor with the desired order
+kieler_woche_data$Wochentag <- factor(kieler_woche_data$Wochentag, levels = weekday_order)
+
+# Calculate mean and standard error for each weekday during KielerWoche
+kieler_woche_summary <- kieler_woche_data %>%
+  group_by(Wochentag) %>%
+  summarise(mean = mean(Umsatz),
+            se = sd(Umsatz) / sqrt(n()))
+
+# Add error bars to bar plot with y-axis scale limited to a maximum of 400
+plot_bar_kieler_woche <- ggplot(kieler_woche_summary, aes(x = Wochentag, y = mean)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  geom_errorbar(aes(ymin = mean - 1.96 * se, ymax = mean + 1.96 * se), width = 0.4) +
+  labs(title = "Mean Umsatz pro Wochentag",#während Kieler Woche
+       x = "Wochentag",
+       y = "Umsatz") +
+  scale_y_continuous(limits = c(0, 400)) +
+  theme_minimal()
+
+plot_bar_kieler_woche
+
+
+```
