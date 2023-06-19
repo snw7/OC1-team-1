@@ -33,24 +33,48 @@ revenue <- read.csv('../data/umsatzdaten_gekuerzt.csv')
 kiwo <- read.csv('../data/kiwo.csv')
 ferien <- read.csv('../data/schulferienSH.csv')
 weather <- read.csv('../data/weather.csv')
+prediction_2019 <- read.csv('../data/prediction_template.csv')
 
 ```
 
-### Joining the kiwo data with the revenue data
 
-Replacing all instances of Kiwo = NA with Kiwo = 0 Reformating Column KielerWoche to boolean values
+### Joining in the Test data set.
+The way we are to predict the "Umsatz" values for the times between the 2019-06-08 and the 2019-07-30 is by filling out the values we know in that time frame as well. So we'll include this time frame in the data preparation step, so that we can later on split the data set and keep this one as the test data set.
 
 ```{r include=FALSE}
-df_prep <- left_join(revenue, kiwo, by = "Datum") %>%
+df_prep <- full_join(revenue, prediction_2019, by = "Datum") %>%
+  mutate(Warengruppe.x = ifelse(is.na(Warengruppe.x), Warengruppe.y, Warengruppe.x)) %>%
+  mutate(Umsatz.x = ifelse(is.na(Umsatz.x), Umsatz.y, Umsatz.x))
+
+df_prep <- df_prep %>% 
+  rename(Umsatz = Umsatz.x, Warengruppe = Warengruppe.x)
+
+df_prep <- select(df_prep, -Warengruppe.y)
+df_prep <- select(df_prep, -Umsatz.y)
+
+```
+
+### Joining the kiwo data
+
+Replacing all instances of Kiwo = NA with Kiwo = 0 Reformating Column KielerWoche to boolean values the weather data with the df containing revenue and kiwo
+
+```{r include=FALSE}
+df_prep <- left_join(df_prep, kiwo, by = "Datum") %>%
   replace_na(list(KielerWoche = 0)) %>%
   mutate(KielerWoche = ifelse(KielerWoche == 1, TRUE, FALSE))
 
 ```
 
-### Joining the weather data with the df containing revenue and kiwo
 
 ```{r include=FALSE}
 df_prep <- left_join(df_prep, weather, by = "Datum")
+
+```
+
+
+```{r}
+# Deleting Column Wettercode from df:
+df_prep <- select(df_prep, -Wettercode)
 
 ```
 
@@ -64,6 +88,14 @@ df_prep$Datum <- as.Date(df_prep$Datum, format = "%Y-%m-%d")
 
 ```{r include=FALSE}
 df_prep <- df_prep %>%
+  mutate(Warengruppe = ifelse(Warengruppe == 1, "Brot", Warengruppe)) %>%
+  mutate(Warengruppe = ifelse(Warengruppe == 2, "Brötchen", Warengruppe)) %>%
+  mutate(Warengruppe = ifelse(Warengruppe == 3, "Croissant", Warengruppe)) %>%
+  mutate(Warengruppe = ifelse(Warengruppe == 4, "Konditorei", Warengruppe)) %>%
+  mutate(Warengruppe = ifelse(Warengruppe == 5, "Kuchen", Warengruppe)) %>%
+  mutate(Warengruppe = ifelse(Warengruppe == 6, "Saisonbrot", Warengruppe))
+
+prediction_2019 <- prediction_2019 %>%
   mutate(Warengruppe = ifelse(Warengruppe == 1, "Brot", Warengruppe)) %>%
   mutate(Warengruppe = ifelse(Warengruppe == 2, "Brötchen", Warengruppe)) %>%
   mutate(Warengruppe = ifelse(Warengruppe == 3, "Croissant", Warengruppe)) %>%
@@ -93,12 +125,6 @@ df_prep <- left_join(df_prep, ferien, by = "Datum") %>%
 df_prep$Monat <- month(df_prep$Datum)
 ```
 
-```{r}
-# Deleting Column Wettercode from df:
-
-df_prep <- select(df_prep, -Wettercode)
-```
-
 
 ```{r}
 
@@ -106,6 +132,7 @@ df_prep_lag <- df_prep %>%
   arrange(Datum, Warengruppe) %>%
   group_by(Warengruppe) %>%
   mutate(value_prev_year = lag(Umsatz, default = NA, n = 365)) %>%
+  
   ungroup()
 
 
@@ -204,7 +231,44 @@ any(is.na(df_hotdeck_1_clean))
 df_hotdeck_1_clean <- df_hotdeck_1_clean %>%
   arrange(Datum)
 
+# Add test data set to clean data:
+
+# prediction_2019$Datum <- as.Date(prediction_2019$Datum, format = "%Y-%m-%d")
+# 
+# 
+# df_hotdeck_1_clean <- full_join(df_hotdeck_1_clean, prediction_2019, by = "Datum") %>%
+#   mutate(Warengruppe.x = ifelse(is.na(Warengruppe.x), Warengruppe.y, Warengruppe.x)) %>%
+#   mutate(Umsatz.x = ifelse(is.na(Umsatz.x), Umsatz.y, Umsatz.x))
+#   
+# df_hotdeck_1_clean <- df_hotdeck_1_clean %>% 
+#   rename(Umsatz = Umsatz.x, Warengruppe = Warengruppe.x)
+# 
+# 
+# df_hotdeck_1_clean <- select(df_hotdeck_1_clean, -Warengruppe.y)
+# df_hotdeck_1_clean <- select(df_hotdeck_1_clean, -Umsatz.y)
+
+
 ```
+
+
+```{r}
+# Add test data set to lag data set:
+# 
+# df_hotdeck_1_clean_lag <- full_join(df_hotdeck_1_clean_lag, prediction_2019, by = "Datum") %>%
+#   mutate(Warengruppe.x = ifelse(is.na(Warengruppe.x), Warengruppe.y, Warengruppe.x)) %>%
+#   mutate(Umsatz.x = ifelse(is.na(Umsatz.x), Umsatz.y, Umsatz.x))
+#   
+# df_hotdeck_1_clean_lag <- df_hotdeck_1_clean_lag %>% 
+#   rename(Umsatz = Umsatz.x, Warengruppe = Warengruppe.x)
+# 
+# 
+# df_hotdeck_1_clean_lag <- select(df_hotdeck_1_clean_lag, -Warengruppe.y)
+# df_hotdeck_1_clean_lag <- select(df_hotdeck_1_clean_lag, -Umsatz.y)
+
+
+```
+
+
 
 
 

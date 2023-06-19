@@ -53,53 +53,41 @@ use_condaenv("r-reticulate", required = TRUE)
 
 ```
 
-Preparing data once more in a different configuration
-```{r include=FALSE}
-# Preparation of independent variables ('features') by dummy coding the categorical variables
-features <- as_tibble(model.matrix(Umsatz ~ as.factor(Warengruppe) +  as.factor(Wochentag) + as.factor(Monat) + Datum + Bewoelkung + Temperatur + KielerWoche + Windgeschwindigkeit, df))
-names(features)
-
-# Construction of prepared data set 
-prepared_data <- tibble(label=df$Umsatz, features)  
-# inclusion of the dependent variable ('label')
-
-```
-
 Now since this is a different data type as the previously used one for the LR and SVM, we need to create the basic, training and validation data sets again:
 ```{r}
-set.seed(42)
-prepared_data_shuffled <- prepared_data %>%
-  sample_frac(1)
-
-n_total_NN <- nrow(prepared_data_shuffled)
-n_training_NN <- floor(0.7 * n_total_NN)
-n_validation_NN <- floor(0.2 * n_total_NN)
+training_NN <- subset(df, Datum >= "2013-07-01" & Datum <= "2018-07-30")
+validation_NN <- subset(df, Datum >= "2018-07-31" & Datum <= "2019-06-08")
+test_NN <- subset(df, Datum >= "2019-06-09" & Datum <= "2019-07-30")
 
 ```
 
-
-Here we need to split the features and labels for training, validation and test data sets.
 ```{r}
-training_features <-
-  prepared_data_shuffled %>% select(-label) %>% slice(1:n_training_NN)
+training_features <- as_tibble(model.matrix(Umsatz ~ as.factor(Warengruppe) +  as.factor(Wochentag) + as.factor(Monat) + Datum + Bewoelkung + Temperatur + KielerWoche + Windgeschwindigkeit, training_NN))
 
-validation_features <-
-  prepared_data_shuffled %>% select(-label) %>% slice((n_training_NN + 1):(n_training_NN + n_validation_NN))
+validation_features <- as_tibble(model.matrix(Umsatz ~ as.factor(Warengruppe) +  as.factor(Wochentag) + as.factor(Monat) + Datum + Bewoelkung + Temperatur + KielerWoche + Windgeschwindigkeit, validation_NN))
 
-test_features <-
-  prepared_data_shuffled %>% select(-label) %>% slice((n_training_NN + n_validation_NN + 1):n_total_NN)
+test_features <- as_tibble(model.matrix(Umsatz ~ as.factor(Warengruppe) +  as.factor(Wochentag) + as.factor(Monat) + Datum + Bewoelkung + Temperatur + KielerWoche + Windgeschwindigkeit, test_NN))
 
-training_label <-
-  prepared_data_shuffled %>% select(label) %>% slice(1:n_training_NN)
+training_label <- tibble(label=training_NN$Umsatz)
 
-validation_label <-
-  prepared_data_shuffled %>% select(label) %>% slice((n_training_NN + 1):(n_training_NN + n_validation_NN))
+validation_label <- tibble(label=validation_NN$Umsatz)
 
-test_label <-
-  prepared_data_shuffled %>% select(label) %>% slice((n_training_NN + n_validation_NN + 1):n_total_NN)
+test_label <- tibble(label=test_NN$Umsatz)
+
+
+test_features$`as.factor(Monat)2` <- 0
+test_features$`as.factor(Monat)3` <- 0
+test_features$`as.factor(Monat)4` <- 0
+test_features$`as.factor(Monat)5` <- 0
+test_features$`as.factor(Monat)6` <- ifelse(test_features$`as.factor(Monat)7` == 0, 1, 0)
+test_features$`as.factor(Monat)8` <- 0
+test_features$`as.factor(Monat)9` <- 0
+test_features$`as.factor(Monat)10` <- 0
+test_features$`as.factor(Monat)11` <- 0
+test_features$`as.factor(Monat)12` <- 0
+test_features$`as.factor(Warengruppe)Saisonbrot` <- 0
 
 ```
-
 
 ```{r}
 # Check the dimensions of the dataframes
@@ -112,6 +100,8 @@ cat("\n")
 cat("Training label dimensions:", dim(training_label), "\n")
 cat("Validation label dimensions:", dim(validation_label), "\n")
 cat("Test label dimensions:", dim(test_label), "\n")
+
+
 ```
 
 Now let's go on to train the Neural Network!
@@ -129,7 +119,7 @@ from tensorflow.keras.optimizers import Adam
 model_1 = Sequential([
   InputLayer(input_shape=(len(r.training_features.keys()), )),
   BatchNormalization(),
-  Dense(16, activation='tanh'),
+  Dense(16, activation='relu'),
   Dense(8, activation='relu'),
   Dense(2)
 ])
@@ -179,7 +169,7 @@ history_1 = model_1.fit(r.training_features, r.training_label, epochs=750,
 # Ggf. Speichern des geschaetzten Modells
 # model_1.save("../ML_models/mod_nn_2.h5")
 # model_2.save("../ML_models/mod_nn_3.h5")
-model_1.save("../ML_models/mod_nn_16.h5")
+model_1.save("../ML_models/mod_nn_19.h5")
 
 ```
 
@@ -237,12 +227,13 @@ training_predictions <- py$model_1$predict(training_features)
 validation_predictions <- py$model_1$predict(validation_features)
 test_predictions <- py$model_1$predict(test_features)
 
+# Need to save the predicted values in a .csv file.
+
 
 
 # Vergleich der Gütekriterien für die Traingings- und Testdaten
 cat(paste0("MAPE on the Training Data:\t", format(mape(training_label[[1]], training_predictions), digits=3, nsmall=2)))
 cat(paste0("\nMAPE on the Validation Data:\t", format(mape(validation_label[[1]], validation_predictions), digits=3, nsmall=2)))
-
 
 ```
 
@@ -253,25 +244,25 @@ cat(paste0("\nMAPE on the Validation Data:\t", format(mape(validation_label[[1]]
 
 # Zusammenstellung der Daten für die Plots
 data_train <- data.frame(prediction = training_predictions/1000, actual = training_label[[1]]/1000)
-data_test <- data.frame(prediction = validation_predictions/1000, actual = validation_label[[1]]/1000)
+data_validation <- data.frame(prediction = validation_predictions/1000, actual = validation_label[[1]]/1000)
 
-# Plot der Ergebnisse der Trainingsdaten
-ggplot(data_train[1:100,]) +
-  geom_line( aes(x=1:length(prediction), y=prediction, colour = "Predicted Values" )) +
-  geom_line( aes(x=1:length(actual), y=actual, colour = "Actual Values" )) +
-  scale_colour_manual( values = c("Predicted Values"="blue", "Actual Values"="red") ) +
-  labs(title="Predicted and Actual Values for the Training Data") +
-  xlab("Case Number") +
-  ylab("Umsatz") 
-
-# Plot der Ergebnisse der Validierungsdaten
-ggplot(data_test[1:100,]) +
-  geom_line( aes(x=1:length(prediction), y=prediction, colour = "Predicted Values" )) +
-  geom_line( aes(x=1:length(actual), y=actual, colour = "Actual Values" )) +
-  scale_colour_manual( values = c("Predicted Values"="blue", "Actual Values"="red") ) +
-  labs(title="Predicted and Actual Values for the Test Data") +
-  xlab("Case Number") +
-  ylab("Umsatz") 
+# # Plot der Ergebnisse der Trainingsdaten
+# ggplot(data_train[1:100,]) +
+#   geom_line( aes(x=1:length(prediction), y=prediction, colour = "Predicted Values" )) +
+#   geom_line( aes(x=1:length(actual), y=actual, colour = "Actual Values" )) +
+#   scale_colour_manual( values = c("Predicted Values"="blue", "Actual Values"="red") ) +
+#   labs(title="Predicted and Actual Values for the Training Data") +
+#   xlab("Case Number") +
+#   ylab("Umsatz") 
+# 
+# # Plot der Ergebnisse der Validierungsdaten
+# ggplot(data_test[1:100,]) +
+#   geom_line( aes(x=1:length(prediction), y=prediction, colour = "Predicted Values" )) +
+#   geom_line( aes(x=1:length(actual), y=actual, colour = "Actual Values" )) +
+#   scale_colour_manual( values = c("Predicted Values"="blue", "Actual Values"="red") ) +
+#   labs(title="Predicted and Actual Values for the Test Data") +
+#   xlab("Case Number") +
+#   ylab("Umsatz") 
 
 
 ```
@@ -284,4 +275,35 @@ cat(paste0("\nTatsächlicher Umsatz:\t", validation_label[[1]][100]))
 # model_1.save("../ML_models/mod_nn_6.h5")
 ```
 
+```{r}
+library(httr)
+
+# Dataframe for request must include columns `Datum`, `Warengruppe` und `Umsatz`
+predictions_temp <- read_csv("../data/prediction_template.csv")
+
+predictions <- as.data.frame(test_predictions)
+
+predictions$Datum <- predictions_temp$Datum
+  
+predictions <- left_join(predictions, predictions_temp, by = "Datum")
+
+predictions$Umsatz <- predictions$V1
+
+df_hotdeck_1_clean <- df_hotdeck_1_clean %>%
+  rename(Umsatz = Umsatz.x, Warengruppe = Warengruppe.x)
+
+rename()
+
+
+# name must not be provided; however, each team must upload at least one not
+# anonymous prediction
+name <- "Gruppe 11"
+
+# Execution of the request
+r <- POST("https://bakery-sales-mape-tolicqztoq-ey.a.run.app/", 
+          body = list(name=name, predictions=predictions),
+          encode = "json")
+# Output of MAPE in Percent
+content(r, "parsed", "application/json")
+```
 

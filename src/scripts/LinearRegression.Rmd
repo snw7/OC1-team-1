@@ -60,7 +60,7 @@ for (lib in libraries)
 ```
 
 ```{r}
-df <- read_csv("./data_files/test_data.csv", show_col_types = FALSE)
+df <- read_csv("../data/data_clean.csv", show_col_types = FALSE)
 ```
 
 
@@ -69,27 +69,9 @@ df <- read_csv("./data_files/test_data.csv", show_col_types = FALSE)
 Teilen des Datensatzes in Trainings- Validierungs- und Testdatensatz. Diese werden für LR und SVM verwendet.
 
 ```{r include=FALSE}
-# Set a random seed for reproducibility
-set.seed(42)
-
-# Shuffle the data
-data_shuffled <- df %>% 
-  sample_frac(1)
-
-# Calculate the number of rows for each dataset
-n_total <- nrow(df)
-n_train <- floor(0.7 * n_total)
-n_validation <- floor(0.20 * n_total)
-
-# Split the data into training, validation, and test datasets
-train_data <- data_shuffled %>%
-  slice(1:n_train)
-
-validation_data <- data_shuffled %>%
-  slice((n_train + 1):(n_train + n_validation))
-
-test_data <- data_shuffled %>%
-  slice((n_train + n_validation + 1):n_total)
+train_data <- subset(df, Datum >= "2013-07-01" & Datum <= "2018-07-30")
+validation_data <- subset(df, Datum >= "2018-07-31" & Datum <= "2019-06-08")
+test_data <- subset(df, Datum >= "2019-06-09" & Datum <= "2019-07-30")
 
 # Check the dimensions of the datasets
 cat("Training dataset dimensions:", dim(train_data), "\n")
@@ -127,20 +109,22 @@ cat("Test dataset dimensions:", dim(test_data), "\n")
     summary(mod_lr_7)
   
     # Windgeschwindigkeit only inproves R-squared marginally.
-  mod_lr_8 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit + Wettercode, df)
+  mod_lr_8 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit, df)
     summary(mod_lr_8)
 
-mod_lr_9 <- lm(Umsatz ~ Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit + Wettercode, df)
+mod_lr_9 <- lm(Umsatz ~ Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit, df)
     summary(mod_lr_9)
     
-mod_lr_10 <- lm(Umsatz ~ Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit + as.factor(Wettercode), df)
+mod_lr_10 <- lm(Umsatz ~ Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit, df)
     summary(mod_lr_10)
     
-mod_lr_11 <- lm(Umsatz ~ Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit + as.factor(Wettercode) + Monat, df)
+mod_lr_11 <- lm(Umsatz ~ Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit + Monat, df)
     summary(mod_lr_11)
     
-mod_lr_12 <- lm(Umsatz ~ Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit + as.factor(Wettercode) + Monat + Monat * Temperatur, df)
+mod_lr_12 <- lm(Umsatz ~ Datum + Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit + Monat + Monat * Temperatur, df)
     summary(mod_lr_12)
+    
+
 
 ```
 
@@ -148,13 +132,35 @@ mod_lr_12 <- lm(Umsatz ~ Datum * Temperatur + as.factor(Warengruppe) + as.factor
 
 ```{r include=FALSE}
 # Make predictions using the test data
-predicted_values <- predict(mod_lr_12, newdata = validation_data)
+predictions <- predict(mod_lr_12, newdata = test_data)
+
+predictions
 
 # Compare the predicted values with the actual values
-comparison <- data.frame(Actual = validation_data$Umsatz, Predicted = predicted_values)
+# comparison <- data.frame(Actual = validation_data$Umsatz, Predicted = predicted_values)
 
 # Display the comparison and RMSE
-head(comparison)
-cat("Mean Absolute Percentage Error (MAPE):", mape(comparison$Actual, comparison$Predicted), "\n")
+# head(comparison)
+# cat("Mean Absolute Percentage Error (MAPE):", mape(comparison$Actual, comparison$Predicted), "\n")
+df
+
 
 ```
+
+```{r}
+library(httr)
+
+predictions <- 
+
+head(predicted_values)
+  
+name <- "Gruppe 11"
+
+# Execution of the request
+r <- POST("https://bakery-sales-mape-tolicqztoq-ey.a.run.app/", 
+          body = list(name=name, predictions=predictions),
+          encode = "json")
+# Output of MAPE in Percent
+content(r, "parsed", "application/json")
+```
+
