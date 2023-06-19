@@ -92,36 +92,36 @@ cat("Test dataset dimensions:", dim(test_data), "\n")
   mod_lr_2 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag), df)
     summary(mod_lr_2)
     
-  mod_lr_3 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH, df)
+  mod_lr_3 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + as.factor(FerienSH), df)
     summary(mod_lr_3)
     
-  mod_lr_4 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur, df)
+  mod_lr_4 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + as.factor(FerienSH) + Temperatur, df)
     summary(mod_lr_4)
   
-  mod_lr_5 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche, df)
+  mod_lr_5 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + as.factor(FerienSH) + Temperatur + as.factor(KielerWoche), df)
     summary(mod_lr_5)
   
-  mod_lr_6 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung, df)
+  mod_lr_6 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + as.factor(FerienSH) + Temperatur + as.factor(KielerWoche) + Bewoelkung, df)
     summary(mod_lr_6)
     
     # Quick comment: KiWo and Bewoelkung do not increase R-squared
-    mod_lr_7 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit, df)
+    mod_lr_7 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + as.factor(FerienSH) + Temperatur + as.factor(KielerWoche) + Bewoelkung + Windgeschwindigkeit, df)
     summary(mod_lr_7)
   
     # Windgeschwindigkeit only inproves R-squared marginally.
-  mod_lr_8 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit, df)
+  mod_lr_8 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + as.factor(FerienSH) + Temperatur + as.factor(KielerWoche) + Bewoelkung + Windgeschwindigkeit, df)
     summary(mod_lr_8)
 
-mod_lr_9 <- lm(Umsatz ~ Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit, df)
+mod_lr_9 <- lm(Umsatz ~ Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + as.factor(FerienSH) + Temperatur + as.factor(KielerWoche) + Bewoelkung + Windgeschwindigkeit, df)
     summary(mod_lr_9)
     
-mod_lr_10 <- lm(Umsatz ~ Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit, df)
+mod_lr_10 <- lm(Umsatz ~ Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + as.factor(FerienSH) + Temperatur + as.factor(KielerWoche) + Bewoelkung + Windgeschwindigkeit, df)
     summary(mod_lr_10)
     
-mod_lr_11 <- lm(Umsatz ~ Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit + Monat, df)
+mod_lr_11 <- lm(Umsatz ~ Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + as.factor(FerienSH) + Temperatur + as.factor(KielerWoche) + Bewoelkung + Windgeschwindigkeit + as.factor(Monat), df)
     summary(mod_lr_11)
     
-mod_lr_12 <- lm(Umsatz ~ Datum + Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit + Monat + Monat * Temperatur, df)
+mod_lr_12 <- lm(Umsatz ~ Datum + Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + as.factor(FerienSH) + Temperatur + as.factor(KielerWoche) + Bewoelkung + Windgeschwindigkeit +  as.factor(Monat) + as.factor(Monat) * Temperatur, df)
     summary(mod_lr_12)
     
 
