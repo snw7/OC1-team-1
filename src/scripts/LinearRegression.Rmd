@@ -123,6 +123,9 @@ cat("Test dataset dimensions:", dim(test_data), "\n")
     
  mod_lr_12 <- lm(Umsatz ~ Datum + Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + as.factor(FerienSH) + Temperatur + as.factor(KielerWoche) + Bewoelkung + Windgeschwindigkeit +  as.factor(Monat) + as.factor(Monat) * Temperatur, df)
      summary(mod_lr_12)
+     
+ mod_lr_13 <- lm(Umsatz ~ as.factor(Wochentag) + Temperatur^3 + as.factor(Warengruppe) + as.factor(Wochentag) + as.factor(FerienSH) + Temperatur + as.factor(KielerWoche) + Bewoelkung + Windgeschwindigkeit +  as.factor(Monat) + as.factor(Monat) * Temperatur, df)
+     summary(mod_lr_13)
     
 ```
 
@@ -131,6 +134,7 @@ cat("Test dataset dimensions:", dim(test_data), "\n")
 ```{r include=FALSE}
 # Make predictions using the test data
 prediction_temp <- read.csv("../data/prediction_template.csv") 
+
 
 prediction_temp$predicted <- predict(mod_lr_12, newdata = test_data)
 
