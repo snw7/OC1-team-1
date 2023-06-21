@@ -82,6 +82,7 @@ df_prep <- select(df_prep, -Wettercode)
 
 ```{r include=FALSE}
 df_prep$Datum <- as.Date(df_prep$Datum, format = "%Y-%m-%d")
+
 ```
 
 ### Converting the "Warengruppe" to char, as the algorithm might interpret the numeric values as ordered, while they are categorial.
@@ -123,6 +124,10 @@ df_prep <- left_join(df_prep, ferien, by = "Datum") %>%
 ### Adding Month variable
 ```{r}
 df_prep$Monat <- month(df_prep$Datum)
+
+
+# df_prep <- df_prep[df_prep$Monat == 6 | df_prep$Monat == 7, ]
+# df
 ```
 
 

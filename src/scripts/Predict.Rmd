@@ -24,12 +24,12 @@ for (lib in libraries)
 
 ```{r}
 # Load the saved model
-model <- load_model_hdf5("../ML_models/mod_nn_18.h5")
+model <- load_model_hdf5("../ML_models/mod_nn_20.h5")
 
-temp <- test_features[2, ]
+temp <- test_features
 
 test_predictions <- model$predict(temp)
-test_predictions
+head(test_predictions)
 
 # 
 # predictions <- model$predict(test_features)
