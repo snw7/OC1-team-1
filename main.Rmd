@@ -151,7 +151,7 @@ mod_lr_10 <- lm(Umsatz ~ Datum * Temperatur + as.factor(Warengruppe) + as.factor
 mod_lr_11 <- lm(Umsatz ~ Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit + as.factor(Wettercode) + Monat, clean_df)
     summary(mod_lr_11)
     
-mod_lr_12 <- lm(Umsatz ~ Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + FerienSH + Temperatur + KielerWoche + Bewoelkung + Windgeschwindigkeit + as.factor(Wettercode) + Monat + Monat * Temperatur, clean_df)
+mod_lr_12 <- lm(Umsatz ~ Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + as.factor(FerienSH) + Temperatur + as.factor(KielerWoche) + Bewoelkung + Windgeschwindigkeit + as.factor(Wettercode) + as.factor(Monat) + as.factor(Monat) * Temperatur, clean_df)
     summary(mod_lr_12)
   
   
