@@ -21,8 +21,6 @@ for (lib in libraries)
   }
 }
 
-remove(libraries)
-
 ```
 
 ### Data Import
@@ -104,11 +102,9 @@ df_prep <- left_join(df_prep, ferien, by = "Datum") %>%
 
 ### Adding Month variable
 ```{r}
+
 df_prep$Monat <- month(df_prep$Datum)
 
-
-# df_prep <- df_prep[df_prep$Monat == 6 | df_prep$Monat == 7, ]
-# df
 ```
 
 

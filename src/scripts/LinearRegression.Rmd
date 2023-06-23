@@ -1,5 +1,7 @@
-```{r include=FALSE}
 
+
+
+```{r include=FALSE}
 if (!requireNamespace("reticulate", quietly = TRUE)) {
   install.packages("reticulate")
 }
@@ -17,11 +19,11 @@ for (lib in libraries)
     library(lib, character.only = TRUE)
   }
 }
+```
 
-# Install the reticulate package if you haven't already
-#if (!requireNamespace("reticulate", quietly = TRUE)) {
-#  install.packages("reticulate")
-#}
+
+The following piece of code does not have to be run repeatedly, only initial run is required.
+```{r include=FALSE}
 
 # Custom function to check if a Conda environment exists
 #condaenv_exists <- function(env_name) {
@@ -59,21 +61,26 @@ for (lib in libraries)
 # 'InvalidArchiveError("Error with archive C:\\Users\\ [...] \\\compose_set_interface.h.inc'")'
 ```
 
+
+Read in the prepared data set as variable 'df'
 ```{r}
+
 df <- read_csv("../data/data_clean.csv", show_col_types = FALSE)
+
 ```
 
 
-## Prediction Models (LR, SVM, NN)
-
-Teilen des Datensatzes in Trainings- Validierungs- und Testdatensatz. Diese werden für LR und SVM verwendet.
-
+Splitting the data set into Training, Validation and Test data sets.
+The test data set is fixed, as the time frame we want to predict is a given parameter. For the Training and validation sets, we chose roughly an 80 - 20 distribution.
 ```{r include=FALSE}
-train_data <- subset(df, Datum >= "2013-07-01" & Datum <= "2018-07-30")
-validation_data <- subset(df, Datum >= "2018-07-31" & Datum <= "2019-06-08")
+
+train_data <- subset(df, Datum >= "2013-07-01" & Datum <= "2018-03-31")
+
+validation_data <- subset(df, Datum >= "2018-04-01" & Datum <= "2019-06-08")
+
 test_data <- subset(df, Datum >= "2019-06-09" & Datum <= "2019-07-30")
 
-# Check the dimensions of the datasets
+# Check the dimensions of the data sets
 cat("Training dataset dimensions:", dim(train_data), "\n")
 cat("Validation dataset dimensions:", dim(validation_data), "\n")
 cat("Test dataset dimensions:", dim(test_data), "\n")
@@ -83,78 +90,31 @@ cat("Test dataset dimensions:", dim(test_data), "\n")
 ### LR Beispiel einer einfachen linearen Regression
 
 ```{r include=FALSE}
-#   mod_lr <- lm(Umsatz ~ Datum, df)
-#     summary(mod_lr)
-#     
-#   mod_lr_1 <- lm(Umsatz ~ Datum + as.factor(Warengruppe), df)
-#     summary(mod_lr_1)
-#     
-#   mod_lr_2 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag), df)
-#     summary(mod_lr_2)
-#     
-#   mod_lr_3 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + as.factor(FerienSH), df)
-#     summary(mod_lr_3)
-#     
-#   mod_lr_4 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + as.factor(FerienSH) + Temperatur, df)
-#     summary(mod_lr_4)
-#   
-  mod_lr_5 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + as.factor(FerienSH) + Temperatur + as.factor(KielerWoche), df)
-    summary(mod_lr_5)
 
-  mod_lr_6 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + as.factor(FerienSH) + Temperatur + as.factor(KielerWoche) + Bewoelkung, df)
-    summary(mod_lr_6)
-
-    # Quick comment: KiWo and Bewoelkung do not increase R-squared
-    mod_lr_7 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + as.factor(FerienSH) + Temperatur + as.factor(KielerWoche) + Bewoelkung + Windgeschwindigkeit, df)
-    summary(mod_lr_7)
-
-#     # Windgeschwindigkeit only inproves R-squared marginally.
-#   mod_lr_8 <- lm(Umsatz ~ Datum + as.factor(Warengruppe) + as.factor(Wochentag) + as.factor(FerienSH) + Temperatur + as.factor(KielerWoche) + Bewoelkung + Windgeschwindigkeit, df)
-#     summary(mod_lr_8)
-# 
-# mod_lr_9 <- lm(Umsatz ~ Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + as.factor(FerienSH) + Temperatur + as.factor(KielerWoche) + Bewoelkung + Windgeschwindigkeit, df)
-#     summary(mod_lr_9)
-#     
-# mod_lr_10 <- lm(Umsatz ~ Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + as.factor(FerienSH) + Temperatur + as.factor(KielerWoche) + Bewoelkung + Windgeschwindigkeit, df)
-#     summary(mod_lr_10)
-#     
-# mod_lr_11 <- lm(Umsatz ~ Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + as.factor(FerienSH) + Temperatur + as.factor(KielerWoche) + Bewoelkung + Windgeschwindigkeit + as.factor(Monat), df)
-#     summary(mod_lr_11)
-    
- mod_lr_12 <- lm(Umsatz ~ Datum + Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + as.factor(FerienSH) + Temperatur + as.factor(KielerWoche) + Bewoelkung + Windgeschwindigkeit +  as.factor(Monat) + as.factor(Monat) * Temperatur, df)
-     summary(mod_lr_12)
-     
- mod_lr_13 <- lm(Umsatz ~ as.factor(Wochentag) + Temperatur^3 + as.factor(Warengruppe) + as.factor(Wochentag) + as.factor(FerienSH) + Temperatur + as.factor(KielerWoche) + Bewoelkung + Windgeschwindigkeit +  as.factor(Monat) + as.factor(Monat) * Temperatur, df)
-     summary(mod_lr_13)
+mod <- lm(Umsatz ~ Datum + Datum * Temperatur + as.factor(Warengruppe) + as.factor(Wochentag) + as.logical(FerienSH) + Temperatur + as.logical(KielerWoche) + Bewoelkung + Windgeschwindigkeit +  as.factor(Monat) + as.factor(Monat) * Temperatur + Windgeschwindigkeit * Temperatur, df)
+     summary(mod)
     
 ```
 
-#### Nutzung des resultierenden Modells für eine Vohersage
 
+Preparing the data set for the prediction request.
 ```{r include=FALSE}
+
 # Make predictions using the test data
-prediction_temp <- read.csv("../data/prediction_template.csv") 
+prediction_temp <- read.csv("../data/prediction_template.csv")
 
-
-prediction_temp$predicted <- predict(mod_lr_12, newdata = test_data)
+prediction_temp$predicted <- predict(mod, newdata = test_data)
 
 prediction_temp <- select(prediction_temp, -Umsatz)
 
 prediction_temp <- prediction_temp %>%
   rename(Umsatz = predicted)
 
-
-# Compare the predicted values with the actual values
-# comparison <- data.frame(Actual = validation_data$Umsatz, Predicted = predicted_values)
-
-# Display the comparison and RMSE
-# head(comparison)
-# cat("Mean Absolute Percentage Error (MAPE):", mape(comparison$Actual, comparison$Predicted), "\n")
-
 ```
 
 ```{r}
 library(httr)
+
 predictions <- prediction_temp
 
 name <- "Gruppe 11"
@@ -166,4 +126,3 @@ r <- POST("https://bakery-sales-mape-tolicqztoq-ey.a.run.app/",
 # Output of MAPE in Percent
 content(r, "parsed", "application/json")
 ```
-
